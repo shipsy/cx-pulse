@@ -1,6 +1,6 @@
 ---
 name: morning-brief
-description: Generate the daily Morning CX Brief — mirrors vista-549 (Support - open tickets), pulls roster, scans Slack channels. Posts to C0A82U7MZ5F and C07BQD5776Y at 8 AM IST daily. Evening routine compares against this morning baseline.
+description: Generate the daily Morning CX Brief — mirrors vista-549 (Support - open tickets), 6-section structured report. Posts to C0A82U7MZ5F and C07BQD5776Y at 8 AM IST daily.
 ---
 
 # Morning Brief — CX Pulse
@@ -9,21 +9,18 @@ Post to TWO channels: C0A82U7MZ5F (leadership DM) and C07BQD5776Y (#customer-exp
 
 ## Source of Truth
 
-This report mirrors **vista-549 ("Support - open tickets")** in DevRev.
-URL: https://app.devrev.ai/shipsy/vistas/vista-549
-
-Vista-549 shows: subtype=Support, state=open OR in_progress (not closed/resolved/canceled).
+Mirrors **vista-549 ("Support - open tickets")** in DevRev.
+Only tickets where state = "open" or "in_progress" (not closed/resolved/canceled).
 
 ## Execution Steps
 
 ### Step 1: Read Roster
 Google Sheet `1v8lbH2yZCU7TAInUNO2tqx-HDGbCjPVtqZEWX94pApc`. Today's column.
-Extract ON DUTY (name + shift) vs OFF (WO/PL). Exclude WMS team (Bhavyank, Dhanasree).
+ON DUTY (name + shift) vs OFF (WO/PL). Exclude WMS team.
 
-### Step 2: Pull ALL Open Support Tickets (mirror vista-549)
+### Step 2: Pull ALL Open Support Tickets
 
-Run MULTIPLE searches to maximize coverage (hybrid_search can't filter by state, so we cast a wide net):
-
+Run multiple searches to maximize coverage:
 ```
 hybrid_search namespace=ticket query="support tickets currently open queued not resolved" limit=50
 hybrid_search namespace=ticket query="support tickets in progress awaiting response" limit=50
@@ -33,45 +30,27 @@ hybrid_search namespace=ticket query="unassigned support tickets open" limit=50
 hybrid_search namespace=ticket query="support tickets frustrated unhappy sentiment open" limit=50
 ```
 
-**For EACH unique ticket found, get full details via get_ticket. FILTER: only keep tickets where `state` = "open" or "in_progress". Discard state="closed".**
+For EACH unique ticket, `get_ticket`. FILTER: only keep state = "open" or "in_progress".
 
 Extract per ticket:
-- `display_id` — clickable as `<https://app.devrev.ai/shipsy/works/TKT-XXXXX|TKT-XXXXX>`
+- `display_id` — clickable link
 - `title`
 - `tnt__customer_cohort_dropdown` — cohort
 - `tnt__pod` — pod
-- `severity_v2.label`
-- `stage.name` — Queued / In Progress / Awaiting Customer Response / Awaiting Development / Reopen
-- `state` — MUST be "open" or "in_progress"
-- `owned_by[0].display_name` — owner (flag if "Unassigned")
+- `tnt__assignee` — CX Lead (the designated support person)
+- `severity_v2.label` — Blocker / High / Medium / Low
+- `stage.name` — Queued / In Progress / Awaiting Customer Response / Awaiting Development / Reopen / Awaiting Product Assist
+- `state` — must be "open" or "in_progress"
+- `owned_by[0].display_name` — current owner
 - `account.display_name` — customer
-- `sentiment.label` — Happy/Neutral/Unhappy/Frustrated
-- `sla_summary` — for each metric: status = hit/miss/in_progress, remaining_time
-- `needs_response` — true/false
-- `created_date` — for age calculation
-- `tnt__work_duration`
+- `rev_org.display_name` — org
+- `sentiment.label`
+- `sla_summary` — hit/miss per metric
+- `needs_response`
+- `created_date` — for age calculation (today - created_date = age in days)
 
-### Step 3: Group & Aggregate
-
-**By Cohort (exclude WMS):**
-- DEDICATED: 1-Reliance, 1-DTDC, 2-Aramex, 2-HNK
-- 3PL: 4A-B2C Shipper, 4A-B2C LSP, 5A-B2B LSP, 5A-B2B Shipper
-- ON-DEMAND: 3A-On Demand, 3B-S (On Demand)
-- OTHER: Exim, Platform, TBD, empty
-
-**By Account:** which accounts have most open tickets
-
-**Metrics:**
-- Total open count
-- Unassigned count (owned_by = Unassigned/SVCACC-46)
-- SLA breached count (status = miss or remaining_time < 0)
-- Frustrated/Unhappy count
-- Needs response count
-
-### Step 4: Scan Slack Channels (last 24h)
-Read with `oldest` = 24h ago, `limit` = 20, `response_format` = concise:
-
-- `C07BQD5776Y` — frustrated customer alerts
+### Step 3: Scan Slack Channels (last 24h)
+- `C07BQD5776Y` — frustrated alerts
 - `C0AU4MT6MUK` — escalations
 - `C09P8BC41PW` — Aramex WhatsApp
 - `C0ACT5ER2E6` — ChronoDiali WhatsApp
@@ -81,42 +60,87 @@ Read with `oldest` = 24h ago, `limit` = 20, `response_format` = concise:
 - `C081GJ2M0LW` — Qatar Post external
 - `C07UZFTU7C4` — Movin
 
-### Step 5: Format & Post to BOTH channels
+### Step 4: Format & Post to BOTH channels
 
 ```
-*CX Pulse — Daily Support Brief* | {{day}}, {{date}}
-_Source: vista-549 (Support - open tickets)_
+*CX Pulse — Morning Brief* | {{day}}, {{date}}
+_Source: vista-549 · {{total}} open tickets_
 
-*{{open}} open* · *{{on_duty}} on duty* · *{{frustrated}} frustrated* · *{{sla_breached}} SLA breached* · *{{unassigned}} unassigned* · *{{needs_response}} needs response*
+*{{total}} open* · *{{blockers}} blockers* · *{{frustrated}} frustrated* · *{{sla_breached}} SLA breached* · *{{unassigned}} unassigned*
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 :pushpin: *Headlines*
-SLA Hit Rate: {{pct}}% {{color}}  |  Frustrated: {{count}} {{color}}
-On Duty: {{on_duty}}/{{total}} {{note}} {{color}}
-Gap: {{one-liner biggest risk}}
+{{one-liner biggest risk today}}
+On Duty: {{count}}/{{total team}} {{weekend note if applicable}}
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-:bar_chart: *By Cohort*
+:busts_in_silhouette: *1. CX Lead Wise* (tnt__assignee)
 
 ```
-Cohort         | Open | Frust | SLA%  | Unsgn | Duty Today
----------------|------|-------|-------|-------|------------
+CX Lead              | Open | Blocker | Frust | SLA Miss | On Duty?
+---------------------|------|---------|-------|----------|----------
+{{assignee name}}    | {{n}}| {{n}}   | {{n}} | {{n}}    | Yes/No/WO
+Unassigned           | {{n}}| {{n}}   | {{n}} | {{n}}    | —
 ...
 ```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-:office: *By Account*
+:gear: *2. POD Wise*
+
+```
+Pod              | Open | Blocker | Frust | SLA Miss
+-----------------|------|---------|-------|----------
+On Demand        | {{n}}| {{n}}   | {{n}} | {{n}}
+MCM              | {{n}}| {{n}}   | {{n}} | {{n}}
+Alpha            | {{n}}| {{n}}   | {{n}} | {{n}}
+Brahmos          | {{n}}| {{n}}   | {{n}} | {{n}}
+Finance          | {{n}}| {{n}}   | {{n}} | {{n}}
+...
+(not set)        | {{n}}| {{n}}   | {{n}} | {{n}}
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+:office: *3. Top 10 Accounts*
 
 ```
 Account              | Open | Frust | SLA   | Key Issue
 ---------------------|------|-------|-------|-----------------------------
+{{account}}          | {{n}}| {{n}} | {{s}} | {{one-liner}}
 ...
 ```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-:ticket: *Open Tickets (Morning Baseline)*
+:red_circle: *4. Blockers* ({{count}} total)
 
-*{{Cohort}}* {{color}}
-• TKT-XXXXX {{Account}} — {{title}} | {{owner}} {{on/off}} | {{stage}} | {{SLA status}}
-[repeat per ticket — THIS LIST IS THE MORNING BASELINE]
+• TKT-XXXXX | {{Account}} | {{title}} | CX Lead: {{assignee or UNASSIGNED}} | Age: {{days}}d
+• ...
+(If 0 blockers: "No blockers :large_green_square:")
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+:hourglass_flowing_sand: *5. Age Wise* (pending tickets)
+
+```
+Age              | Count | % of Total
+-----------------|-------|------------
+0-7 days         | {{n}} | {{%}}
+7-14 days        | {{n}} | {{%}}
+14-30 days       | {{n}} | {{%}}
+30+ days         | {{n}} | {{%}}  ← needs attention
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+:bar_chart: *6. Status Wise*
+
+```
+Stage                         | Count
+------------------------------|------
+Queued                        | {{n}}
+In Progress                   | {{n}}
+Awaiting Customer Response    | {{n}}
+Awaiting Development          | {{n}}
+Awaiting Product Assist       | {{n}}
+Reopen                        | {{n}}
+```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 :satellite: *Channel Signals* (last 24h)
@@ -124,43 +148,53 @@ Account              | Open | Frust | SLA   | Key Issue
 ```
 Source                           | Signals | Key Issue
 ---------------------------------|---------|------------------
+{{channel}}                      | {{cnt}} | {{summary or Silent}}
 ...
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-:busts_in_silhouette: *Team*
+:busts_in_silhouette: *Today's Team*
 
 ```
 ON DUTY
-{{Name}}     {{bars}}  {{count}} open   {{shift}}  ({{cohort}})
+{{Name}}     {{bars}}  {{count}} open   {{shift}}
 
 OFF TODAY (with open tickets)
 {{Name}}     {{bars}}  {{count}} open   WO/PL
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-:bulb: *Notable Today*
+:bulb: *Notable*
 • {{insight 1}}
 • {{insight 2}}
-• {{insight 3}}
 
 :dart: *Actions*
-1. *{{Person}}* → {{ticket}} {{account}}: {{what and why}}
+1. *{{Person}}* → {{ticket}}: {{what and why}}
 ...
+
+_Morning Baseline — evening report will track RESOLVED vs STILL OPEN for each ticket above_
 ```
 
-## CRITICAL: Morning Baseline
-The "Open Tickets" section is the MORNING BASELINE. The evening routine will re-check every ticket listed here and report: RESOLVED or STILL OPEN. This creates a closed-loop accountability system.
+## Age Calculation
+```
+age_days = (today - created_date).days
+Bucket:
+  0-7 days   = recent
+  7-14 days  = aging
+  14-30 days = old
+  30+ days   = critical — flag these
+```
 
 ## Rules
 
-1. NEVER fabricate data. Only report what DevRev returns.
+1. NEVER fabricate data.
 2. Clickable links: `<https://app.devrev.ai/shipsy/works/TKT-XXXXX|TKT-XXXXX>`
-3. Only include tickets where state = "open" or "in_progress". Never include state = "closed".
-4. Cross-reference roster with owners — flag if owner is OFF.
-5. Keep under 4000 characters.
-6. Weekend: emphasize coverage gaps, note SLA timer pause.
-7. 3PL (4A+5A) — always show SLA miss rate and workload ratio.
-8. Exclude WMS team and WMS cohort.
-9. Channel Signals: only show channels with activity. Mark others "Silent".
-10. Actions: 3-5 items, each with person + ticket + reason.
+3. Only state = "open" or "in_progress". Never include closed.
+4. CX Lead = `tnt__assignee` field. If empty, show "Unassigned".
+5. Cross-reference roster — flag CX Lead as "WO" or "PL" if off today.
+6. Keep under 4500 characters.
+7. 3PL (4A+5A) — always highlight if overwhelmed.
+8. Exclude WMS team.
+9. Blockers section: list EVERY blocker with full details. This is critical.
+10. 30+ days tickets in Age Wise section = flag as needing attention.
+11. Actions: 3-5 items, each with person + ticket + reason.
