@@ -1,13 +1,11 @@
 ---
 name: morning-brief
-description: Generate the daily Morning CX Brief — 6-section structured report with 5 action sub-sections. Uses DevRev REST API with pagination for complete data. Posts to C0A82U7MZ5F and C07BQD5776Y at 9 AM IST daily via routine.
+description: Generate the daily Morning CX Brief — 6-section structured report with 5 action sub-sections. Uses DevRev REST API with pagination for complete data. Posts to C07BQD5776Y at 9 AM IST daily via routine.
 ---
 
 # Morning Brief — CX Pulse
 
-Post to TWO Slack channels:
-- `C0A82U7MZ5F` — leadership group DM
-- `C07BQD5776Y` — #customer-experience-product-support
+Post to Slack channel: `C07BQD5776Y` (#customer-experience-product-support)
 
 ---
 
@@ -175,7 +173,7 @@ This becomes tomorrow's baseline. The `ticket_ids` array enables exact inflow/ou
 
 ### Step 7: Format and Post to Slack
 
-Post to BOTH channels: `C0A82U7MZ5F` and `C07BQD5776Y`.
+Post to Slack channel `C07BQD5776Y` (#customer-experience-product-support).
 Use the output format template defined below.
 All ticket IDs must be clickable: `<https://app.devrev.ai/shipsy/works/TKT-XXXXX|TKT-XXXXX>`
 
@@ -701,4 +699,4 @@ File: `config/daily-snapshot.json`
 14. **No insights section.** The brief has exactly 6 sections + 5 action sub-sections. No Section 7.
 15. **JSON parsing:** Always use `strict=False` when parsing DevRev API responses.
 16. **Age calculation:** `age_days = (today - created_date).days`
-17. **Post to BOTH channels:** `C0A82U7MZ5F` and `C07BQD5776Y`. Every run, both channels.
+17. **Post to channel:** `C07BQD5776Y` (#customer-experience-product-support). Only this channel.
