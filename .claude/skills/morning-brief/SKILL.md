@@ -29,11 +29,43 @@ Header: Content-Type: application/json
 PAT is stored as environment variable `DEVREV_TOKEN`. If not available, use the PAT from the project's secure config.
 
 ### Pagination
+
+**CRITICAL: You MUST complete ALL pages. Do NOT stop early.**
+
+The org has ~4000+ open tickets across all subtypes. Only ~300 are subtype=Support. If you stop pagination early, you will miss Support tickets and the report will be WRONG (e.g., showing 137 instead of 275).
+
 ```
 Page 1: { "type": ["ticket"], "state": ["open", "in_progress"], "limit": 100 }
 Page N: { "type": ["ticket"], "state": ["open", "in_progress"], "limit": 100, "cursor": "<next_cursor>" }
 ```
-Continue until `next_cursor` is empty or `works` array is empty.
+
+**You will need 40-50 pages.** Continue until `next_cursor` is empty or `works` array is empty. Do NOT stop because you think you have "enough" tickets.
+
+**Recommended approach:** Write a Python script that handles pagination in a loop, then run it via Bash. Do NOT try to paginate manually with individual curl calls — you will lose track or stop early. Example:
+
+```python
+import json, urllib.request
+TOKEN = "<PAT>"
+all_tickets = []
+cursor = None
+while True:
+    payload = {"type": ["ticket"], "state": ["open", "in_progress"], "limit": 100}
+    if cursor:
+        payload["cursor"] = cursor
+    data = json.dumps(payload).encode()
+    req = urllib.request.Request("https://api.devrev.ai/works.list", data=data,
+        headers={"Authorization": f"Bearer {TOKEN}", "Content-Type": "application/json"})
+    resp = json.loads(urllib.request.urlopen(req).read().decode(), strict=False)
+    works = resp.get("works", [])
+    all_tickets.extend(works)
+    cursor = resp.get("next_cursor", "")
+    if not works or not cursor:
+        break
+# Now filter client-side
+support_tickets = [t for t in all_tickets if t.get("subtype") == "Support"]
+```
+
+**The API does NOT support server-side subtype filtering.** `subtype`, `ticket_type`, `ticket_subtype` all return 400. Client-side filtering after full pagination is the ONLY way.
 
 ### JSON Parsing
 Use `json.loads(response, strict=False)` — DevRev responses contain control characters that break strict JSON parsing.
@@ -105,14 +137,16 @@ Vidushi Wanchoo, Vinod Kumar Gunda, Madhav Kapoor, Deepanshu Marwari, Vikas Pand
 
 Use DevRev REST API with pagination (see Source of Truth above).
 
-**Client-side filter after fetching:**
+**Client-side filter after fetching (STRICT — only exact match):**
 ```python
 for ticket in all_fetched_tickets:
-    if ticket.subtype != "Support": skip
-    cohort = ticket.custom_fields.tnt__customer_cohort_dropdown
+    if ticket.get("subtype") != "Support": skip    # MUST be exactly "Support", not None/empty
+    cohort = ticket.get("custom_fields", {}).get("tnt__customer_cohort_dropdown") or "TBD"
     if cohort in ("WMS", "Roadmap"): skip
     # Keep this ticket
 ```
+
+**The DevRev API does NOT support server-side subtype filtering.** You MUST fetch ALL ticket types and filter client-side. Expect ~4000+ raw tickets but only ~300 will be subtype=Support.
 
 **Fields to extract per ticket:**
 
@@ -124,9 +158,9 @@ for ticket in all_fetched_tickets:
 | cohort | `ticket.custom_fields.tnt__customer_cohort_dropdown` | Customer tier/segment |
 | pod | `ticket.custom_fields.tnt__pod` | Sub-team |
 | CX Lead | `ticket.custom_fields.tnt__assignee` | Designated support person (DON ID) |
-| severity | `ticket.severity_v2.label` | Blocker / High / Medium / Low |
+| severity | `ticket.severity` | Blocker / High / Medium / Low (plain string, NOT severity_v2) |
 | stage | `ticket.stage.name` | Current workflow stage |
-| state | `ticket.state` | open / in_progress |
+| state | `ticket.stage.state.name` | open / in_progress (NOT a top-level field — nested inside stage) |
 | owner | `ticket.owned_by[0].display_name` | Current ticket owner |
 | account | `ticket.rev_org.display_name` | Customer account name |
 | needs_response | `ticket.needs_response` | Boolean — customer waiting for reply |
@@ -214,8 +248,8 @@ def arrow(delta):
 | Metric | Source |
 |--------|--------|
 | Total Open | `count(support_tickets)` |
-| Blockers | `count(severity_v2.label == "blocker")` |
-| Aging 30d+ | `count(age >= 30 AND severity in ["blocker", "high"])` |
+| Blockers | `count(severity == "blocker")` — field is `ticket.severity` (plain string) |
+| Aging 30d+ | `count(age >= 30 AND severity in ["blocker", "high"])` — field is `ticket.severity` |
 | Unassigned | `count(tnt__assignee is null)` |
 | Unanswered | `count(needs_response == true)` |
 | Inflow | `len(today_ids - yesterday_ids)` |
@@ -251,7 +285,7 @@ awaiting_product_assist | in_development | Reassigned to Customer Support | Reop
 
 **Purpose:** Every blocker-severity ticket listed with full details.
 
-**Filter:** `severity_v2.label == "blocker"` (case-insensitive)
+**Filter:** `severity == "blocker"` (case-insensitive — the field is `ticket.severity`, a plain string)
 
 **Display per blocker:** Ticket ID (clickable), Account, Title (50 chars), CX Lead, Owner, Age in days, Stage.
 
@@ -267,7 +301,7 @@ awaiting_product_assist | in_development | Reassigned to Customer Support | Reop
 ```python
 aged = [t for t in support_tickets
         if age(t) >= 30
-        and severity(t).lower() in ("blocker", "high")]
+        and t.get("severity", "").lower() in ("blocker", "high")]
 ```
 
 **Display:** Group by CX Lead → count + key accounts (top 3 accounts per CX Lead).
@@ -564,6 +598,14 @@ Extract the `devu/XXXX` suffix and map:
 | devu/3063 | Tejal Shirsat |
 | devu/2676 | SKG/Sumit Gupta |
 | devu/3091 | Gaurav Singh |
+| devu/2626 | Shajiya Shaik |
+| devu/1885 | Shipsy Support |
+| devu/863 | Akash KumarRajek |
+| devu/899 | Yash Singh |
+| devu/1009 | Sana Amreen |
+| devu/1607 | Amit Dubey |
+| devu/2944 | Bhanu Arya |
+| devu/2632 | Nikhila K |
 
 **If DON ID not in this table:** Try resolving via `GET https://api.devrev.ai/dev-users.get?id=<don_id>`. Extract `full_name` or `display_name`. Cache the result.
 
