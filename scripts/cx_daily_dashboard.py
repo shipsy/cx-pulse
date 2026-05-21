@@ -322,22 +322,29 @@ def main():
     msg.append(f" #  {'Account':<18}  {'Pool':>4}   {'FR%':>5}   {'RT%':>5}")
     msg.append(f"──  {'─'*18}  {'─'*4}  {'─'*6}  {'─'*6}")
     sorted_sla = sorted(sla_acct.items(), key=lambda x: x[1]["n"], reverse=True)
-    for i, (a, d) in enumerate(sorted_sla[:12], 1):
+    # Show top 12 accounts with 3+ tickets, roll up the rest
+    shown = []
+    rest = []
+    for a, d in sorted_sla:
+        if len(shown) < 12 and d["n"] >= 3:
+            shown.append((a, d))
+        else:
+            rest.append((a, d))
+    for i, (a, d) in enumerate(shown, 1):
         frd = d["fr_h"] + d["fr_m"]; rtd = d["rt_h"] + d["rt_m"]
         fp = round(d["fr_h"] / frd * 100) if frd else 0
         rp = round(d["rt_h"] / rtd * 100) if rtd else 0
         fp_s = f"{sla_color(fp)}{fp}%" if frd else "  -  "
         rp_s = f"{sla_color(rp)}{rp}%" if rtd else "  -  "
         msg.append(f"{i:>2}  {a[:18]:<18}  {d['n']:>4}  {fp_s:>6}  {rp_s:>6}")
-    remaining = sorted_sla[12:]
-    if remaining:
-        rm_n = sum(d["n"] for _, d in remaining)
-        rm_frh = sum(d["fr_h"] for _, d in remaining); rm_frm = sum(d["fr_m"] for _, d in remaining)
-        rm_rth = sum(d["rt_h"] for _, d in remaining); rm_rtm = sum(d["rt_m"] for _, d in remaining)
+    if rest:
+        rm_n = sum(d["n"] for _, d in rest)
+        rm_frh = sum(d["fr_h"] for _, d in rest); rm_frm = sum(d["fr_m"] for _, d in rest)
+        rm_rth = sum(d["rt_h"] for _, d in rest); rm_rtm = sum(d["rt_m"] for _, d in rest)
         rm_frd = rm_frh + rm_frm; rm_rtd = rm_rth + rm_rtm
         rfp = f"{round(rm_frh/rm_frd*100)}%" if rm_frd else "-"
         rrp = f"{round(rm_rth/rm_rtd*100)}%" if rm_rtd else "-"
-        msg.append(f"    {len(remaining)} more accts       {rm_n:>4}    {rfp:>4}    {rrp:>4}")
+        msg.append(f"    {len(rest)} more accts       {rm_n:>4}    {rfp:>4}    {rrp:>4}")
     msg.append("")
     msg.append("🟢 ≥75%  🟡 60-74%  🟠 40-59%  🔴 <40%")
     msg.append("```")
