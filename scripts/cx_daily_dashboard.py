@@ -195,16 +195,19 @@ def main():
 
     # Load snapshot for better previous day data
     snap = None
+    stored_rates = {}
     snap_path = os.path.join(os.path.dirname(__file__), "..", "config", "daily-snapshot.json")
     try:
         with open(snap_path) as f:
-            snap = json.load(f)
-        if snap.get("date") != yday:
-            snap = None  # Only use if it's yesterday's snapshot
+            snap_raw = json.load(f)
+        stored_rates = snap_raw.get("daily_rates", {})
+        if snap_raw.get("date") == yday:
+            snap = snap_raw
     except:
-        snap = None
+        pass
 
     if snap:
+        open_yday = snap.get("total", open_yday)
         prev_blockers_val = snap.get("blockers", prev_blockers)
         prev_unanswered_val = snap.get("unanswered", len(unanswered))
     else:
@@ -246,11 +249,17 @@ def main():
 
     # ═══ RESOLUTION RATE (daily, last 7 days) ═══
     daily_rates = []
+    daily_rates_save = {}
     for i in range(7, 0, -1):
         d = (TODAY - datetime.timedelta(days=i)).isoformat()
-        cr = [t for t in seen_all_dedup(tix, csup) if t.get("created_date", "")[:10] == d and stg(t) != "canceled"]
-        rv = [t for t in csup if t.get("actual_close_date", "")[:10] == d and stg(t).lower() in ("resolved", "closed")]
-        daily_rates.append((d, len(cr), len(rv)))
+        if d in stored_rates:
+            c, r = stored_rates[d]
+        else:
+            cr = [t for t in seen_all_dedup(tix, csup) if t.get("created_date", "")[:10] == d and stg(t) != "canceled"]
+            rv = [t for t in csup if t.get("actual_close_date", "")[:10] == d and stg(t).lower() in ("resolved", "closed")]
+            c, r = len(cr), len(rv)
+        daily_rates.append((d, c, r))
+        daily_rates_save[d] = [c, r]
 
     # ═══ TAT ═══
     tat_all = []; tat_sev = defaultdict(list)
@@ -445,6 +454,7 @@ def main():
         "total": total,
         "blockers": len(blockers),
         "unanswered": len(unanswered),
+        "daily_rates": daily_rates_save,
         "filter": "subtype=Support, excl WMS/Roadmap cohorts, excl WMS Inbound/Outbound pods, unanswered=queued+WIP only"
     }
     try:
