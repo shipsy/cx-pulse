@@ -9,7 +9,18 @@ from collections import defaultdict, Counter
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 # ═══ CONFIG ═══
-TOKEN = os.environ.get("DEVREV_TOKEN", "")
+def _load_token():
+    t = os.environ.get("DEVREV_TOKEN", "").strip()
+    if t:
+        return t
+    token_path = os.path.join(os.path.dirname(__file__), "..", ".devrev_token")
+    try:
+        with open(token_path) as f:
+            return f.read().strip()
+    except FileNotFoundError:
+        return ""
+
+TOKEN = _load_token()
 API = "https://api.devrev.ai"
 TODAY = datetime.date.today()
 YESTERDAY = (TODAY - datetime.timedelta(days=1))

@@ -5,7 +5,18 @@ Exit 0 = safe to run dashboard. Exit 1 = something broken, do NOT run dashboard.
 
 import json, os, sys, datetime, urllib.request, base64
 
-TOKEN = os.environ.get("DEVREV_TOKEN", "")
+def _load_token():
+    t = os.environ.get("DEVREV_TOKEN", "").strip()
+    if t:
+        return t
+    token_path = os.path.join(os.path.dirname(__file__), "..", ".devrev_token")
+    try:
+        with open(token_path) as f:
+            return f.read().strip()
+    except FileNotFoundError:
+        return ""
+
+TOKEN = _load_token()
 API = "https://api.devrev.ai"
 
 
