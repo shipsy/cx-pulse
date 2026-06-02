@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
 """CX Daily Dashboard — deterministic script for daily Slack report.
-Fetches from DevRev REST API, computes 7 metrics, outputs formatted Slack message.
-Run: python3 scripts/cx_daily_dashboard.py
+Fetches from DevRev REST API, computes 8 metrics, outputs formatted Slack message.
+Run: python3 scripts/cx_daily_dashboard.py [--dry-run]
+  --dry-run: output report but do NOT update snapshot (safe for testing)
 Requires: DEVREV_TOKEN env var"""
 
-import json, os, sys, datetime, urllib.request, math
+import json, os, sys, datetime, math, subprocess
+
+DRY_RUN = "--dry-run" in sys.argv
 from collections import defaultdict, Counter
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
@@ -75,6 +78,16 @@ DEVU_MAP = {
     "devu/2944":"Bhanu Arya","devu/2632":"Nikhila K",
 }
 
+SLACK_ID = {
+    "Saurabh Singh": "U06L4JBDUG7", "Gangesh Pandey": "U03CAJNJ3M5",
+    "Vinod Kumar Gunda": "U037KN084FJ", "Laxmi Rajput": "U06PWHWSDV3",
+    "Kaustuv Choudhary": "U09BY1QA9D2", "Vidushi Wanchoo": "U032GDTAN6B",
+    "Madhav Kapoor": "U02KSF1754L", "Vikas Pandey": "U06MM6U5WHK",
+    "Abhishek Bhandari": "U08LNRWDBNE", "Asif Khan": "U069SEPA8M8",
+    "Srijan Srivastava": "U096P90QQAE", "Tejal Shirsat": "U09JLRSCV51",
+    "Deepanshu Marwari": "U02J2QN6SSX",
+}
+
 # ═══ HELPERS ═══
 def norm(raw):
     if not raw or raw == "Unknown": return "Unknown"
@@ -83,12 +96,33 @@ def norm(raw):
     if n.endswith(" Account"): n = n[:-8]
     return ALIASES.get(n.lower().strip(), n)
 
-def apicall(endpoint, payload):
-    d = json.dumps(payload).encode()
-    r = urllib.request.Request(f"{API}/{endpoint}", data=d,
-        headers={"Authorization": f"Bearer {TOKEN}", "Content-Type": "application/json"})
-    with urllib.request.urlopen(r, timeout=30) as resp:
-        return json.loads(resp.read().decode(), strict=False)
+def apicall(endpoint, payload, _retries=3):
+    import tempfile, time
+    with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f:
+        json.dump(payload, f)
+        f.flush()
+        tmppath = f.name
+    try:
+        for attempt in range(_retries):
+            r = subprocess.run(["curl", "-s", "--compressed", "--retry", "1",
+                "--max-time", "90", "-X", "POST", f"{API}/{endpoint}",
+                "-H", f"Authorization: Bearer {TOKEN}",
+                "-H", "Content-Type: application/json",
+                "-d", f"@{tmppath}"], capture_output=True, text=True, timeout=120)
+            if not r.stdout.strip():
+                if attempt < _retries - 1:
+                    time.sleep(1)
+                    continue
+                raise RuntimeError(f"curl returned empty (rc={r.returncode})")
+            try:
+                return json.loads(r.stdout, strict=False)
+            except json.JSONDecodeError:
+                if attempt < _retries - 1:
+                    time.sleep(1)
+                    continue
+                raise
+    finally:
+        os.unlink(tmppath)
 
 def is_support(t):
     if t.get("subtype") != "Support": return False
@@ -161,7 +195,7 @@ def main():
     print("Fetching open tickets...", file=sys.stderr)
     raw = []; cur = None
     while True:
-        p = {"type": ["ticket"], "state": ["open", "in_progress"], "limit": 100}
+        p = {"type": ["ticket"], "state": ["open", "in_progress"], "limit": 25}
         if cur: p["cursor"] = cur
         r = apicall("works.list", p)
         w = r.get("works", []); raw.extend(w); cur = r.get("next_cursor", "")
@@ -173,7 +207,7 @@ def main():
     res = []; cur = None; pg = 0
     while True:
         pg += 1
-        p = {"type": ["ticket"], "state": ["resolved", "closed"], "limit": 100}
+        p = {"type": ["ticket"], "state": ["resolved", "closed"], "limit": 25}
         if cur: p["cursor"] = cur
         r = apicall("works.list", p)
         w = r.get("works", []); res.extend(w); cur = r.get("next_cursor", "")
@@ -206,24 +240,66 @@ def main():
 
     # Load snapshot for better previous day data
     snap = None
+    snap_raw = {}
     stored_rates = {}
     snap_path = os.path.join(os.path.dirname(__file__), "..", "config", "daily-snapshot.json")
     try:
         with open(snap_path) as f:
             snap_raw = json.load(f)
         stored_rates = snap_raw.get("daily_rates", {})
-        if snap_raw.get("date") == yday:
+        snap_date = snap_raw.get("date", "")
+        snap_age = (TODAY - datetime.date.fromisoformat(snap_date)).days if snap_date else 999
+
+        if snap_date == yday:
+            # Ideal: snapshot is exactly yesterday
             snap = snap_raw
+        elif snap_date == TODAY.isoformat():
+            # Already ran today — use prior_total stored from earlier run
+            if "prior_total" in snap_raw:
+                snap = {"total": snap_raw["prior_total"],
+                        "blockers": snap_raw.get("prior_blockers", prev_blockers),
+                        "unanswered": snap_raw.get("prior_unanswered", len(unanswered)),
+                        "blocker_ids": snap_raw.get("prior_blocker_ids", [])}
+        elif 0 < snap_age <= 3:
+            # Stale but usable — snapshot is 2-3 days old
+            snap = snap_raw
+            print(f"  Warning: snapshot {snap_age}d old, prior-day values are approximate", file=sys.stderr)
     except:
         pass
 
+    prev_blocker_ids = set()
     if snap:
         open_yday = snap.get("total", open_yday)
         prev_blockers_val = snap.get("blockers", prev_blockers)
         prev_unanswered_val = snap.get("unanswered", len(unanswered))
+        prev_blocker_ids = set(snap.get("blocker_ids", []))
     else:
         prev_blockers_val = prev_blockers
         prev_unanswered_val = len(unanswered)
+        print("  Warning: no usable snapshot, prior-day values are reconstructed", file=sys.stderr)
+
+    # Blocker breakdown: persisting / closed / downgraded / new / escalated
+    current_blocker_ids = set(t.get("display_id", "") for t in blockers)
+    blockers_persisting = current_blocker_ids & prev_blocker_ids
+
+    # Tickets that LEFT the blocker list — why?
+    no_longer_blocker = prev_blocker_ids - current_blocker_ids
+    closed_ids = set(t.get("display_id", "") for t in csup)
+    open_ids = set(t.get("display_id", "") for t in tix)
+    blockers_closed = set(did for did in no_longer_blocker if did in closed_ids)
+    blockers_downgraded = set(did for did in no_longer_blocker if did in open_ids)  # still open, just not blocker
+    blockers_other = no_longer_blocker - blockers_closed - blockers_downgraded  # reclassified out of filter
+
+    # Tickets that JOINED the blocker list — how?
+    new_blocker_ids = current_blocker_ids - prev_blocker_ids
+    blockers_created = set()  # truly new tickets
+    blockers_escalated = set()  # existing tickets escalated to blocker
+    for did in new_blocker_ids:
+        t = next((t for t in blockers if t.get("display_id") == did), None)
+        if t and t.get("created_date", "")[:10] == TODAY.isoformat():
+            blockers_created.add(did)  # created today as blocker
+        else:
+            blockers_escalated.add(did)  # existed before, severity raised to blocker
 
     # Created/Resolved yesterday (deduped)
     seen = set(); created_yday = []
@@ -238,6 +314,22 @@ def main():
 
     resolved_yday = [t for t in csup if t.get("actual_close_date", "")[:10] == yday
                      and stg(t).lower() in ("resolved", "closed")]
+
+    # Canceled yesterday (left open but NOT counted as resolved)
+    canceled_yday = [t for t in csup if t.get("actual_close_date", "")[:10] == yday
+                     and stg(t) == "canceled" and is_support(t)]
+
+    # Reopened yesterday (currently open, stage=Reopen, modified yesterday)
+    reopened_yday = [t for t in tix if stg(t).lower() == "reopen"
+                     and t.get("modified_date", "")[:10] == yday]
+
+    # Reconciliation
+    if snap:
+        expected_open = open_yday + len(created_yday) - len(resolved_yday) - len(canceled_yday) + len(reopened_yday)
+        reclass_delta = total - expected_open  # tickets entering/leaving support filter
+    else:
+        expected_open = None
+        reclass_delta = 0
 
     # ═══ SLA ═══
     sla_all = {"fr_h": 0, "fr_m": 0, "rt_h": 0, "rt_m": 0}
@@ -272,18 +364,36 @@ def main():
         daily_rates.append((d, c, r))
         daily_rates_save[d] = [c, r]
 
-    # ═══ TAT ═══
+    # ═══ TAT (SLA-aware from DevRev's completed_in) ═══
     tat_all = []; tat_sev = defaultdict(list)
+    tat_wallclock_fallback = 0
     for t in resolved_7d:
-        cr = t.get("created_date", ""); cl = t.get("actual_close_date", "")
-        if cr and cl:
-            try:
-                c1 = datetime.datetime.fromisoformat(cr.replace("Z", "+00:00")).replace(tzinfo=None)
-                c2 = datetime.datetime.fromisoformat(cl.replace("Z", "+00:00")).replace(tzinfo=None)
-                h = (c2 - c1).total_seconds() / 3600
-                if h >= 0: tat_all.append(h); tat_sev[sev(t)].append(h)
-            except: pass
+        # Try SLA-aware time first (completed_in minutes from Resolution time metric)
+        sla_tat_min = None
+        tr = t.get("sla_summary", {}).get("sla_tracker", {})
+        for m in tr.get("metric_target_summaries", []):
+            nm = m.get("metric_definition", {}).get("name", "")
+            if "Resolution" in nm and m.get("completed_in") is not None:
+                sla_tat_min = m["completed_in"]
+                break
+        if sla_tat_min is not None and sla_tat_min > 0:
+            h = sla_tat_min / 60  # convert minutes to hours
+            tat_all.append(h); tat_sev[sev(t)].append(h)
+        elif sla_tat_min == 0:
+            continue  # skip: SLA was paused entire duration (no actual support time)
+        else:
+            # Fallback: wall clock (less accurate — includes customer wait + off-hours)
+            cr = t.get("created_date", ""); cl = t.get("actual_close_date", "")
+            if cr and cl:
+                try:
+                    c1 = datetime.datetime.fromisoformat(cr.replace("Z", "+00:00")).replace(tzinfo=None)
+                    c2 = datetime.datetime.fromisoformat(cl.replace("Z", "+00:00")).replace(tzinfo=None)
+                    h = (c2 - c1).total_seconds() / 3600
+                    if h >= 0: tat_all.append(h); tat_sev[sev(t)].append(h); tat_wallclock_fallback += 1
+                except: pass
     tat_all.sort()
+    if tat_wallclock_fallback:
+        print(f"  TAT: {len(tat_all) - tat_wallclock_fallback} SLA-aware + {tat_wallclock_fallback} wall-clock fallback", file=sys.stderr)
 
     # ═══ WHO RESOLVES ═══
     rb = Counter(t.get("custom_fields", {}).get("tnt__resolved_by", "") for t in resolved_7d
@@ -319,15 +429,36 @@ def main():
     msg.append("```")
     msg.append(f"               {dbyday_str:>8}  {yday_str:>8}    Change")
     msg.append(f"Open           {open_yday:>8}  {total:>8}     {arrow(open_yday, total)}")
+    # Blocker emoji: based on what actually happened, not just count
+    if prev_blocker_ids:
+        if len(blockers_closed) > 0 and len(blockers_persisting) == 0:
+            bl_emoji = " ✅"  # all old blockers cleared
+        elif len(blockers_persisting) == len(prev_blocker_ids) and len(new_blocker_ids) > 0:
+            bl_emoji = " 🔴"  # all old persist + new ones added
+        elif len(blockers_persisting) == len(prev_blocker_ids) and len(new_blocker_ids) == 0:
+            bl_emoji = " ⚠️"  # all old persist, no new but nothing fixed
+        elif len(blockers_closed) > 0:
+            bl_emoji = " 🟡"  # some progress but still have blockers
+        else:
+            bl_emoji = " ⚠️"
+    else:
+        bl_emoji = " ✅" if len(blockers) < prev_blockers_val else (" ⚠️" if len(blockers) > prev_blockers_val else "")
+
     bl_arrow = arrow(prev_blockers_val, len(blockers))
-    bl_emoji = " ✅" if len(blockers) < prev_blockers_val else (" ⚠️" if len(blockers) > prev_blockers_val else "")
     msg.append(f"Blockers       {prev_blockers_val:>8}  {len(blockers):>8}     {bl_arrow}{bl_emoji}")
+    if prev_blocker_ids:
+        parts = []
+        parts.append(f"{len(blockers_persisting)} persisting")
+        if blockers_closed: parts.append(f"{len(blockers_closed)} closed")
+        if blockers_downgraded: parts.append(f"{len(blockers_downgraded)} downgraded")
+        if blockers_created: parts.append(f"{len(blockers_created)} new")
+        if blockers_escalated: parts.append(f"{len(blockers_escalated)} escalated")
+        msg.append(f"  → {' · '.join(parts)}")
     un_arrow = arrow(prev_unanswered_val, len(unanswered))
     un_emoji = " ✅" if len(unanswered) < prev_unanswered_val else (" ⚠️" if len(unanswered) > prev_unanswered_val else "")
     msg.append(f"Unanswered     {prev_unanswered_val:>8}  {len(unanswered):>8}     {un_arrow}{un_emoji}")
-    msg.append("")
     net_sign = "+" if net_yday >= 0 else ""
-    msg.append(f"Yesterday:  +{len(created_yday)} created | -{len(resolved_yday)} resolved | net {net_sign}{net_yday}")
+    msg.append(f"\nYesterday:  +{len(created_yday)} created | -{len(resolved_yday)} resolved | net {net_sign}{net_yday}")
     msg.append("```")
 
     # SLA
@@ -455,16 +586,72 @@ def main():
         msg.append(row)
     msg.append("```")
 
+    # Aging Tickets
+    msg.append("")
+    msg.append("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+    msg.append("")
+    msg.append("**8. AGING TICKETS** _(open, by age)_")
+
+    def ticket_age(t):
+        try: return (TODAY - datetime.date.fromisoformat(t.get("created_date", TODAY.isoformat())[:10])).days
+        except: return 0
+
+    tix_7 = [t for t in tix if ticket_age(t) >= 7]
+    tix_15 = [t for t in tix if ticket_age(t) >= 15]
+    tix_30 = [t for t in tix if ticket_age(t) >= 30]
+
+    msg.append("```")
+    msg.append(f"{'Age':<14} {'Count':>5}    {'% of Open':>9}")
+    msg.append("─" * 34)
+    msg.append(f"{'7+ days':<14} {len(tix_7):>5}    {round(len(tix_7)/total*100):>8}%")
+    msg.append(f"{'15+ days':<14} {len(tix_15):>5}    {round(len(tix_15)/total*100):>8}%")
+    msg.append(f"{'30+ days':<14} {len(tix_30):>5}    {round(len(tix_30)/total*100):>8}%")
+    msg.append("```")
+
+    # 30+ holders — OUTSIDE code block so Slack renders @mentions
+    aging_lead = Counter(cx(t) for t in tix_30)
+    top3 = [(n, c) for n, c in aging_lead.most_common(4) if n != "Unassigned"][:3]
+    def slack_tag(name):
+        sid = SLACK_ID.get(name)
+        return f"<@{sid}>" if sid else name
+    holders = " · ".join(f"{slack_tag(n)} ({c})" for n, c in top3)
+    unassigned_30 = aging_lead.get("Unassigned", 0)
+    if unassigned_30:
+        holders += f" · {unassigned_30} unassigned"
+    msg.append(f"30+ holders: {holders}")
+
+    # 30+ stuck in
+    stage_short = {"awaiting_customer_response": "AwCust", "awaiting_development": "AwDev",
+                   "awaiting_product_assist": "AwProd", "work_in_progress": "WIP",
+                   "queued": "Queued", "in_development": "InDev",
+                   "Reassigned to Customer Support": "Reassigned", "Reopen": "Reopen"}
+    aging_stages = Counter(stage_short.get(stg(t), stg(t)[:12]) for t in tix_30)
+    stuck = " · ".join(f"{s} ({c})" for s, c in aging_stages.most_common(3))
+    msg.append(f"30+ stuck in: {stuck}")
+
     # Output
     output = "\n".join(msg)
     print(output)
 
-    # Save snapshot
+    # Save snapshot — only on real runs, not dry-run/testing
+    if DRY_RUN:
+        print("DRY RUN — snapshot NOT updated", file=sys.stderr)
+        return output
+    is_rerun = snap_raw.get("date", "") == TODAY.isoformat()
+    prior_total = snap_raw.get("total", total) if not is_rerun else snap_raw.get("prior_total", total)
+    prior_blockers = snap_raw.get("blockers", len(blockers)) if not is_rerun else snap_raw.get("prior_blockers", len(blockers))
+    prior_unanswered = snap_raw.get("unanswered", len(unanswered)) if not is_rerun else snap_raw.get("prior_unanswered", len(unanswered))
+    prior_blocker_ids_save = list(snap_raw.get("blocker_ids", [])) if not is_rerun else snap_raw.get("prior_blocker_ids", [])
     new_snap = {
         "date": TODAY.isoformat(),
         "total": total,
         "blockers": len(blockers),
+        "blocker_ids": list(current_blocker_ids),
         "unanswered": len(unanswered),
+        "prior_total": prior_total,
+        "prior_blockers": prior_blockers,
+        "prior_unanswered": prior_unanswered,
+        "prior_blocker_ids": prior_blocker_ids_save,
         "daily_rates": daily_rates_save,
         "filter": "subtype=Support, excl WMS/Roadmap cohorts, excl WMS Inbound/Outbound pods, unanswered=queued+WIP only"
     }

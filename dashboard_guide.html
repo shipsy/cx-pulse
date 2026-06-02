@@ -1,0 +1,1149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CX Pulse Dashboard — Complete Guide</title>
+<style>
+  :root {
+    --bg: #f8fafc; --card: #ffffff; --border: #e2e8f0;
+    --text: #1e293b; --muted: #64748b; --accent: #6366f1;
+    --green: #22c55e; --green-bg: #dcfce7; --green-dark: #166534;
+    --blue: #3b82f6; --blue-bg: #dbeafe; --blue-dark: #1e40af;
+    --amber: #f59e0b; --amber-bg: #fef3c7; --amber-dark: #92400e;
+    --red: #ef4444; --red-bg: #fee2e2; --red-dark: #991b1b;
+    --purple: #8b5cf6; --purple-bg: #ede9fe; --purple-dark: #5b21b6;
+    --indigo: #6366f1; --indigo-bg: #e0e7ff; --indigo-dark: #3730a3;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+
+  /* Header */
+  .header { background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #4338ca 100%); color: white; padding: 40px 40px 36px; text-align: center; }
+  .header h1 { font-size: 34px; font-weight: 800; letter-spacing: -0.5px; }
+  .header h1 span { color: #a5b4fc; font-weight: 400; }
+  .header .subtitle { color: #c7d2fe; font-size: 15px; margin-top: 8px; max-width: 600px; margin-left: auto; margin-right: auto; }
+  .header .period { display: inline-block; background: rgba(255,255,255,0.15); padding: 5px 16px; border-radius: 20px; font-size: 13px; margin-top: 14px; color: #e0e7ff; }
+
+  /* Container */
+  .container { max-width: 900px; margin: 0 auto; padding: 32px 40px 60px; }
+
+  /* TOC */
+  .toc { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 28px 32px; margin-bottom: 40px; }
+  .toc h2 { font-size: 18px; font-weight: 700; margin-bottom: 16px; color: var(--text); }
+  .toc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 32px; }
+  .toc a { font-size: 14px; color: var(--accent); text-decoration: none; padding: 4px 0; display: block; transition: color 0.15s; }
+  .toc a:hover { color: var(--indigo-dark); text-decoration: underline; }
+  .toc a .toc-num { display: inline-block; width: 24px; font-weight: 700; color: var(--muted); font-size: 12px; }
+
+  /* Section */
+  .section { margin-bottom: 44px; scroll-margin-top: 24px; }
+  .section-title { font-size: 22px; font-weight: 700; color: var(--text); margin-bottom: 6px; display: flex; align-items: center; gap: 10px; border-bottom: 2px solid var(--border); padding-bottom: 10px; }
+  .section-title .badge { font-size: 11px; background: var(--indigo-bg); color: var(--indigo-dark); padding: 2px 10px; border-radius: 10px; font-weight: 600; }
+  .section-num { color: var(--accent); font-weight: 800; font-size: 14px; background: var(--indigo-bg); width: 28px; height: 28px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .section-explain { font-size: 14px; color: var(--muted); margin-bottom: 16px; border-left: 3px solid var(--border); padding-left: 14px; margin-top: 12px; }
+
+  /* Method Cards */
+  .method-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; }
+  .method-grid.single { grid-template-columns: 1fr; }
+  .method-grid.triple { grid-template-columns: 1fr 1fr 1fr; }
+  .method-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 20px; }
+  .method-card h4 { font-size: 15px; font-weight: 700; margin-bottom: 6px; color: var(--text); }
+  .method-card p { font-size: 13px; color: var(--muted); line-height: 1.5; }
+  .method-card .formula { background: #f1f5f9; padding: 8px 12px; border-radius: 6px; font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace; font-size: 13px; margin-top: 10px; color: var(--indigo-dark); line-height: 1.6; }
+  .method-card .formula code { font-family: inherit; }
+
+  /* Info Box */
+  .info-box { background: var(--blue-bg); border-left: 4px solid var(--blue); padding: 14px 18px; border-radius: 0 8px 8px 0; margin: 16px 0; font-size: 13px; color: var(--blue-dark); }
+  .info-box strong { font-weight: 700; }
+  .warn-box { background: var(--amber-bg); border-left: 4px solid var(--amber); padding: 14px 18px; border-radius: 0 8px 8px 0; margin: 16px 0; font-size: 13px; color: var(--amber-dark); }
+  .warn-box strong { font-weight: 700; }
+
+  /* FAQ / Collapsible */
+  .faq-group { margin-top: 16px; }
+  .faq-item { border: 1px solid var(--border); border-radius: 8px; margin-bottom: 8px; overflow: hidden; background: var(--card); }
+  .faq-question { padding: 12px 16px; font-size: 14px; font-weight: 600; color: var(--text); cursor: pointer; display: flex; align-items: center; gap: 10px; user-select: none; transition: background 0.15s; }
+  .faq-question:hover { background: #f1f5f9; }
+  .faq-question::before { content: '+'; display: inline-flex; width: 22px; height: 22px; border-radius: 50%; background: var(--indigo-bg); color: var(--accent); font-size: 16px; font-weight: 700; align-items: center; justify-content: center; flex-shrink: 0; transition: transform 0.2s; }
+  .faq-item.open .faq-question::before { content: '-'; transform: rotate(0deg); }
+  .faq-answer { display: none; padding: 0 16px 14px 48px; font-size: 13px; color: var(--muted); line-height: 1.6; }
+  .faq-item.open .faq-answer { display: block; }
+
+  /* Columns Table */
+  .columns-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 12px; }
+  .columns-table thead th { background: #1e293b; color: white; padding: 10px 14px; text-align: left; font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .columns-table tbody td { padding: 10px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .columns-table tbody tr:nth-child(even) { background: #fafbfc; }
+  .columns-table tbody tr:hover { background: #f1f5f9; }
+
+  /* Color Legend */
+  .color-legend { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 12px; }
+  .color-swatch { display: flex; align-items: center; gap: 6px; font-size: 13px; }
+  .color-swatch .swatch { width: 16px; height: 16px; border-radius: 4px; }
+
+  /* Stage list */
+  .stage-list { list-style: none; padding: 0; margin-top: 12px; }
+  .stage-list li { padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px; display: flex; gap: 8px; }
+  .stage-list li:last-child { border-bottom: none; }
+  .stage-name { font-weight: 700; color: var(--text); min-width: 220px; flex-shrink: 0; }
+  .stage-desc { color: var(--muted); }
+
+  /* Quick Ref Table */
+  .quick-ref { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 12px; }
+  .quick-ref thead th { background: linear-gradient(135deg, #312e81, #4338ca); color: white; padding: 12px 16px; text-align: left; font-weight: 600; }
+  .quick-ref tbody td { padding: 12px 16px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .quick-ref tbody tr:nth-child(even) { background: #fafbfc; }
+  .quick-ref tbody tr:hover { background: var(--indigo-bg); }
+
+  /* Health Score Breakdown */
+  .health-breakdown { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-top: 12px; }
+  .health-component { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 14px; text-align: center; }
+  .health-component .weight { font-size: 28px; font-weight: 800; color: var(--accent); }
+  .health-component .label { font-size: 12px; color: var(--muted); margin-top: 4px; font-weight: 600; text-transform: uppercase; }
+
+  /* Badge styles */
+  .badge-green { background: var(--green-bg); color: var(--green-dark); padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: 700; }
+  .badge-yellow { background: var(--amber-bg); color: var(--amber-dark); padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: 700; }
+  .badge-red { background: var(--red-bg); color: var(--red-dark); padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: 700; }
+
+  /* Separator */
+  .section-sep { height: 1px; background: var(--border); margin: 40px 0; }
+
+  /* Footer */
+  .footer { background: #1e293b; color: #94a3b8; padding: 24px 40px; font-size: 12px; text-align: center; }
+  .footer a { color: #a5b4fc; text-decoration: none; }
+  .footer a:hover { text-decoration: underline; }
+
+  /* Back to top */
+  .back-top { display: inline-block; font-size: 12px; color: var(--accent); text-decoration: none; margin-top: 8px; font-weight: 600; }
+  .back-top:hover { text-decoration: underline; }
+
+  /* Print styles */
+  @media print {
+    body { background: white; font-size: 11px; }
+    .header { padding: 20px 24px; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .header h1 { font-size: 24px; }
+    .container { padding: 16px 24px; max-width: 100%; }
+    .toc { break-after: page; }
+    .section { break-inside: avoid; }
+    .method-card { break-inside: avoid; }
+    .faq-item .faq-answer { display: block !important; }
+    .faq-question::before { content: '-' !important; }
+    .back-top { display: none; }
+    .footer { padding: 12px 24px; }
+    .columns-table thead th, .quick-ref thead th { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+
+  @media (max-width: 700px) {
+    .container { padding: 16px; }
+    .header { padding: 24px 16px; }
+    .header h1 { font-size: 24px; }
+    .toc-grid { grid-template-columns: 1fr; }
+    .method-grid { grid-template-columns: 1fr; }
+    .method-grid.triple { grid-template-columns: 1fr; }
+    .health-breakdown { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <h1>CX Pulse Dashboard <span>— Complete Guide</span></h1>
+  <div class="subtitle">Every metric explained. Use this to prepare for founder reviews.</div>
+  <div class="period">Reference Document — CX Support Intelligence</div>
+</div>
+
+<!-- Main Content -->
+<div class="container">
+
+  <!-- Table of Contents -->
+  <div class="toc" id="toc">
+    <h2>Table of Contents</h2>
+    <div class="toc-grid">
+      <a href="#s1"><span class="toc-num">1.</span> Filters Applied</a>
+      <a href="#s10"><span class="toc-num">10.</span> Aging Distribution</a>
+      <a href="#s2"><span class="toc-num">2.</span> KPI Cards</a>
+      <a href="#s11"><span class="toc-num">11.</span> Stage Dwell Analysis</a>
+      <a href="#s3"><span class="toc-num">3.</span> SLA Adherence</a>
+      <a href="#s12"><span class="toc-num">12.</span> CX Lead — Open Tickets</a>
+      <a href="#s4"><span class="toc-num">4.</span> Resolution Time (TAT)</a>
+      <a href="#s13"><span class="toc-num">13.</span> CX Lead — Resolved Performance</a>
+      <a href="#s5"><span class="toc-num">5.</span> First Response Time</a>
+      <a href="#s14"><span class="toc-num">14.</span> Account SLA</a>
+      <a href="#s6"><span class="toc-num">6.</span> CSAT</a>
+      <a href="#s15"><span class="toc-num">15.</span> Account Health Score</a>
+      <a href="#s7"><span class="toc-num">7.</span> Who Resolves</a>
+      <a href="#s16"><span class="toc-num">16.</span> Roadmap — Focus Areas</a>
+      <a href="#s8"><span class="toc-num">8.</span> Weekly Created vs Resolved</a>
+      <a href="#s17"><span class="toc-num">17.</span> Roadmap — Target Tracking</a>
+      <a href="#s9"><span class="toc-num">9.</span> Severity Distribution</a>
+      <a href="#s18"><span class="toc-num">18.</span> Friday AI Impact</a>
+      <a href="#quick-ref" style="grid-column: 1 / -1; margin-top: 8px; font-weight: 700; color: var(--indigo-dark);"><span class="toc-num">*</span> Quick Reference — Common Founder Questions</a>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- SECTION 1: Filters Applied -->
+  <!-- ============================================================ -->
+  <div class="section" id="s1">
+    <div class="section-title"><span class="section-num">1</span> Filters Applied</div>
+    <div class="section-explain">Every metric in this dashboard uses the same base filter. This ensures consistency — no metric uses a different scope.</div>
+
+    <div class="method-card" style="margin-top: 12px;">
+      <h4>Base Filter Rules</h4>
+      <p>These four rules are applied to every query before any metric is computed.</p>
+      <div class="formula">
+        Subtype = "Support" (exact match)<br>
+        Customer Cohort NOT IN ("WMS", "Roadmap")<br>
+        POD NOT IN ("WMS Inbound", "WMS Outbound")<br>
+        Stage != "canceled"
+      </div>
+    </div>
+
+    <div class="info-box" style="margin-top: 16px;">
+      <strong>Why we filter:</strong> Without this, the numbers would include ~2000+ non-support tickets (projects, UAT, internal items, tech_debt) that dilute the support metrics. WMS has a separate team and its own tracking. Roadmap items are feature requests, not support tickets.
+    </div>
+
+    <div class="faq-group">
+      <div class="faq-item">
+        <div class="faq-question">Why does DevRev show 7768 tickets but your dashboard shows 1065?</div>
+        <div class="faq-answer">DevRev has all ticket types (Support, Project, UAT, tech_debt, etc.). We filter to Support-subtype only (1833), then exclude WMS/Roadmap scope (768 tickets) = <strong>1065 support tickets</strong> in our scope. The difference is not missing data — it is intentional scoping.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">Why exclude canceled tickets?</div>
+        <div class="faq-answer">Canceled tickets were never real support work. They include auto-generated spam, duplicates, and misrouted items. Counting them would inflate both "created" and "resolved" numbers without reflecting any actual work done.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">What if a ticket has no cohort set?</div>
+        <div class="faq-answer">Tickets with cohort = "TBD" or empty are still included in the dashboard (they pass the filter). They show up as "TBD" or "Unassigned" in per-account breakdowns. These need manual triage to be assigned a proper cohort.</div>
+      </div>
+    </div>
+    <a href="#toc" class="back-top">Back to Table of Contents</a>
+  </div>
+
+  <div class="section-sep"></div>
+
+  <!-- ============================================================ -->
+  <!-- SECTION 2: KPI Cards -->
+  <!-- ============================================================ -->
+  <div class="section" id="s2">
+    <div class="section-title"><span class="section-num">2</span> KPI Cards</div>
+    <div class="section-explain">The top-level numbers shown as cards at the top of the dashboard. These give the 10-second summary of support health.</div>
+
+    <!-- Created -->
+    <div class="method-grid">
+      <div class="method-card">
+        <h4>Created</h4>
+        <p>Number of tickets created in the selected date range.</p>
+        <div class="formula">Count tickets WHERE<br>Created date IN (From, To)<br>AND stage != canceled</div>
+      </div>
+      <div class="method-card">
+        <h4>Resolved</h4>
+        <p>Number of tickets resolved or closed in the selected date range.</p>
+        <div class="formula">Count tickets WHERE<br>Close date IN (From, To)<br>AND stage IN (resolved, Closed)<br>AND stage != canceled</div>
+      </div>
+    </div>
+
+    <div class="method-grid" style="margin-top: 16px;">
+      <div class="method-card">
+        <h4>Resolve Ratio</h4>
+        <p>Are we keeping up with incoming volume? &gt;100% means queue is shrinking, &lt;100% means queue is growing.</p>
+        <div class="formula">Resolve Ratio = Resolved / Created x 100</div>
+      </div>
+      <div class="method-card">
+        <h4>FR% (First Response Hit Rate)</h4>
+        <p>Percentage of tickets where first response was within SLA target time.</p>
+        <div class="formula">FR% = count(Metric Status[0] = "hit")<br>/ count(Metric Status[0] IN ("hit", "miss"))<br>x 100</div>
+      </div>
+    </div>
+
+    <div class="method-grid" style="margin-top: 16px;">
+      <div class="method-card">
+        <h4>RT% (Resolution Time Hit Rate)</h4>
+        <p>Percentage of tickets resolved within SLA target time.</p>
+        <div class="formula">RT% = count(Metric Status[1] = "hit")<br>/ count(Metric Status[1] IN ("hit", "miss"))<br>x 100</div>
+      </div>
+      <div class="method-card">
+        <h4>Resolution P50</h4>
+        <p>Median resolution time. 50% of tickets are resolved faster than this value.</p>
+        <div class="formula">PERCENTILE(Completed In[1], 0.50)<br>WHERE Completed In[1] > 0</div>
+      </div>
+    </div>
+
+    <div class="warn-box" style="margin-top: 16px;">
+      <strong>Critical distinction — SLA-aware time vs wall-clock time:</strong> The P50 value uses DevRev's <code>Completed In[1]</code> field, which is SLA-aware. It excludes time in "Awaiting Customer Response" (SLA paused), excludes non-business hours (nights, weekends per Mon-Fri 10AM-8PM IST schedule), and only counts actual support work time. This is NOT <code>Close date - Created date</code>.
+    </div>
+
+    <div class="method-grid" style="margin-top: 16px;">
+      <div class="method-card">
+        <h4>Open Tickets</h4>
+        <p>Count of tickets NOT in a terminal stage.</p>
+        <div class="formula">Count WHERE stage NOT IN<br>(resolved, canceled, Closed)</div>
+      </div>
+      <div class="method-card">
+        <h4>Blockers</h4>
+        <p>Open tickets with Severity = "Blocker" — customer's core business operation is completely stopped.</p>
+        <div class="formula">Count WHERE stage NOT IN<br>(resolved, canceled, Closed)<br>AND severity = "Blocker"</div>
+      </div>
+    </div>
+
+    <div class="method-grid single" style="margin-top: 16px;">
+      <div class="method-card">
+        <h4>CSAT</h4>
+        <p>Customer Satisfaction Score — average rating from post-resolution surveys. Scale: 1-5 (5 = very satisfied).</p>
+        <div class="formula">Average of CSAT Rating[0].average<br>WHERE CSAT Rating[0].count > 0</div>
+      </div>
+    </div>
+
+    <div class="faq-group">
+      <div class="faq-item">
+        <div class="faq-question">Why not count canceled as resolved?</div>
+        <div class="faq-answer">Canceled means the ticket was invalid — auto-generated spam, duplicates, misrouted. Counting it inflates both created and resolved without reflecting real work.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">Resolve ratio is 85%. Is that good?</div>
+        <div class="faq-answer">It means 85 out of every 100 tickets created were resolved in the same period. The queue grew by 15%. We need &gt;100% consistently to shrink the backlog. Occasional dips below 100% during high-inflow weeks are normal, but sustained &lt;100% indicates a capacity problem.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">What's the SLA target for FR and RT?</div>
+        <div class="faq-answer">The default SLA policy is "Support Ticket SLA Default" (sla-28), applied to all accounts. The schedule is Mon-Fri 10AM-8PM IST. Individual account targets may vary in the future if per-account SLA policies are configured in DevRev.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">Why is RT% higher than FR%?</div>
+        <div class="faq-answer">RT measures total resolution time, which can be paused during "Awaiting Customer Response." FR measures time to first response with no pausing allowed. FR is harder to meet because the clock starts immediately when the ticket is created.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">FR% and RT% exclude "in_progress" — why?</div>
+        <div class="faq-answer">Tickets with Metric Status = "in_progress" haven't completed SLA evaluation yet (they're still open). Including them would dilute the metric. We only count completed evaluations: either "hit" (met SLA) or "miss" (did not).</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">Why is P50 only 1.9 hours but customers complain about multi-day waits?</div>
+        <div class="faq-answer">1.9h is the SLA-aware time — actual support work effort. The customer experiences wall-clock time which includes nights, weekends, and time they spend responding to our questions. A 3-day calendar wait might only be 1.9h of actual support effort. The customer perception is real, but P50 measures something different: how efficient the team is with their working time.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">Only 50 CSAT responses out of 1000 resolved. Is that representative?</div>
+        <div class="faq-answer">5% response rate is typical for email surveys in B2B SaaS. Respondents tend to be either very happy or very unhappy, so the score may be slightly polarized. However, it's the best signal we have. To increase response rate, we'd need in-app prompts or shorter surveys.</div>
+      </div>
+    </div>
+    <a href="#toc" class="back-top">Back to Table of Contents</a>
+  </div>
+
+  <div class="section-sep"></div>
+
+  <!-- ============================================================ -->
+  <!-- SECTION 3: SLA Adherence -->
+  <!-- ============================================================ -->
+  <div class="section" id="s3">
+    <div class="section-title"><span class="section-num">3</span> SLA Adherence <span class="badge">DEFAULT POLICY</span></div>
+    <div class="section-explain">Per-account breakdown of SLA hit rates. Shows which accounts are meeting targets and which are falling behind.</div>
+
+    <div class="method-card">
+      <h4>What the table shows</h4>
+      <p>Each row is one account (customer). Columns show total ticket pool, first response hits/misses, and resolution time hits/misses.</p>
+      <div class="formula">
+        Pool = total tickets for that account (open + resolved in range)<br>
+        FR% = FR Hits / (FR Hits + FR Miss) x 100<br>
+        RT% = RT Hits / (RT Hits + RT Miss) x 100
+      </div>
+    </div>
+
+    <table class="columns-table" style="margin-top: 16px;">
+      <thead>
+        <tr><th>Column</th><th>What It Shows</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Pool</strong></td><td>Total tickets for that account within the date range</td></tr>
+        <tr><td><strong>FR Hits</strong></td><td>Tickets where first response was within SLA target</td></tr>
+        <tr><td><strong>FR Miss</strong></td><td>Tickets where first response exceeded SLA target</td></tr>
+        <tr><td><strong>FR%</strong></td><td>First Response hit rate = Hits / (Hits + Miss) x 100</td></tr>
+        <tr><td><strong>RT Hits</strong></td><td>Tickets where resolution was within SLA target</td></tr>
+        <tr><td><strong>RT Miss</strong></td><td>Tickets where resolution exceeded SLA target</td></tr>
+        <tr><td><strong>RT%</strong></td><td>Resolution Time hit rate = Hits / (Hits + Miss) x 100</td></tr>
+      </tbody>
+    </table>
+
+    <div style="margin-top: 16px;">
+      <h4 style="font-size: 14px; font-weight: 700; margin-bottom: 8px;">Color Coding</h4>
+      <div class="color-legend">
+        <div class="color-swatch"><div class="swatch" style="background: var(--green);"></div> 75%+ (Good)</div>
+        <div class="color-swatch"><div class="swatch" style="background: var(--amber);"></div> 60-74% (Warning)</div>
+        <div class="color-swatch"><div class="swatch" style="background: #f97316;"></div> 40-59% (Concern)</div>
+        <div class="color-swatch"><div class="swatch" style="background: var(--red);"></div> &lt;40% (Critical)</div>
+      </div>
+    </div>
+
+    <div class="info-box" style="margin-top: 16px;">
+      <strong>SLA Policy:</strong> All accounts currently use the same default SLA policy — "Support Ticket SLA Default" (sla-28). Schedule: Mon-Fri 10AM-8PM IST (org_schedule-13). There are no per-account custom SLA targets at this time.
+    </div>
+
+    <div class="faq-group">
+      <div class="faq-item">
+        <div class="faq-question">Aramex is at 12% FR. Why so low?</div>
+        <div class="faq-answer">Aramex has many open tickets, often in "Awaiting Development" stage. The team responds initially but engineering resolution takes longer, causing SLA misses. The FR miss is because some Aramex tickets come in via bulk integrations and don't get a human first response quickly enough.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">Can we set different SLA targets per account?</div>
+        <div class="faq-answer">Currently DevRev has one default policy for all accounts. Per-account SLA would require configuring separate SLA policies in DevRev, each with its own target times and schedules. This is possible but would need DevRev admin configuration.</div>
+      </div>
+    </div>
+    <a href="#toc" class="back-top">Back to Table of Contents</a>
+  </div>
+
+  <div class="section-sep"></div>
+
+  <!-- ============================================================ -->
+  <!-- SECTION 4: Resolution Time -->
+  <!-- ============================================================ -->
+  <div class="section" id="s4">
+    <div class="section-title"><span class="section-num">4</span> Resolution Time (TAT) <span class="badge">SLA-AWARE</span></div>
+    <div class="section-explain">How long it takes to resolve tickets, measured in SLA-aware minutes. This is the most commonly misunderstood metric — read this section carefully.</div>
+
+    <div class="method-card">
+      <h4>Source Field</h4>
+      <p><code>Completed In[1]</code> from DevRev's SLA tracker. This field automatically:</p>
+      <div class="formula">
+        Pauses when ticket is in "Awaiting Customer Response"<br>
+        Pauses during non-business hours (Mon-Fri 10AM-8PM IST)<br>
+        Only counts minutes where support was actively responsible
+      </div>
+    </div>
+
+    <div class="method-grid" style="margin-top: 16px;">
+      <div class="method-card">
+        <h4>P10 (10th Percentile)</h4>
+        <p>10% of tickets are resolved in this time or less. These are the fastest, simplest tickets.</p>
+        <div class="formula">PERCENTILE(Completed In[1], 0.10)<br>WHERE Completed In[1] > 0</div>
+      </div>
+      <div class="method-card">
+        <h4>P50 (Median)</h4>
+        <p>50% faster, 50% slower. The "typical" resolution time. This is the headline number.</p>
+        <div class="formula">PERCENTILE(Completed In[1], 0.50)<br>WHERE Completed In[1] > 0</div>
+      </div>
+    </div>
+
+    <div class="method-grid single" style="margin-top: 16px;">
+      <div class="method-card">
+        <h4>P90 (90th Percentile)</h4>
+        <p>90% of tickets are resolved in this time or less. Only 10% take longer. This shows the "worst case" for most tickets.</p>
+        <div class="formula">PERCENTILE(Completed In[1], 0.90) WHERE Completed In[1] > 0</div>
+      </div>
+    </div>
+
+    <div class="warn-box" style="margin-top: 16px;">
+      <strong>Why P10/P50/P90, not average?</strong> Average is skewed by outliers. One ticket taking 30 days pulls the average up massively. Percentiles give a clearer picture: P50 tells you the typical experience, P90 tells you the worst common experience.
+    </div>
+
+    <div class="info-box">
+      <strong>Display format:</strong> &lt;60 min shows as "Xm", &lt;24h as "Xh", 24h+ as "Xd". Example: "1.9h" means 1 hour 54 minutes of SLA-aware work time.
+    </div>
+
+    <div class="info-box">
+      <strong>Zero exclusion:</strong> Tickets with Completed In = 0 are excluded. These are tickets where SLA was paused the entire duration (e.g., immediately moved to "Awaiting Customer Response" and closed from there). Zero doesn't mean "instant" — it means "no SLA clock time was recorded."
+    </div>
+
+    <div class="faq-group">
+      <div class="faq-item">
+        <div class="faq-question">P50 is 1.9h but customers complain about 3-day waits?</div>
+        <div class="faq-answer">1.9h is <em>support work time</em>. The customer experiences <em>wall-clock time</em> which includes nights, weekends, and time waiting for their own response. A 3-day calendar wait might only be 1.9h of actual support effort. Both perspectives are valid — P50 measures team efficiency, while customer perception includes all waiting time.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">Blocker P50 is 4.2 days. Why so slow for critical issues?</div>
+        <div class="faq-answer">Blockers are the hardest problems — they often need engineering involvement, code changes, deployments, and cross-team coordination. The SLA-aware 4.2 days is actual work time across multiple people, not calendar time. These tickets typically have the most back-and-forth between support, engineering, and the customer.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">Can we show wall-clock time too?</div>
+        <div class="faq-answer">Yes — it would be <code>Close date - Created date</code>. But this mixes apples and oranges: a ticket created Friday 6 PM and resolved Monday 10 AM is "3 days" by wall clock but only a few hours of work. The SLA-aware metric is more fair for measuring team performance. Wall-clock time is better for measuring customer experience.</div>
+      </div>
+    </div>
+    <a href="#toc" class="back-top">Back to Table of Contents</a>
+  </div>
+
+  <div class="section-sep"></div>
+
+  <!-- ============================================================ -->
+  <!-- SECTION 5: First Response Time -->
+  <!-- ============================================================ -->
+  <div class="section" id="s5">
+    <div class="section-title"><span class="section-num">5</span> First Response Time <span class="badge">SLA-AWARE</span></div>
+    <div class="section-explain">Time from ticket creation to first meaningful response. Uses the same SLA-aware measurement as Resolution Time.</div>
+
+    <div class="method-card">
+      <h4>Source Field</h4>
+      <p><code>Completed In[0]</code> from DevRev's SLA tracker. Same SLA-awareness as Resolution Time — excludes off-hours (Mon-Fri 10AM-8PM IST schedule).</p>
+      <div class="formula">
+        P10 = PERCENTILE(Completed In[0], 0.10)<br>
+        P50 = PERCENTILE(Completed In[0], 0.50)<br>
+        P90 = PERCENTILE(Completed In[0], 0.90)<br>
+        WHERE Completed In[0] > 0
+      </div>
+    </div>
+
+    <div class="info-box" style="margin-top: 16px;">
+      <strong>Key difference from Resolution Time:</strong> First Response has no "pausing" concept — once a ticket is created, the FR clock ticks until someone responds. There is no stage that pauses the FR timer (unlike Resolution Time which pauses during Awaiting Customer Response).
+    </div>
+
+    <div class="faq-group">
+      <div class="faq-item">
+        <div class="faq-question">FR P50 is 15 minutes. That seems fast?</div>
+        <div class="faq-answer">Many tickets get a quick first response during business hours — either an auto-acknowledgment or a human doing initial triage. The P90 shows the tail: 10% of tickets wait much longer. Focus on P90 to understand the worst-case customer experience for first response.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">Does the Friday AI agent count as a first response?</div>
+        <div class="faq-answer">It depends on how the response is recorded in DevRev. If Friday posts an internal-only comment, it does not count as a customer-facing first response. If it posts a customer-visible response, it does count and stops the FR clock.</div>
+      </div>
+    </div>
+    <a href="#toc" class="back-top">Back to Table of Contents</a>
+  </div>
+
+  <div class="section-sep"></div>
+
+  <!-- ============================================================ -->
+  <!-- SECTION 6: CSAT -->
+  <!-- ============================================================ -->
+  <div class="section" id="s6">
+    <div class="section-title"><span class="section-num">6</span> CSAT <span class="badge">SURVEY-BASED</span></div>
+    <div class="section-explain">Customer satisfaction from post-resolution surveys. The most direct signal of how customers feel about our support.</div>
+
+    <div class="method-grid">
+      <div class="method-card">
+        <h4>Score Calculation</h4>
+        <p>Average of all survey responses for resolved tickets.</p>
+        <div class="formula">CSAT = Average of CSAT Rating[0].average<br>WHERE CSAT Rating[0].count > 0<br><br>Scale: 1-5 (5 = very satisfied)</div>
+      </div>
+      <div class="method-card">
+        <h4>Response Rate</h4>
+        <p>How many resolved tickets actually received a survey response.</p>
+        <div class="formula">Response Rate = Total Responses<br>/ Total Resolved Tickets x 100</div>
+      </div>
+    </div>
+
+    <div class="info-box" style="margin-top: 16px;">
+      <strong>Star distribution:</strong> The dashboard also shows how many customers gave 1, 2, 3, 4, or 5 stars. This helps distinguish between "lots of 3s" (mediocre) and "mix of 1s and 5s" (polarized).
+    </div>
+
+    <div class="faq-group">
+      <div class="faq-item">
+        <div class="faq-question">CSAT is 4.1. What's the industry benchmark?</div>
+        <div class="faq-answer">B2B SaaS support typically targets 4.3-4.5. Our 4.1 is reasonable but has room to improve. Research shows first-response speed correlates most strongly with CSAT — faster first responses generally lead to higher satisfaction scores.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">Can we trust a 5% response rate?</div>
+        <div class="faq-answer">It's directionally correct but not statistically robust. Respondents self-select: very happy and very unhappy customers are more likely to respond. The true average for all customers is likely closer to 3.5-4.0 (slightly lower than surveyed). To improve coverage, consider in-app prompts or shorter one-click surveys.</div>
+      </div>
+    </div>
+    <a href="#toc" class="back-top">Back to Table of Contents</a>
+  </div>
+
+  <div class="section-sep"></div>
+
+  <!-- ============================================================ -->
+  <!-- SECTION 7: Who Resolves -->
+  <!-- ============================================================ -->
+  <div class="section" id="s7">
+    <div class="section-title"><span class="section-num">7</span> Who Resolves</div>
+    <div class="section-explain">Breakdown of who ultimately resolved each ticket — support team, engineering, or product.</div>
+
+    <div class="method-card">
+      <h4>Source Field</h4>
+      <p>The <code>Resolved By</code> field (custom field <code>tnt__resolved_by</code>) on each ticket. Only three values are counted:</p>
+      <div class="formula">
+        "Resolved by Support" — CX team solved it<br>
+        "Resolved by Engineering" — needed code change/fix<br>
+        "Resolved by Product" — needed product decision
+      </div>
+    </div>
+
+    <div class="info-box" style="margin-top: 16px;">
+      <strong>Tickets without this field or with other values are excluded from this chart.</strong> This means the percentages represent only tickets where the CX Lead explicitly marked who resolved it.
+    </div>
+
+    <div class="faq-group">
+      <div class="faq-item">
+        <div class="faq-question">86% resolved by support. Is that good?</div>
+        <div class="faq-answer">Yes — it means most issues are handled without needing engineering escalation. The 8% engineering and 7% product indicate tickets that required code changes or product decisions. A healthy ratio is 80-90% support. If support drops below 70%, it might mean the product has too many bugs or the support team lacks access/tooling.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">What about tickets resolved by the customer themselves?</div>
+        <div class="faq-answer">Those typically go into "Resolved by Support" if the CX Lead guided the customer to the solution, or they might be closed without a "Resolved By" value if the customer stopped responding and the ticket timed out. The current field doesn't have a "Self-resolved" option.</div>
+      </div>
+    </div>
+    <a href="#toc" class="back-top">Back to Table of Contents</a>
+  </div>
+
+  <div class="section-sep"></div>
+
+  <!-- ============================================================ -->
+  <!-- SECTION 8: Weekly Created vs Resolved -->
+  <!-- ============================================================ -->
+  <div class="section" id="s8">
+    <div class="section-title"><span class="section-num">8</span> Weekly Created vs Resolved</div>
+    <div class="section-explain">Bar chart showing tickets created and resolved per week. The visual gap between bars shows whether the queue is growing or shrinking.</div>
+
+    <div class="method-grid">
+      <div class="method-card">
+        <h4>Created (per week)</h4>
+        <p>Tickets with <code>Created date</code> in that calendar week, excluding canceled.</p>
+        <div class="formula">Count WHERE Created date IN week<br>AND stage != canceled</div>
+      </div>
+      <div class="method-card">
+        <h4>Resolved (per week)</h4>
+        <p>Tickets with <code>Close date</code> in that calendar week, stage = resolved or Closed.</p>
+        <div class="formula">Count WHERE Close date IN week<br>AND stage IN (resolved, Closed)</div>
+      </div>
+    </div>
+
+    <div class="info-box" style="margin-top: 16px;">
+      <strong>How to read:</strong> When the green bar (resolved) is taller than the blue bar (created), the queue is shrinking that week. When blue is taller, the queue grew. Consistent green &gt; blue means the team is clearing backlog.
+    </div>
+
+    <div class="faq-group">
+      <div class="faq-item">
+        <div class="faq-question">Why does one week show 91 resolved — that's 3x normal?</div>
+        <div class="faq-answer">Likely a cleanup sprint where the team dedicated time to clearing backlog. These spikes are positive — they show the team can burst when needed. The normal sustainable rate is ~35-40 resolved per week. Spikes above that indicate focused effort on reducing queue.</div>
+      </div>
+    </div>
+    <a href="#toc" class="back-top">Back to Table of Contents</a>
+  </div>
+
+  <div class="section-sep"></div>
+
+  <!-- ============================================================ -->
+  <!-- SECTION 9: Severity Distribution -->
+  <!-- ============================================================ -->
+  <div class="section" id="s9">
+    <div class="section-title"><span class="section-num">9</span> Severity Distribution</div>
+    <div class="section-explain">Donut chart of open tickets by severity level. Answers: "How critical is our current queue?"</div>
+
+    <div class="method-card">
+      <h4>Severity Levels</h4>
+      <p>Four levels, set by the CX Lead based on customer impact:</p>
+      <div class="formula">
+        Blocker — customer's core business is completely stopped<br>
+        High — significant feature is broken, workaround exists<br>
+        Medium — default, moderate impact on operations<br>
+        Low — minor issue, cosmetic, or nice-to-have
+      </div>
+    </div>
+
+    <div class="faq-group">
+      <div class="faq-item">
+        <div class="faq-question">83% Medium. Should we worry?</div>
+        <div class="faq-answer">Medium is the default severity. Most tickets start as Medium unless the CX Lead explicitly escalates or de-escalates. The key metrics to watch are: <strong>Blocker count</strong> (should be near 0 — each one means a customer is down) and <strong>High count</strong> (should be declining week-over-week). The Medium majority is normal.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">Who decides severity?</div>
+        <div class="faq-answer">The CX Lead (tnt__assignee) sets severity during initial triage. Customers can request a severity level, but the CX Lead makes the final call based on actual business impact. Blockers should be verified — a "Blocker" that isn't actually stopping operations should be downgraded.</div>
+      </div>
+    </div>
+    <a href="#toc" class="back-top">Back to Table of Contents</a>
+  </div>
+
+  <div class="section-sep"></div>
+
+  <!-- ============================================================ -->
+  <!-- SECTION 10: Aging Distribution -->
+  <!-- ============================================================ -->
+  <div class="section" id="s10">
+    <div class="section-title"><span class="section-num">10</span> Aging Distribution</div>
+    <div class="section-explain">Bar chart showing how old open tickets are. Answers: "How much of our queue is stale?"</div>
+
+    <div class="method-card">
+      <h4>Age Calculation</h4>
+      <p>Simple calendar-day age of each open ticket.</p>
+      <div class="formula">Age = Today - Created date (in calendar days)</div>
+    </div>
+
+    <table class="columns-table" style="margin-top: 16px;">
+      <thead>
+        <tr><th>Bucket</th><th>What It Means</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>0-1d</strong></td><td>Created today or yesterday — fresh, expected to be in Queued or WIP</td></tr>
+        <tr><td><strong>1-3d</strong></td><td>Recent — should have at least a first response by now</td></tr>
+        <tr><td><strong>3-7d</strong></td><td>Getting stale — most should be resolved or in Awaiting Customer Response</td></tr>
+        <tr><td><strong>7-14d</strong></td><td>Aging — likely complex or waiting on engineering</td></tr>
+        <tr><td><strong>14-30d</strong></td><td>Old — needs investigation, likely stuck in a pipeline</td></tr>
+        <tr><td><strong>30d+</strong></td><td>Very old — requires active management, possible escalation</td></tr>
+      </tbody>
+    </table>
+
+    <div class="warn-box" style="margin-top: 16px;">
+      <strong>Cumulative buckets in the per-person table:</strong> The 7+ count includes 15+ and 30+ day tickets. The 15+ count includes 30+ day tickets. They are nested, not additive.
+    </div>
+
+    <div class="faq-group">
+      <div class="faq-item">
+        <div class="faq-question">62 tickets are 30+ days old. Why?</div>
+        <div class="faq-answer">Most are in "Awaiting Development" or "Awaiting Product Assist" stages — waiting on engineering or product decisions, not support. Support has done their investigation but needs engineering to fix a bug or product to make a decision. These are not support failures; they represent engineering/product backlog that surfaces through support tickets.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">Is aging measured in business days or calendar days?</div>
+        <div class="faq-answer">Calendar days. A ticket created on Friday and checked on Monday is 3 days old, even though only 1 business day passed. This is intentional — the customer experiences calendar time, not business time. For SLA measurement, we use SLA-aware time; but for aging, calendar time is more honest about the customer wait.</div>
+      </div>
+    </div>
+    <a href="#toc" class="back-top">Back to Table of Contents</a>
+  </div>
+
+  <div class="section-sep"></div>
+
+  <!-- ============================================================ -->
+  <!-- SECTION 11: Stage Dwell Analysis -->
+  <!-- ============================================================ -->
+  <div class="section" id="s11">
+    <div class="section-title"><span class="section-num">11</span> Stage Dwell Analysis</div>
+    <div class="section-explain">How long tickets sit in each stage. Identifies bottlenecks — if tickets pile up in a stage, that's where the process is stuck.</div>
+
+    <div class="method-card">
+      <h4>What the table shows</h4>
+      <p>For each stage: how many tickets are currently there, how long they've been there on average, the oldest one, and which accounts have the most tickets in that stage.</p>
+      <div class="formula">
+        Count = tickets currently in this stage<br>
+        Avg Age = mean(Today - Created date) for tickets in stage<br>
+        Oldest = max(Today - Created date) for tickets in stage<br>
+        Top Accounts = 3 accounts with most tickets in stage
+      </div>
+    </div>
+
+    <h4 style="font-size: 15px; font-weight: 700; margin-top: 20px; margin-bottom: 12px;">Stage Definitions</h4>
+    <ul class="stage-list">
+      <li><span class="stage-name">Queued</span><span class="stage-desc">New, unactioned. Ticket just came in and nobody has picked it up yet. SLA clock is running.</span></li>
+      <li><span class="stage-name">WIP (Work In Progress)</span><span class="stage-desc">CX Lead is actively investigating. This is the "doing work" stage. SLA clock running.</span></li>
+      <li><span class="stage-name">Awaiting Customer Response</span><span class="stage-desc">We asked the customer a question and are waiting for their reply. SLA clock is paused.</span></li>
+      <li><span class="stage-name">Awaiting Development</span><span class="stage-desc">Support investigation is done; needs engineering to fix a bug or build a feature. SLA clock is running (this is a common SLA miss cause).</span></li>
+      <li><span class="stage-name">Awaiting Product Assist</span><span class="stage-desc">Needs product team decision — feature scoping, priority call, or design input.</span></li>
+      <li><span class="stage-name">In Development</span><span class="stage-desc">Engineering is actively working on a fix. SLA clock running.</span></li>
+      <li><span class="stage-name">Reassigned to Customer Support</span><span class="stage-desc">Engineering bounced it back to support — either the fix is deployed and needs verification, or it wasn't an engineering issue.</span></li>
+      <li><span class="stage-name">Reopen</span><span class="stage-desc">Previously resolved, but customer reopened because the problem recurred or the fix didn't work. SLA clock restarts.</span></li>
+    </ul>
+
+    <div class="faq-group">
+      <div class="faq-item">
+        <div class="faq-question">Most tickets are in "Awaiting Development." Is that a problem?</div>
+        <div class="faq-answer">It means support has done their job (investigated, identified root cause) but engineering hasn't fixed it yet. This is an engineering capacity/priority issue, not a support issue. The actionable step is to work with engineering leads to prioritize these tickets in their sprint planning.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">SLA clock runs during "Awaiting Development" — is that fair?</div>
+        <div class="faq-answer">The current SLA policy only pauses during "Awaiting Customer Response." All other stages count against SLA. This means tickets stuck in engineering queues will miss SLA, which accurately reflects that the customer is still waiting. It's by design — it creates pressure to fix bugs faster.</div>
+      </div>
+    </div>
+    <a href="#toc" class="back-top">Back to Table of Contents</a>
+  </div>
+
+  <div class="section-sep"></div>
+
+  <!-- ============================================================ -->
+  <!-- SECTION 12: CX Lead — Open Tickets -->
+  <!-- ============================================================ -->
+  <div class="section" id="s12">
+    <div class="section-title"><span class="section-num">12</span> CX Lead — Open Tickets</div>
+    <div class="section-explain">Per-person breakdown of open ticket load. Answers: "Who's overloaded? Who has aging tickets?"</div>
+
+    <div class="method-card">
+      <h4>CX Lead Field</h4>
+      <p>Maps to <code>tnt__assignee</code> in DevRev — the designated support person responsible for the ticket. This is different from <code>owned_by</code> (ticket owner) which may be a manager or auto-assigned.</p>
+    </div>
+
+    <table class="columns-table" style="margin-top: 16px;">
+      <thead>
+        <tr><th>Column</th><th>What It Shows</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Total</strong></td><td>All open tickets assigned to this person</td></tr>
+        <tr><td><strong>Que</strong></td><td>Tickets in Queued stage (not yet started)</td></tr>
+        <tr><td><strong>WIP</strong></td><td>Tickets in Work In Progress (actively working)</td></tr>
+        <tr><td><strong>AwCust</strong></td><td>Tickets in Awaiting Customer Response</td></tr>
+        <tr><td><strong>AwDev</strong></td><td>Tickets in Awaiting Development</td></tr>
+        <tr><td><strong>AwProd</strong></td><td>Tickets in Awaiting Product Assist</td></tr>
+        <tr><td><strong>InDev</strong></td><td>Tickets in In Development</td></tr>
+        <tr><td><strong>Resgn</strong></td><td>Tickets in Reassigned to Customer Support</td></tr>
+        <tr><td><strong>Reopen</strong></td><td>Tickets that were reopened</td></tr>
+        <tr><td><strong>Avg Age</strong></td><td>Average of (Today - Created date) for all their open tickets</td></tr>
+        <tr><td><strong>7+d</strong></td><td>Count of their open tickets older than 7 days (includes 15+ and 30+)</td></tr>
+        <tr><td><strong>15+d</strong></td><td>Count of their open tickets older than 15 days (includes 30+)</td></tr>
+        <tr><td><strong>30+d</strong></td><td>Count of their open tickets older than 30 days</td></tr>
+      </tbody>
+    </table>
+
+    <div class="faq-group">
+      <div class="faq-item">
+        <div class="faq-question">Person X has 25 open tickets. Is that too many?</div>
+        <div class="faq-answer">It depends on the ticket mix. If 15 are in "Awaiting Customer Response" (paused, waiting for customer), the active load is only 10. Look at the stage breakdown, not just the total. A person with 10 tickets all in WIP is more loaded than someone with 25 tickets, 20 of which are awaiting customer or engineering.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">Why does "Unassigned" appear as a CX Lead?</div>
+        <div class="faq-answer">Some tickets don't have a <code>tnt__assignee</code> set. These are either newly created (before triage) or fell through the cracks. Unassigned tickets should be triaged and assigned during the daily standup. A growing "Unassigned" count is a red flag.</div>
+      </div>
+    </div>
+    <a href="#toc" class="back-top">Back to Table of Contents</a>
+  </div>
+
+  <div class="section-sep"></div>
+
+  <!-- ============================================================ -->
+  <!-- SECTION 13: CX Lead — Resolved Performance -->
+  <!-- ============================================================ -->
+  <div class="section" id="s13">
+    <div class="section-title"><span class="section-num">13</span> CX Lead — Resolved Performance</div>
+    <div class="section-explain">How each person performed on resolved tickets. This is the "output" view — open tickets show load, resolved tickets show throughput.</div>
+
+    <table class="columns-table" style="margin-top: 12px;">
+      <thead>
+        <tr><th>Column</th><th>What It Shows</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Resolved</strong></td><td>Count of tickets resolved in the date range</td></tr>
+        <tr><td><strong>FR%</strong></td><td>Their personal First Response hit rate</td></tr>
+        <tr><td><strong>RT%</strong></td><td>Their personal Resolution Time hit rate</td></tr>
+        <tr><td><strong>TAT P50</strong></td><td>Median resolution time for their tickets (SLA-aware)</td></tr>
+        <tr><td><strong>CSAT Avg</strong></td><td>Average CSAT for their tickets (if survey responses exist)</td></tr>
+        <tr><td><strong>Resolved/Day</strong></td><td>Resolved count / working days in range (excludes Sat & Sun)</td></tr>
+      </tbody>
+    </table>
+
+    <div class="method-card" style="margin-top: 16px;">
+      <h4>Resolved/Day Calculation</h4>
+      <p>Working days exclude weekends (Saturday and Sunday). Public holidays are not excluded — the working day count may be slightly inflated during holiday-heavy periods.</p>
+      <div class="formula">Resolved/Day = Resolved Count<br>/ Working Days in Date Range<br><br>Working Days = Total Days - Saturdays - Sundays</div>
+    </div>
+
+    <div class="faq-group">
+      <div class="faq-item">
+        <div class="faq-question">Tejal has 3 resolved and 8 open. Is that ok?</div>
+        <div class="faq-answer">Low throughput with growing backlog suggests either (a) very complex tickets that take longer to resolve, (b) capacity constraint — too many tickets assigned, or (c) tickets stuck waiting on engineering. Check the stage breakdown in the Open Tickets table to understand where the bottleneck is. If most are in "Awaiting Development," it's not Tejal's problem.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">Why does one person have 90% FR but another has 40%?</div>
+        <div class="faq-answer">This depends on ticket timing and account mix. Someone handling tickets for accounts with fast-response culture (Reliance, DTDC) may have higher FR%. Someone handling bulk tickets from integrations that come in overnight will have lower FR% because the clock runs through the night before they can respond.</div>
+      </div>
+    </div>
+    <a href="#toc" class="back-top">Back to Table of Contents</a>
+  </div>
+
+  <div class="section-sep"></div>
+
+  <!-- ============================================================ -->
+  <!-- SECTION 14: Account SLA -->
+  <!-- ============================================================ -->
+  <div class="section" id="s14">
+    <div class="section-title"><span class="section-num">14</span> Account SLA</div>
+    <div class="section-explain">Per-account performance overview combining volume, SLA, and aging data in one table.</div>
+
+    <table class="columns-table" style="margin-top: 12px;">
+      <thead>
+        <tr><th>Column</th><th>What It Shows</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Total</strong></td><td>Total tickets for this account in the date range (open + resolved)</td></tr>
+        <tr><td><strong>Open</strong></td><td>Currently open tickets for this account</td></tr>
+        <tr><td><strong>Resolved</strong></td><td>Tickets resolved for this account in the date range</td></tr>
+        <tr><td><strong>FR%</strong></td><td>First Response hit rate for this account</td></tr>
+        <tr><td><strong>RT%</strong></td><td>Resolution Time hit rate for this account</td></tr>
+        <tr><td><strong>TAT P50</strong></td><td>Median resolution time for this account's tickets (SLA-aware)</td></tr>
+        <tr><td><strong>Blockers</strong></td><td>Number of open Blocker-severity tickets for this account</td></tr>
+        <tr><td><strong>Avg Age</strong></td><td>Average age of this account's open tickets (calendar days)</td></tr>
+      </tbody>
+    </table>
+
+    <div class="info-box" style="margin-top: 16px;">
+      <strong>Use this table to prepare for account-specific founder questions.</strong> If a founder asks "How is Aramex doing?", this row gives you the full picture: volume, SLA performance, resolution speed, and whether they have blockers.
+    </div>
+
+    <a href="#toc" class="back-top">Back to Table of Contents</a>
+  </div>
+
+  <div class="section-sep"></div>
+
+  <!-- ============================================================ -->
+  <!-- SECTION 15: Account Health Score -->
+  <!-- ============================================================ -->
+  <div class="section" id="s15">
+    <div class="section-title"><span class="section-num">15</span> Account Health Score <span class="badge">COMPOSITE</span></div>
+    <div class="section-explain">A single 0-100 score that combines SLA performance, ticket aging, and customer sentiment into one risk indicator.</div>
+
+    <div class="method-card">
+      <h4>Formula</h4>
+      <p>Weighted combination of three independent signals. Each component is normalized to 0-100.</p>
+      <div class="formula">
+        Health Score = SLA% x 0.4<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+ Inverse Age Score x 0.3<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+ Sentiment Score x 0.3
+      </div>
+    </div>
+
+    <div class="health-breakdown" style="margin-top: 16px;">
+      <div class="health-component">
+        <div class="weight">40%</div>
+        <div class="label">SLA Performance</div>
+        <div style="font-size: 12px; color: var(--muted); margin-top: 6px;">Average of FR% and RT%</div>
+      </div>
+      <div class="health-component">
+        <div class="weight">30%</div>
+        <div class="label">Age Score</div>
+        <div style="font-size: 12px; color: var(--muted); margin-top: 6px;">100 - min(Avg Age x 2, 100)</div>
+      </div>
+      <div class="health-component">
+        <div class="weight">30%</div>
+        <div class="label">Sentiment</div>
+        <div style="font-size: 12px; color: var(--muted); margin-top: 6px;">100 - (Frustrated% x 3 + Unhappy% x 1.5), capped 0-100</div>
+      </div>
+    </div>
+
+    <div class="method-grid" style="margin-top: 16px;">
+      <div class="method-card">
+        <h4>SLA% Component</h4>
+        <p>Average of the account's FR% and RT%. If an account has 80% FR and 60% RT, the SLA component is 70.</p>
+        <div class="formula">SLA% = (FR% + RT%) / 2</div>
+      </div>
+      <div class="method-card">
+        <h4>Inverse Age Score</h4>
+        <p>Penalizes older tickets. An account with avg age 5 days scores 90. An account with avg age 50+ days scores 0.</p>
+        <div class="formula">Age Score = 100 - min(Avg Age x 2, 100)<br><br>0 days = 100 (perfect)<br>25 days = 50<br>50+ days = 0</div>
+      </div>
+    </div>
+
+    <div class="method-grid single" style="margin-top: 16px;">
+      <div class="method-card">
+        <h4>Sentiment Score</h4>
+        <p>Penalizes frustrated and unhappy sentiment more heavily. Based on DevRev's <code>sentiment.label</code> field (Happy/Neutral/Unhappy/Frustrated).</p>
+        <div class="formula">
+          Sentiment Score = 100 - (Frustrated% x 3 + Unhappy% x 1.5)<br>
+          Capped at 0 (floor) and 100 (ceiling)<br><br>
+          Example: 10% Frustrated, 20% Unhappy<br>
+          = 100 - (10x3 + 20x1.5) = 100 - 60 = 40
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top: 16px;">
+      <h4 style="font-size: 14px; font-weight: 700; margin-bottom: 8px;">Health Badges</h4>
+      <div class="color-legend">
+        <div class="color-swatch"><span class="badge-green">Healthy</span> Score &gt; 80</div>
+        <div class="color-swatch"><span class="badge-yellow">Watch</span> Score 60-80</div>
+        <div class="color-swatch"><span class="badge-red">At Risk</span> Score &lt; 60</div>
+      </div>
+    </div>
+
+    <div class="faq-group">
+      <div class="faq-item">
+        <div class="faq-question">Aramex is red. What does that mean?</div>
+        <div class="faq-answer">It's a composite of three independent signals: low SLA performance (e.g., 12% FR), high average ticket age, and frustrated customer sentiment. Three different data sources all pointing to account risk. This isn't one bad metric — it's a pattern across multiple dimensions.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">Can the weights be changed?</div>
+        <div class="faq-answer">Yes — the 40/30/30 split is configured in the dashboard code. If leadership wants to weight SLA more heavily (e.g., 60/20/20), that's a code change. The current weights were chosen to balance "are we meeting targets" (SLA) with "how long are customers waiting" (age) and "how do customers feel" (sentiment).</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">An account with 2 tickets shows "At Risk" — is that meaningful?</div>
+        <div class="faq-answer">Low-volume accounts can get extreme scores. Two tickets both missing SLA = 0% SLA. The score is mathematically correct but statistically noisy. Focus health scores on accounts with 5+ tickets in the range. Accounts with very few tickets should be reviewed manually rather than algorithmically.</div>
+      </div>
+    </div>
+    <a href="#toc" class="back-top">Back to Table of Contents</a>
+  </div>
+
+  <div class="section-sep"></div>
+
+  <!-- ============================================================ -->
+  <!-- SECTION 16: Roadmap — Focus Areas -->
+  <!-- ============================================================ -->
+  <div class="section" id="s16">
+    <div class="section-title"><span class="section-num">16</span> Roadmap — Focus Areas</div>
+    <div class="section-explain">Auto-generated cards showing where to focus improvement effort. These are data-driven, not manually written.</div>
+
+    <div class="method-grid triple">
+      <div class="method-card">
+        <h4>SLA Gap Closure</h4>
+        <p>Identifies accounts with the lowest FR% and RT%. Prioritizes the biggest gaps because improving a 10% account to 40% has more impact than improving 70% to 75%.</p>
+        <div class="formula">Sort accounts by FR% ASC<br>Show bottom 3-5</div>
+      </div>
+      <div class="method-card">
+        <h4>Aging Ticket Reduction</h4>
+        <p>Identifies CX Leads with the most 30+ day tickets. These represent the oldest unresolved problems.</p>
+        <div class="formula">Sort CX Leads by<br>count(30+d tickets) DESC<br>Show top 3-5</div>
+      </div>
+      <div class="method-card">
+        <h4>Team Capacity</h4>
+        <p>Compares highest-loaded vs lowest-loaded people. Highlights rebalancing opportunities.</p>
+        <div class="formula">Compare max(open tickets)<br>vs min(open tickets)<br>per CX Lead</div>
+      </div>
+    </div>
+
+    <div class="info-box" style="margin-top: 16px;">
+      <strong>These cards update automatically with the data.</strong> When you change the date range, the focus areas recalculate. They always reflect the current state of the filtered dataset.
+    </div>
+
+    <a href="#toc" class="back-top">Back to Table of Contents</a>
+  </div>
+
+  <div class="section-sep"></div>
+
+  <!-- ============================================================ -->
+  <!-- SECTION 17: Roadmap — Target Tracking -->
+  <!-- ============================================================ -->
+  <div class="section" id="s17">
+    <div class="section-title"><span class="section-num">17</span> Roadmap — Target Tracking</div>
+    <div class="section-explain">Current metrics compared against editable targets. Shows whether we're on track to meet leadership expectations.</div>
+
+    <div class="method-card">
+      <h4>How it works</h4>
+      <p>Targets are set in the dashboard sidebar — they can be changed to match what leadership expects. The gap is calculated automatically.</p>
+      <div class="formula">
+        Gap = Target - Actual<br><br>
+        Status:<br>
+        "On Track" — Actual >= Target<br>
+        "Close" — Gap <= 5 points<br>
+        "Gap: X pts" — Gap > 5 points
+      </div>
+    </div>
+
+    <div class="faq-group">
+      <div class="faq-item">
+        <div class="faq-question">Who sets the targets?</div>
+        <div class="faq-answer">The CX Manager sets targets based on leadership expectations. These are editable in the dashboard sidebar. Common targets: FR% > 75%, RT% > 70%, CSAT > 4.2, Open Tickets < 100. Targets should be reviewed monthly and adjusted based on team capacity and product stability.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">Can we track targets week-over-week?</div>
+        <div class="faq-answer">The Weekly Progress table shows the direction (improving or declining) for each metric. Combined with targets, you can see whether improvement velocity is sufficient to hit the target by a given date.</div>
+      </div>
+    </div>
+    <a href="#toc" class="back-top">Back to Table of Contents</a>
+  </div>
+
+  <div class="section-sep"></div>
+
+  <!-- ============================================================ -->
+  <!-- SECTION 18: Friday AI Impact -->
+  <!-- ============================================================ -->
+  <div class="section" id="s18">
+    <div class="section-title"><span class="section-num">18</span> Friday AI Impact <span class="badge">SEPARATE ANALYSIS</span></div>
+    <div class="section-explain">Static data from the F.R.I.D.A.Y Agent Intelligence analysis (31-day period). This section uses data from a separate analysis — not from the dashboard's CSV export.</div>
+
+    <div class="method-grid">
+      <div class="method-card">
+        <h4>Coverage: 22.8%</h4>
+        <p>Friday analyzed 523 of 2,298 total tickets in the 31-day window.</p>
+        <div class="formula">Coverage = Friday Runs / Total Tickets<br>= 523 / 2,298 = 22.8%</div>
+      </div>
+      <div class="method-card">
+        <h4>Accuracy: 84.6%</h4>
+        <p>Of tickets where both AI and human RCA existed, 84.6% aligned.</p>
+        <div class="formula">Accuracy = Matching RCAs<br>/ Total Comparable RCAs x 100<br>= 11 / 13 = 84.6%</div>
+      </div>
+    </div>
+
+    <div class="method-grid" style="margin-top: 16px;">
+      <div class="method-card">
+        <h4>Speed: 4.2 min median</h4>
+        <p>Friday's median RCA generation time vs ~2.4h for a human to write an RCA.</p>
+        <div class="formula">AI P50 = 4.2 minutes<br>Human P50 = ~2.4 hours<br>Speed multiplier = ~34x faster</div>
+      </div>
+      <div class="method-card">
+        <h4>Data Source</h4>
+        <p>This data is NOT from the dashboard's CSV export. It comes from a separate analysis of Slack channel messages and DevRev timeline entries over a 31-day period.</p>
+      </div>
+    </div>
+
+    <div class="faq-group">
+      <div class="faq-item">
+        <div class="faq-question">Only 22.8% coverage. Why not 100%?</div>
+        <div class="faq-answer">25.4% of runs are skipped because the customer workspace isn't mapped to a Shipsy org_id. Friday needs this mapping to access backend systems and logs. Mapping more customer workspaces will directly increase coverage. The remaining gap is tickets from unmapped accounts + tickets that came in during agent downtime.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">84.6% accuracy. What about the 15.4%?</div>
+        <div class="faq-answer">2 mismatches out of 13 comparable tickets. One was a tooling gap (Friday had no access to OBB-V2 logs, so it couldn't diagnose the issue). The other was over-investigation of a non-Shipsy issue (Friday spent time investigating something that wasn't our problem). Both are fixable — add OBB-V2 log access, and add a check for "is this a Shipsy issue?"</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">Is Friday AI saving time?</div>
+        <div class="faq-answer">Yes. For the 386 tickets where Friday generated an RCA, the median time was 4.2 minutes vs ~2.4 hours for a human. Even at 22.8% coverage, this saves approximately 900+ hours of human investigation time per month (386 tickets x ~2.4h per ticket saved, minus the ~27 minutes total AI compute time). The time savings grow linearly with coverage.</div>
+      </div>
+    </div>
+    <a href="#toc" class="back-top">Back to Table of Contents</a>
+  </div>
+
+  <div class="section-sep"></div>
+
+  <!-- ============================================================ -->
+  <!-- QUICK REFERENCE -->
+  <!-- ============================================================ -->
+  <div class="section" id="quick-ref">
+    <div class="section-title">Quick Reference — Common Founder Questions</div>
+    <div class="section-explain">Keep this table handy during reviews. These are the questions that come up most often, with concise answers.</div>
+
+    <table class="quick-ref">
+      <thead>
+        <tr><th style="width: 45%;">Question</th><th>Short Answer</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>"Why don't your numbers match DevRev?"</strong></td>
+          <td>Different filter scope. We show Support-subtype only, excluding WMS and Roadmap. DevRev shows all ticket types.</td>
+        </tr>
+        <tr>
+          <td><strong>"What's the SLA target?"</strong></td>
+          <td>Default SLA policy sla-28, same for all accounts. Schedule: Mon-Fri 10AM-8PM IST.</td>
+        </tr>
+        <tr>
+          <td><strong>"Why is TAT so low compared to customer complaints?"</strong></td>
+          <td>TAT is SLA-aware — it excludes customer wait time and off-hours. Customers experience wall-clock time which includes nights, weekends, and their own response time.</td>
+        </tr>
+        <tr>
+          <td><strong>"Is Friday AI saving time?"</strong></td>
+          <td>Yes. 4.2 min AI vs ~2.4h human P50 for root cause analysis. ~34x faster, ~900 hours saved per month at current coverage.</td>
+        </tr>
+        <tr>
+          <td><strong>"Why are 62 tickets 30+ days old?"</strong></td>
+          <td>Most are in Awaiting Development or Awaiting Product stages — engineering/product backlog, not support delay. Support has investigated; waiting on fixes.</td>
+        </tr>
+        <tr>
+          <td><strong>"Who's overloaded?"</strong></td>
+          <td>Check People tab, CX Lead Open Tickets table. Sort by Total column. Cross-reference with stage breakdown — high "Awaiting Dev" doesn't mean the person is slow.</td>
+        </tr>
+        <tr>
+          <td><strong>"Which accounts are at risk?"</strong></td>
+          <td>Accounts tab, Health Score table. Red badges = at risk (score &lt; 60). Composite of SLA misses, old tickets, and frustrated sentiment.</td>
+        </tr>
+        <tr>
+          <td><strong>"Are we getting better?"</strong></td>
+          <td>Roadmap tab, Weekly Progress table. Green arrows = improving week-over-week. Compare current metrics vs targets to see remaining gap.</td>
+        </tr>
+        <tr>
+          <td><strong>"Can we set per-account SLA targets?"</strong></td>
+          <td>Not currently. DevRev has one default policy. Per-account SLA requires configuring separate SLA policies — doable but needs DevRev admin work.</td>
+        </tr>
+        <tr>
+          <td><strong>"Why is FR% lower than RT%?"</strong></td>
+          <td>FR clock never pauses — it runs from ticket creation to first response. RT clock pauses during "Awaiting Customer Response." FR is harder to meet, especially for overnight tickets.</td>
+        </tr>
+        <tr>
+          <td><strong>"83% of tickets are Medium severity. Is that meaningful?"</strong></td>
+          <td>Medium is the default. Most tickets start as Medium unless explicitly escalated. Focus on Blocker (business stopped) and High (significant impact) counts instead.</td>
+        </tr>
+        <tr>
+          <td><strong>"Resolve ratio is below 100%. When will we catch up?"</strong></td>
+          <td>At current rates, calculate: Open Backlog / (Weekly Resolved - Weekly Created) = weeks to clear. If Resolved &lt; Created consistently, the backlog grows and we need either more capacity or fewer incoming tickets.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <a href="#toc" class="back-top">Back to Table of Contents</a>
+  </div>
+
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  CX Pulse Dashboard — Methodology Guide | For internal use by CX Leadership | Questions? Reach out on <a href="#">#cx-pulse</a> Slack channel
+</div>
+
+<!-- Collapsible FAQ Script -->
+<script>
+  document.querySelectorAll('.faq-question').forEach(function(q) {
+    q.addEventListener('click', function() {
+      var item = this.parentElement;
+      item.classList.toggle('open');
+    });
+  });
+</script>
+
+</body>
+</html>

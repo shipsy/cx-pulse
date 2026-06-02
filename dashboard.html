@@ -1,0 +1,1417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CX Support Dashboard</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+<style>
+  :root {
+    --sidebar-width: 280px;
+    --sidebar-bg: #1a1d23;
+    --sidebar-hover: #2a2d35;
+    --accent: #4f8cff;
+    --accent-light: #6fa0ff;
+    --bg: #f4f6f9;
+    --card-bg: #ffffff;
+    --text: #1e2028;
+    --text-muted: #6b7280;
+    --border: #e5e7eb;
+    --green: #22c55e;
+    --red: #ef4444;
+    --orange: #f59e0b;
+    --purple: #8b5cf6;
+    --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.06);
+    --shadow-lg: 0 4px 12px rgba(0,0,0,0.1);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    display: flex;
+    min-height: 100vh;
+  }
+
+  /* ── Sidebar ── */
+  .sidebar {
+    width: var(--sidebar-width);
+    background: var(--sidebar-bg);
+    color: #e5e7eb;
+    padding: 24px 16px;
+    position: fixed;
+    top: 0; left: 0; bottom: 0;
+    overflow-y: auto;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .sidebar h1 {
+    font-size: 20px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: -0.3px;
+    margin-bottom: 4px;
+  }
+  .sidebar .subtitle {
+    font-size: 11px;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+  }
+
+  .upload-zone {
+    border: 2px dashed #3a3d45;
+    border-radius: 10px;
+    padding: 18px 14px;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+    position: relative;
+  }
+  .upload-zone:hover, .upload-zone.dragover {
+    border-color: var(--accent);
+    background: rgba(79,140,255,0.06);
+  }
+  .upload-zone input { display: none; }
+  .upload-zone .icon { font-size: 28px; margin-bottom: 6px; }
+  .upload-zone .label { font-size: 13px; color: #9ca3af; }
+  .upload-zone .loaded { font-size: 12px; color: var(--green); margin-top: 4px; }
+
+  .filter-group { margin-bottom: 2px; }
+  .filter-group label {
+    display: block;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: #9ca3af;
+    margin-bottom: 5px;
+  }
+  .filter-group select, .filter-group input[type="date"] {
+    width: 100%;
+    padding: 8px 10px;
+    border-radius: 6px;
+    border: 1px solid #3a3d45;
+    background: #23262e;
+    color: #e5e7eb;
+    font-size: 13px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .filter-group select:focus, .filter-group input[type="date"]:focus {
+    border-color: var(--accent);
+  }
+  .filter-group input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(0.7);
+  }
+
+  .date-row { display: flex; gap: 8px; }
+  .date-row > div { flex: 1; }
+
+  .btn-reset {
+    width: 100%;
+    padding: 9px;
+    border-radius: 6px;
+    border: 1px solid #3a3d45;
+    background: transparent;
+    color: #9ca3af;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 4px;
+  }
+  .btn-reset:hover { background: var(--sidebar-hover); color: #fff; border-color: #555; }
+
+  .sidebar-footer {
+    margin-top: auto;
+    padding-top: 12px;
+    border-top: 1px solid #2a2d35;
+    font-size: 11px;
+    color: #4b5563;
+    text-align: center;
+  }
+
+  /* ── Main Content ── */
+  .main {
+    margin-left: var(--sidebar-width);
+    flex: 1;
+    padding: 28px 32px;
+    min-width: 0;
+  }
+
+  .main-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+  }
+  .main-header h2 { font-size: 22px; font-weight: 700; color: var(--text); }
+  .main-header .meta { font-size: 13px; color: var(--text-muted); }
+
+  /* ── Empty State ── */
+  .empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 60vh;
+    color: var(--text-muted);
+    text-align: center;
+  }
+  .empty-state .icon { font-size: 56px; margin-bottom: 16px; opacity: 0.4; }
+  .empty-state h3 { font-size: 20px; margin-bottom: 8px; color: var(--text); }
+  .empty-state p { font-size: 14px; max-width: 400px; line-height: 1.6; }
+
+  /* ── KPI Cards ── */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+    gap: 14px;
+    margin-bottom: 28px;
+  }
+
+  .kpi-card {
+    background: var(--card-bg);
+    border-radius: 10px;
+    padding: 18px 16px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+  .kpi-card .kpi-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+  }
+  .kpi-card .kpi-value {
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    line-height: 1;
+  }
+  .kpi-card .kpi-sub {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 6px;
+  }
+  .kpi-card .kpi-bar {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+  }
+
+  /* ── Chart Grid ── */
+  .chart-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+    margin-bottom: 28px;
+  }
+  .chart-grid.three-col {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .chart-card {
+    background: var(--card-bg);
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+  }
+  .chart-card h3 {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 14px;
+    color: var(--text);
+  }
+  .chart-card canvas {
+    max-height: 280px;
+  }
+  .chart-card.wide {
+    grid-column: span 2;
+  }
+
+  /* ── Tables ── */
+  .table-section { margin-bottom: 28px; }
+  .table-section h3 {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: var(--text);
+  }
+
+  .data-table-wrap {
+    background: var(--card-bg);
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    overflow-x: auto;
+  }
+
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  .data-table th {
+    background: #f9fafb;
+    padding: 10px 14px;
+    text-align: left;
+    font-weight: 700;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-muted);
+    border-bottom: 2px solid var(--border);
+    white-space: nowrap;
+    cursor: pointer;
+    user-select: none;
+  }
+  .data-table th:hover { color: var(--accent); }
+  .data-table td {
+    padding: 9px 14px;
+    border-bottom: 1px solid #f0f1f3;
+    white-space: nowrap;
+  }
+  .data-table tbody tr:hover { background: #f8f9fc; }
+  .data-table tbody tr:last-child td { border-bottom: none; }
+
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 99px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+  .badge-green  { background: #dcfce7; color: #166534; }
+  .badge-red    { background: #fee2e2; color: #991b1b; }
+  .badge-orange { background: #fef3c7; color: #92400e; }
+  .badge-blue   { background: #dbeafe; color: #1e40af; }
+  .badge-purple { background: #ede9fe; color: #5b21b6; }
+  .badge-gray   { background: #f3f4f6; color: #4b5563; }
+
+  .sla-hit { color: var(--green); font-weight: 700; }
+  .sla-miss { color: var(--red); font-weight: 700; }
+
+  /* Scrollbar for sidebar */
+  .sidebar::-webkit-scrollbar { width: 6px; }
+  .sidebar::-webkit-scrollbar-track { background: transparent; }
+  .sidebar::-webkit-scrollbar-thumb { background: #3a3d45; border-radius: 3px; }
+
+  /* Responsive */
+  @media (max-width: 1100px) {
+    .chart-grid { grid-template-columns: 1fr; }
+    .chart-card.wide { grid-column: span 1; }
+  }
+  @media (max-width: 800px) {
+    .sidebar { width: 100%; position: relative; }
+    .main { margin-left: 0; }
+    .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════ SIDEBAR ══════════════════ -->
+<aside class="sidebar">
+  <div>
+    <h1>CX Pulse</h1>
+    <div class="subtitle">Support Intelligence</div>
+  </div>
+
+  <div class="upload-zone" id="uploadZone">
+    <div class="icon">&#128202;</div>
+    <div class="label">Drop CSV or click to upload</div>
+    <div class="loaded hidden" id="uploadStatus"></div>
+    <input type="file" id="fileInput" accept=".csv">
+  </div>
+
+  <div class="filter-group">
+    <label>Date Range (Created)</label>
+    <div class="date-row">
+      <div>
+        <input type="date" id="filterDateFrom">
+      </div>
+      <div>
+        <input type="date" id="filterDateTo">
+      </div>
+    </div>
+  </div>
+
+  <div class="filter-group">
+    <label>CX Lead</label>
+    <select id="filterCxLead"><option value="">All</option></select>
+  </div>
+
+  <div class="filter-group">
+    <label>Account</label>
+    <select id="filterAccount"><option value="">All</option></select>
+  </div>
+
+  <div class="filter-group">
+    <label>Cohort</label>
+    <select id="filterCohort"><option value="">All</option></select>
+  </div>
+
+  <div class="filter-group">
+    <label>Severity</label>
+    <select id="filterSeverity"><option value="">All</option></select>
+  </div>
+
+  <button class="btn-reset" id="btnReset">Reset All Filters</button>
+
+  <div class="sidebar-footer">
+    CX Pulse Dashboard v1.0<br>
+    Data source: DevRev CSV Export
+  </div>
+</aside>
+
+<!-- ══════════════════ MAIN ══════════════════ -->
+<div class="main">
+
+  <!-- Empty state -->
+  <div id="emptyState" class="empty-state">
+    <div class="icon">&#128200;</div>
+    <h3>No Data Loaded</h3>
+    <p>Upload a CSV file exported from the DevRev Google Sheet to populate the dashboard. Use the upload area in the sidebar.</p>
+  </div>
+
+  <!-- Dashboard content (hidden until data loaded) -->
+  <div id="dashboardContent" class="hidden">
+
+    <div class="main-header">
+      <h2>Dashboard</h2>
+      <div class="meta" id="headerMeta"></div>
+    </div>
+
+    <!-- KPI Cards -->
+    <div class="kpi-grid" id="kpiGrid">
+      <div class="kpi-card">
+        <div class="kpi-bar" style="background:var(--accent)"></div>
+        <div class="kpi-label">Open Tickets</div>
+        <div class="kpi-value" id="kpiOpen">--</div>
+        <div class="kpi-sub" id="kpiOpenSub"></div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-bar" style="background:var(--red)"></div>
+        <div class="kpi-label">Blockers</div>
+        <div class="kpi-value" id="kpiBlockers">--</div>
+        <div class="kpi-sub" id="kpiBlockersSub"></div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-bar" style="background:var(--purple)"></div>
+        <div class="kpi-label">Created</div>
+        <div class="kpi-value" id="kpiCreated">--</div>
+        <div class="kpi-sub" id="kpiCreatedSub"></div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-bar" style="background:var(--green)"></div>
+        <div class="kpi-label">Resolved</div>
+        <div class="kpi-value" id="kpiResolved">--</div>
+        <div class="kpi-sub" id="kpiResolvedSub"></div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-bar" style="background:var(--green)"></div>
+        <div class="kpi-label">FR% (First Response)</div>
+        <div class="kpi-value" id="kpiFR">--</div>
+        <div class="kpi-sub" id="kpiFRSub"></div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-bar" style="background:var(--orange)"></div>
+        <div class="kpi-label">RT% (Resolution Time)</div>
+        <div class="kpi-value" id="kpiRT">--</div>
+        <div class="kpi-sub" id="kpiRTSub"></div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-bar" style="background:var(--accent)"></div>
+        <div class="kpi-label">TAT P50 (hours)</div>
+        <div class="kpi-value" id="kpiTAT">--</div>
+        <div class="kpi-sub" id="kpiTATSub"></div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-bar" style="background:var(--green)"></div>
+        <div class="kpi-label">Resolve Ratio</div>
+        <div class="kpi-value" id="kpiRatio">--</div>
+        <div class="kpi-sub" id="kpiRatioSub"></div>
+      </div>
+    </div>
+
+    <!-- Charts Row 1 -->
+    <div class="chart-grid">
+      <div class="chart-card">
+        <h3>Aging Distribution (Open Tickets)</h3>
+        <canvas id="chartAging"></canvas>
+      </div>
+      <div class="chart-card">
+        <h3>Stage Breakdown</h3>
+        <canvas id="chartStage"></canvas>
+      </div>
+    </div>
+
+    <!-- Charts Row 2 -->
+    <div class="chart-grid">
+      <div class="chart-card">
+        <h3>Severity Distribution</h3>
+        <canvas id="chartSeverity"></canvas>
+      </div>
+      <div class="chart-card">
+        <h3>Who Resolves</h3>
+        <canvas id="chartWhoResolves"></canvas>
+      </div>
+    </div>
+
+    <!-- Charts Row 3 -->
+    <div class="chart-grid">
+      <div class="chart-card">
+        <h3>CX Lead Load (Open Tickets)</h3>
+        <canvas id="chartCxLead"></canvas>
+      </div>
+      <div class="chart-card">
+        <h3>Weekly Created vs Resolved</h3>
+        <canvas id="chartWeekly"></canvas>
+      </div>
+    </div>
+
+    <!-- Table: CX Lead Load -->
+    <div class="table-section">
+      <h3>CX Lead Load Detail</h3>
+      <div class="data-table-wrap">
+        <table class="data-table" id="tableCxLead">
+          <thead>
+            <tr>
+              <th>CX Lead</th>
+              <th>Open</th>
+              <th>Blockers</th>
+              <th>Created</th>
+              <th>Resolved</th>
+              <th>FR%</th>
+              <th>RT%</th>
+              <th>TAT P50 (h)</th>
+              <th>Resolve Ratio</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Table: SLA by Account -->
+    <div class="table-section">
+      <h3>SLA by Account (Top 25)</h3>
+      <div class="data-table-wrap">
+        <table class="data-table" id="tableSlaAccount">
+          <thead>
+            <tr>
+              <th>Account</th>
+              <th>Total</th>
+              <th>Open</th>
+              <th>Resolved</th>
+              <th>FR%</th>
+              <th>RT%</th>
+              <th>TAT P50 (h)</th>
+              <th>Blockers</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Table: TAT by Severity -->
+    <div class="table-section">
+      <h3>TAT by Severity</h3>
+      <div class="data-table-wrap">
+        <table class="data-table" id="tableTatSeverity">
+          <thead>
+            <tr>
+              <th>Severity</th>
+              <th>Count</th>
+              <th>TAT P25 (h)</th>
+              <th>TAT P50 (h)</th>
+              <th>TAT P75 (h)</th>
+              <th>TAT P90 (h)</th>
+              <th>FR%</th>
+              <th>RT%</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+
+  </div><!-- /dashboardContent -->
+</div><!-- /main -->
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+// CX Pulse Dashboard — Main Script
+// ═══════════════════════════════════════════════════════════════
+
+// ── State ──
+let RAW_DATA = [];       // all rows from CSV, parsed
+let FILTERED_DATA = [];  // after applying global filters
+const CHARTS = {};       // chart instances for destruction
+
+// ── Column name mappings (handles slight variations) ──
+function findCol(row, names) {
+  if (typeof names === 'string') names = [names];
+  for (const n of names) {
+    if (row.hasOwnProperty(n)) return n;
+    // case-insensitive fallback
+    const lower = n.toLowerCase();
+    for (const k of Object.keys(row)) {
+      if (k.toLowerCase() === lower) return k;
+    }
+  }
+  return names[0]; // fallback
+}
+
+let COL = {};
+
+function detectColumns(row) {
+  COL = {
+    items:       findCol(row, ['Items', 'items', 'Ticket ID']),
+    created:     findCol(row, ['Created date', 'Created Date', 'created_date']),
+    closed:      findCol(row, ['Close date', 'Close Date', 'close_date', 'Closed date']),
+    stage:       findCol(row, ['Stage', 'stage']),
+    subtype:     findCol(row, ['Subtype', 'subtype']),
+    cohort:      findCol(row, ['Customer Cohort', 'customer_cohort', 'tnt__customer_cohort_dropdown']),
+    pod:         findCol(row, ['POD', 'Pod', 'pod']),
+    account:     findCol(row, ['Account', 'account']),
+    cxLead:      findCol(row, ['CX Lead', 'cx_lead', 'CX lead']),
+    severity:    findCol(row, ['Severity.label', 'Severity', 'severity']),
+    metricSt0:   findCol(row, ['Metric Status[0]', 'Metric Status 0']),
+    metricSt1:   findCol(row, ['Metric Status[1]', 'Metric Status 1']),
+    completedIn0:findCol(row, ['Completed In[0]', 'Completed In 0']),
+    completedIn1:findCol(row, ['Completed In[1]', 'Completed In 1']),
+    resolvedBy:  findCol(row, ['Resolved By', 'resolved_by']),
+    sentiment:   findCol(row, ['Sentiment.label', 'Sentiment', 'sentiment']),
+  };
+}
+
+// ── Helpers ──
+function val(row, col) {
+  const v = row[col];
+  return v === undefined || v === null ? '' : String(v).trim();
+}
+
+function parseDate(s) {
+  if (!s) return null;
+  const d = new Date(s);
+  return isNaN(d.getTime()) ? null : d;
+}
+
+function isOpen(stage) {
+  const s = (stage || '').toLowerCase();
+  const closedStages = ['resolved', 'closed', 'canceled', 'cancelled'];
+  return !closedStages.includes(s);
+}
+
+function isResolved(stage) {
+  const s = (stage || '').toLowerCase();
+  return s === 'resolved' || s === 'closed';
+}
+
+function isCanceled(stage) {
+  const s = (stage || '').toLowerCase();
+  return s === 'canceled' || s === 'cancelled';
+}
+
+const EXCLUDED_COHORTS = ['WMS', 'Roadmap'];
+const EXCLUDED_PODS = ['WMS Inbound', 'WMS Outbound'];
+
+function passesBaseFilter(row) {
+  const sub = val(row, COL.subtype);
+  if (sub.toLowerCase() !== 'support') return false;
+  const cohort = val(row, COL.cohort);
+  if (EXCLUDED_COHORTS.includes(cohort)) return false;
+  const pod = val(row, COL.pod);
+  if (EXCLUDED_PODS.includes(pod)) return false;
+  return true;
+}
+
+function passesUserFilter(row) {
+  const dateFrom = document.getElementById('filterDateFrom').value;
+  const dateTo = document.getElementById('filterDateTo').value;
+  const cxLead = document.getElementById('filterCxLead').value;
+  const account = document.getElementById('filterAccount').value;
+  const cohort = document.getElementById('filterCohort').value;
+  const severity = document.getElementById('filterSeverity').value;
+
+  if (dateFrom) {
+    const created = parseDate(val(row, COL.created));
+    if (!created || created < new Date(dateFrom + 'T00:00:00')) return false;
+  }
+  if (dateTo) {
+    const created = parseDate(val(row, COL.created));
+    if (!created || created > new Date(dateTo + 'T23:59:59')) return false;
+  }
+  if (cxLead && val(row, COL.cxLead) !== cxLead) return false;
+  if (account && val(row, COL.account) !== account) return false;
+  if (cohort && val(row, COL.cohort) !== cohort) return false;
+  if (severity && val(row, COL.severity) !== severity) return false;
+
+  return true;
+}
+
+function applyFilters() {
+  FILTERED_DATA = RAW_DATA.filter(r => passesBaseFilter(r) && passesUserFilter(r));
+  render();
+}
+
+// ── Percentile ──
+function percentile(arr, p) {
+  if (!arr.length) return 0;
+  const sorted = [...arr].sort((a, b) => a - b);
+  const idx = (p / 100) * (sorted.length - 1);
+  const lo = Math.floor(idx);
+  const hi = Math.ceil(idx);
+  if (lo === hi) return sorted[lo];
+  return sorted[lo] + (sorted[hi] - sorted[lo]) * (idx - lo);
+}
+
+function minutesToHours(m) {
+  return +(m / 60).toFixed(1);
+}
+
+// ── Get TAT from Completed In[1] ──
+function getTATMinutes(row) {
+  const raw = val(row, COL.completedIn1);
+  if (!raw) return null;
+  const n = parseFloat(raw);
+  return isNaN(n) ? null : n;
+}
+
+// ── Populate filter dropdowns ──
+function populateFilters() {
+  const sets = { cxLead: new Set(), account: new Set(), cohort: new Set(), severity: new Set() };
+  for (const row of RAW_DATA) {
+    if (!passesBaseFilter(row)) continue;
+    const cx = val(row, COL.cxLead); if (cx) sets.cxLead.add(cx);
+    const ac = val(row, COL.account); if (ac) sets.account.add(ac);
+    const co = val(row, COL.cohort); if (co) sets.cohort.add(co);
+    const sv = val(row, COL.severity); if (sv) sets.severity.add(sv);
+  }
+
+  fillSelect('filterCxLead', [...sets.cxLead].sort());
+  fillSelect('filterAccount', [...sets.account].sort());
+  fillSelect('filterCohort', [...sets.cohort].sort());
+  fillSelect('filterSeverity', [...sets.severity].sort((a,b) => {
+    const order = {'Blocker':0,'High':1,'Medium':2,'Low':3};
+    return (order[a] ?? 9) - (order[b] ?? 9);
+  }));
+}
+
+function fillSelect(id, items) {
+  const el = document.getElementById(id);
+  const current = el.value;
+  el.innerHTML = '<option value="">All</option>';
+  for (const item of items) {
+    const opt = document.createElement('option');
+    opt.value = item;
+    opt.textContent = item;
+    el.appendChild(opt);
+  }
+  el.value = current;
+}
+
+// ══════════════════════════════════════════
+// RENDER
+// ══════════════════════════════════════════
+function render() {
+  const data = FILTERED_DATA;
+
+  // ── KPIs ──
+  const notCanceled = data.filter(r => !isCanceled(val(r, COL.stage)));
+  const open = notCanceled.filter(r => isOpen(val(r, COL.stage)));
+  const resolved = notCanceled.filter(r => isResolved(val(r, COL.stage)));
+  const created = notCanceled; // created = everything except canceled
+  const blockers = open.filter(r => val(r, COL.severity) === 'Blocker');
+
+  // FR% and RT%
+  const frData = notCanceled.filter(r => val(r, COL.metricSt0));
+  const frHit = frData.filter(r => val(r, COL.metricSt0).toLowerCase() === 'hit').length;
+  const frPct = frData.length ? ((frHit / frData.length) * 100).toFixed(1) : '--';
+
+  const rtData = notCanceled.filter(r => val(r, COL.metricSt1));
+  const rtHit = rtData.filter(r => val(r, COL.metricSt1).toLowerCase() === 'hit').length;
+  const rtPct = rtData.length ? ((rtHit / rtData.length) * 100).toFixed(1) : '--';
+
+  // TAT P50 using Completed In[1]
+  const tatValues = [];
+  for (const r of notCanceled) {
+    const t = getTATMinutes(r);
+    if (t !== null && t > 0) tatValues.push(t);
+  }
+  const tatP50 = tatValues.length ? minutesToHours(percentile(tatValues, 50)) : '--';
+
+  // Resolve ratio
+  const ratio = created.length ? (resolved.length / created.length).toFixed(2) : '--';
+
+  document.getElementById('kpiOpen').textContent = open.length;
+  document.getElementById('kpiOpenSub').textContent = `of ${notCanceled.length} total`;
+  document.getElementById('kpiBlockers').textContent = blockers.length;
+  document.getElementById('kpiBlockersSub').textContent = blockers.length > 0 ? `${blockers.length} need attention` : 'None active';
+  document.getElementById('kpiCreated').textContent = created.length;
+  document.getElementById('kpiCreatedSub').textContent = `excl. ${data.length - notCanceled.length} canceled`;
+  document.getElementById('kpiResolved').textContent = resolved.length;
+  document.getElementById('kpiResolvedSub').textContent = `${created.length ? ((resolved.length/created.length)*100).toFixed(0) : 0}% of created`;
+  document.getElementById('kpiFR').textContent = frPct === '--' ? '--' : frPct + '%';
+  document.getElementById('kpiFR').style.color = frPct !== '--' && parseFloat(frPct) >= 95 ? 'var(--green)' : frPct !== '--' && parseFloat(frPct) < 80 ? 'var(--red)' : '';
+  document.getElementById('kpiFRSub').textContent = frData.length ? `${frHit}/${frData.length} hit` : 'No data';
+  document.getElementById('kpiRT').textContent = rtPct === '--' ? '--' : rtPct + '%';
+  document.getElementById('kpiRT').style.color = rtPct !== '--' && parseFloat(rtPct) >= 95 ? 'var(--green)' : rtPct !== '--' && parseFloat(rtPct) < 80 ? 'var(--red)' : '';
+  document.getElementById('kpiRTSub').textContent = rtData.length ? `${rtHit}/${rtData.length} hit` : 'No data';
+  document.getElementById('kpiTAT').textContent = tatP50;
+  document.getElementById('kpiTATSub').textContent = tatValues.length ? `from ${tatValues.length} tickets` : 'No data';
+  document.getElementById('kpiRatio').textContent = ratio;
+  document.getElementById('kpiRatioSub').textContent = `${resolved.length} resolved / ${created.length} created`;
+
+  // ── Header meta ──
+  document.getElementById('headerMeta').textContent = `${notCanceled.length} tickets (filtered) | ${RAW_DATA.filter(passesBaseFilter).length} total support tickets`;
+
+  // ── Charts ──
+  renderAgingChart(open);
+  renderStageChart(notCanceled);
+  renderSeverityChart(notCanceled);
+  renderWhoResolvesChart(resolved);
+  renderCxLeadChart(open);
+  renderWeeklyChart(notCanceled);
+
+  // ── Tables ──
+  renderCxLeadTable(notCanceled);
+  renderSlaAccountTable(notCanceled);
+  renderTatSeverityTable(notCanceled);
+}
+
+// ══════════════════════════════════════════
+// CHARTS
+// ══════════════════════════════════════════
+
+const CHART_COLORS = [
+  '#4f8cff', '#22c55e', '#f59e0b', '#ef4444', '#8b5cf6',
+  '#06b6d4', '#ec4899', '#f97316', '#14b8a6', '#6366f1',
+  '#84cc16', '#e11d48', '#0ea5e9', '#a855f7', '#eab308'
+];
+
+function destroyChart(key) {
+  if (CHARTS[key]) { CHARTS[key].destroy(); delete CHARTS[key]; }
+}
+
+function chartDefaults() {
+  return {
+    responsive: true,
+    maintainAspectRatio: true,
+    plugins: {
+      legend: { display: false },
+      datalabels: { display: false }
+    }
+  };
+}
+
+// ── Aging Bar Chart ──
+function renderAgingChart(openTickets) {
+  destroyChart('aging');
+  const now = new Date();
+  const buckets = { '0-1d': 0, '1-3d': 0, '3-7d': 0, '7-14d': 0, '14-30d': 0, '30d+': 0 };
+
+  for (const r of openTickets) {
+    const created = parseDate(val(r, COL.created));
+    if (!created) continue;
+    const days = (now - created) / (1000 * 60 * 60 * 24);
+    if (days <= 1)       buckets['0-1d']++;
+    else if (days <= 3)  buckets['1-3d']++;
+    else if (days <= 7)  buckets['3-7d']++;
+    else if (days <= 14) buckets['7-14d']++;
+    else if (days <= 30) buckets['14-30d']++;
+    else                 buckets['30d+']++;
+  }
+
+  CHARTS.aging = new Chart(document.getElementById('chartAging'), {
+    type: 'bar',
+    data: {
+      labels: Object.keys(buckets),
+      datasets: [{
+        data: Object.values(buckets),
+        backgroundColor: ['#4f8cff', '#22c55e', '#f59e0b', '#f97316', '#ef4444', '#991b1b'],
+        borderRadius: 4,
+        barPercentage: 0.7
+      }]
+    },
+    options: {
+      ...chartDefaults(),
+      scales: {
+        y: { beginAtZero: true, ticks: { stepSize: 1, font: { size: 11 } }, grid: { color: '#f0f1f3' } },
+        x: { ticks: { font: { size: 11 } }, grid: { display: false } }
+      },
+      plugins: {
+        ...chartDefaults().plugins,
+        tooltip: {
+          callbacks: {
+            label: ctx => `${ctx.parsed.y} tickets`
+          }
+        }
+      }
+    }
+  });
+}
+
+// ── Stage Bar Chart ──
+function renderStageChart(tickets) {
+  destroyChart('stage');
+  const counts = {};
+  for (const r of tickets) {
+    const s = val(r, COL.stage) || 'Unknown';
+    counts[s] = (counts[s] || 0) + 1;
+  }
+  const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+
+  CHARTS.stage = new Chart(document.getElementById('chartStage'), {
+    type: 'bar',
+    data: {
+      labels: sorted.map(e => e[0]),
+      datasets: [{
+        data: sorted.map(e => e[1]),
+        backgroundColor: sorted.map((_, i) => CHART_COLORS[i % CHART_COLORS.length]),
+        borderRadius: 4,
+        barPercentage: 0.7
+      }]
+    },
+    options: {
+      ...chartDefaults(),
+      indexAxis: 'y',
+      scales: {
+        x: { beginAtZero: true, ticks: { stepSize: 1, font: { size: 11 } }, grid: { color: '#f0f1f3' } },
+        y: { ticks: { font: { size: 11 } }, grid: { display: false } }
+      }
+    }
+  });
+}
+
+// ── Severity Donut ──
+function renderSeverityChart(tickets) {
+  destroyChart('severity');
+  const sevOrder = ['Blocker', 'High', 'Medium', 'Low'];
+  const sevColors = { 'Blocker': '#ef4444', 'High': '#f97316', 'Medium': '#f59e0b', 'Low': '#22c55e' };
+  const counts = {};
+  for (const r of tickets) {
+    const s = val(r, COL.severity) || 'Unknown';
+    counts[s] = (counts[s] || 0) + 1;
+  }
+  // order known severities first, then unknowns
+  const labels = [];
+  const values = [];
+  const colors = [];
+  for (const s of sevOrder) {
+    if (counts[s]) {
+      labels.push(s);
+      values.push(counts[s]);
+      colors.push(sevColors[s] || '#9ca3af');
+      delete counts[s];
+    }
+  }
+  for (const [s, c] of Object.entries(counts)) {
+    labels.push(s);
+    values.push(c);
+    colors.push('#9ca3af');
+  }
+
+  CHARTS.severity = new Chart(document.getElementById('chartSeverity'), {
+    type: 'doughnut',
+    data: {
+      labels,
+      datasets: [{
+        data: values,
+        backgroundColor: colors,
+        borderWidth: 2,
+        borderColor: '#fff'
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,
+      cutout: '55%',
+      plugins: {
+        legend: { position: 'right', labels: { padding: 14, font: { size: 12 }, usePointStyle: true, pointStyle: 'circle' } },
+        datalabels: { display: false }
+      }
+    }
+  });
+}
+
+// ── Who Resolves Donut ──
+function renderWhoResolvesChart(resolved) {
+  destroyChart('whoResolves');
+  const counts = {};
+  for (const r of resolved) {
+    let rb = val(r, COL.resolvedBy) || 'Unknown';
+    // normalize common patterns
+    rb = rb.replace(/^Resolved by\s*/i, '').trim();
+    if (!rb) rb = 'Unknown';
+    counts[rb] = (counts[rb] || 0) + 1;
+  }
+  const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+
+  CHARTS.whoResolves = new Chart(document.getElementById('chartWhoResolves'), {
+    type: 'doughnut',
+    data: {
+      labels: sorted.map(e => e[0]),
+      datasets: [{
+        data: sorted.map(e => e[1]),
+        backgroundColor: sorted.map((_, i) => CHART_COLORS[i % CHART_COLORS.length]),
+        borderWidth: 2,
+        borderColor: '#fff'
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,
+      cutout: '55%',
+      plugins: {
+        legend: { position: 'right', labels: { padding: 14, font: { size: 12 }, usePointStyle: true, pointStyle: 'circle' } },
+        datalabels: { display: false }
+      }
+    }
+  });
+}
+
+// ── CX Lead Bar (open tickets) ──
+function renderCxLeadChart(openTickets) {
+  destroyChart('cxLead');
+  const counts = {};
+  for (const r of openTickets) {
+    const cx = val(r, COL.cxLead) || 'Unassigned';
+    counts[cx] = (counts[cx] || 0) + 1;
+  }
+  const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 15);
+
+  CHARTS.cxLead = new Chart(document.getElementById('chartCxLead'), {
+    type: 'bar',
+    data: {
+      labels: sorted.map(e => e[0]),
+      datasets: [{
+        data: sorted.map(e => e[1]),
+        backgroundColor: '#4f8cff',
+        borderRadius: 4,
+        barPercentage: 0.7
+      }]
+    },
+    options: {
+      ...chartDefaults(),
+      indexAxis: 'y',
+      scales: {
+        x: { beginAtZero: true, ticks: { stepSize: 1, font: { size: 11 } }, grid: { color: '#f0f1f3' } },
+        y: { ticks: { font: { size: 11 } }, grid: { display: false } }
+      }
+    }
+  });
+}
+
+// ── Weekly Resolution Line/Bar ──
+function renderWeeklyChart(tickets) {
+  destroyChart('weekly');
+
+  // Group by ISO week
+  function getWeekKey(d) {
+    const dt = new Date(d);
+    const day = dt.getDay() || 7;
+    dt.setDate(dt.getDate() + 4 - day);
+    const yearStart = new Date(dt.getFullYear(), 0, 1);
+    const weekNo = Math.ceil(((dt - yearStart) / 86400000 + 1) / 7);
+    return `${dt.getFullYear()}-W${String(weekNo).padStart(2, '0')}`;
+  }
+
+  const weeks = {};
+  for (const r of tickets) {
+    const created = parseDate(val(r, COL.created));
+    if (!created) continue;
+    const wk = getWeekKey(created);
+    if (!weeks[wk]) weeks[wk] = { created: 0, resolved: 0 };
+    if (!isCanceled(val(r, COL.stage))) {
+      weeks[wk].created++;
+    }
+    if (isResolved(val(r, COL.stage))) {
+      // use close date for resolved week
+      const closed = parseDate(val(r, COL.closed));
+      if (closed) {
+        const rwk = getWeekKey(closed);
+        if (!weeks[rwk]) weeks[rwk] = { created: 0, resolved: 0 };
+        weeks[rwk].resolved++;
+        // undo from created week resolved count (we'll add to resolved week)
+      }
+    }
+  }
+
+  // Actually let's redo: created goes to created-week, resolved goes to close-week
+  const weekMap = {};
+  for (const r of tickets) {
+    if (isCanceled(val(r, COL.stage))) continue;
+    const created = parseDate(val(r, COL.created));
+    if (created) {
+      const wk = getWeekKey(created);
+      if (!weekMap[wk]) weekMap[wk] = { created: 0, resolved: 0 };
+      weekMap[wk].created++;
+    }
+    if (isResolved(val(r, COL.stage))) {
+      const closed = parseDate(val(r, COL.closed));
+      if (closed) {
+        const wk = getWeekKey(closed);
+        if (!weekMap[wk]) weekMap[wk] = { created: 0, resolved: 0 };
+        weekMap[wk].resolved++;
+      }
+    }
+  }
+
+  const sortedWeeks = Object.keys(weekMap).sort();
+
+  CHARTS.weekly = new Chart(document.getElementById('chartWeekly'), {
+    type: 'bar',
+    data: {
+      labels: sortedWeeks,
+      datasets: [
+        {
+          label: 'Created',
+          data: sortedWeeks.map(w => weekMap[w].created),
+          backgroundColor: 'rgba(79,140,255,0.7)',
+          borderRadius: 3,
+          order: 2
+        },
+        {
+          label: 'Resolved',
+          data: sortedWeeks.map(w => weekMap[w].resolved),
+          type: 'line',
+          borderColor: '#22c55e',
+          backgroundColor: 'rgba(34,197,94,0.1)',
+          pointBackgroundColor: '#22c55e',
+          pointRadius: 4,
+          borderWidth: 2,
+          fill: true,
+          tension: 0.3,
+          order: 1
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,
+      plugins: {
+        legend: { position: 'top', labels: { font: { size: 12 }, usePointStyle: true, pointStyle: 'circle', padding: 16 } },
+        datalabels: { display: false }
+      },
+      scales: {
+        y: { beginAtZero: true, ticks: { font: { size: 11 } }, grid: { color: '#f0f1f3' } },
+        x: { ticks: { font: { size: 10 }, maxRotation: 45 }, grid: { display: false } }
+      }
+    }
+  });
+}
+
+// ══════════════════════════════════════════
+// TABLES
+// ══════════════════════════════════════════
+
+function renderCxLeadTable(tickets) {
+  const leads = {};
+  for (const r of tickets) {
+    const cx = val(r, COL.cxLead) || 'Unassigned';
+    if (!leads[cx]) leads[cx] = { open: 0, blockers: 0, created: 0, resolved: 0, frHit: 0, frTotal: 0, rtHit: 0, rtTotal: 0, tatVals: [] };
+    const l = leads[cx];
+    l.created++;
+    const stage = val(r, COL.stage);
+    if (isOpen(stage)) l.open++;
+    if (isOpen(stage) && val(r, COL.severity) === 'Blocker') l.blockers++;
+    if (isResolved(stage)) l.resolved++;
+
+    const fr = val(r, COL.metricSt0).toLowerCase();
+    if (fr) { l.frTotal++; if (fr === 'hit') l.frHit++; }
+    const rt = val(r, COL.metricSt1).toLowerCase();
+    if (rt) { l.rtTotal++; if (rt === 'hit') l.rtHit++; }
+
+    const t = getTATMinutes(r);
+    if (t !== null && t > 0) l.tatVals.push(t);
+  }
+
+  const sorted = Object.entries(leads).sort((a, b) => b[1].open - a[1].open);
+  const tbody = document.querySelector('#tableCxLead tbody');
+  tbody.innerHTML = '';
+
+  for (const [name, d] of sorted) {
+    const frPct = d.frTotal ? ((d.frHit / d.frTotal) * 100).toFixed(1) : '--';
+    const rtPct = d.rtTotal ? ((d.rtHit / d.rtTotal) * 100).toFixed(1) : '--';
+    const tat = d.tatVals.length ? minutesToHours(percentile(d.tatVals, 50)).toFixed(1) : '--';
+    const ratio = d.created ? (d.resolved / d.created).toFixed(2) : '--';
+
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><strong>${esc(name)}</strong></td>
+      <td>${d.open}</td>
+      <td>${d.blockers > 0 ? `<span class="badge badge-red">${d.blockers}</span>` : '0'}</td>
+      <td>${d.created}</td>
+      <td>${d.resolved}</td>
+      <td class="${slaClass(frPct, 95)}">${frPct}${frPct !== '--' ? '%' : ''}</td>
+      <td class="${slaClass(rtPct, 95)}">${rtPct}${rtPct !== '--' ? '%' : ''}</td>
+      <td>${tat}</td>
+      <td>${ratio}</td>
+    `;
+    tbody.appendChild(tr);
+  }
+}
+
+function renderSlaAccountTable(tickets) {
+  const accounts = {};
+  for (const r of tickets) {
+    const acc = val(r, COL.account) || 'Unknown';
+    if (!accounts[acc]) accounts[acc] = { total: 0, open: 0, resolved: 0, frHit: 0, frTotal: 0, rtHit: 0, rtTotal: 0, tatVals: [], blockers: 0 };
+    const a = accounts[acc];
+    a.total++;
+    const stage = val(r, COL.stage);
+    if (isOpen(stage)) a.open++;
+    if (isResolved(stage)) a.resolved++;
+    if (isOpen(stage) && val(r, COL.severity) === 'Blocker') a.blockers++;
+
+    const fr = val(r, COL.metricSt0).toLowerCase();
+    if (fr) { a.frTotal++; if (fr === 'hit') a.frHit++; }
+    const rt = val(r, COL.metricSt1).toLowerCase();
+    if (rt) { a.rtTotal++; if (rt === 'hit') a.rtHit++; }
+
+    const t = getTATMinutes(r);
+    if (t !== null && t > 0) a.tatVals.push(t);
+  }
+
+  const sorted = Object.entries(accounts).sort((a, b) => b[1].total - a[1].total).slice(0, 25);
+  const tbody = document.querySelector('#tableSlaAccount tbody');
+  tbody.innerHTML = '';
+
+  for (const [name, d] of sorted) {
+    const frPct = d.frTotal ? ((d.frHit / d.frTotal) * 100).toFixed(1) : '--';
+    const rtPct = d.rtTotal ? ((d.rtHit / d.rtTotal) * 100).toFixed(1) : '--';
+    const tat = d.tatVals.length ? minutesToHours(percentile(d.tatVals, 50)).toFixed(1) : '--';
+
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><strong>${esc(name)}</strong></td>
+      <td>${d.total}</td>
+      <td>${d.open}</td>
+      <td>${d.resolved}</td>
+      <td class="${slaClass(frPct, 95)}">${frPct}${frPct !== '--' ? '%' : ''}</td>
+      <td class="${slaClass(rtPct, 95)}">${rtPct}${rtPct !== '--' ? '%' : ''}</td>
+      <td>${tat}</td>
+      <td>${d.blockers > 0 ? `<span class="badge badge-red">${d.blockers}</span>` : '0'}</td>
+    `;
+    tbody.appendChild(tr);
+  }
+}
+
+function renderTatSeverityTable(tickets) {
+  const sevs = {};
+  for (const r of tickets) {
+    const sev = val(r, COL.severity) || 'Unknown';
+    if (!sevs[sev]) sevs[sev] = { count: 0, tatVals: [], frHit: 0, frTotal: 0, rtHit: 0, rtTotal: 0 };
+    const s = sevs[sev];
+    s.count++;
+
+    const t = getTATMinutes(r);
+    if (t !== null && t > 0) s.tatVals.push(t);
+
+    const fr = val(r, COL.metricSt0).toLowerCase();
+    if (fr) { s.frTotal++; if (fr === 'hit') s.frHit++; }
+    const rt = val(r, COL.metricSt1).toLowerCase();
+    if (rt) { s.rtTotal++; if (rt === 'hit') s.rtHit++; }
+  }
+
+  const order = ['Blocker', 'High', 'Medium', 'Low'];
+  const sorted = Object.entries(sevs).sort((a, b) => {
+    const ai = order.indexOf(a[0]);
+    const bi = order.indexOf(b[0]);
+    return (ai === -1 ? 99 : ai) - (bi === -1 ? 99 : bi);
+  });
+
+  const tbody = document.querySelector('#tableTatSeverity tbody');
+  tbody.innerHTML = '';
+
+  for (const [name, d] of sorted) {
+    const p25 = d.tatVals.length ? minutesToHours(percentile(d.tatVals, 25)).toFixed(1) : '--';
+    const p50 = d.tatVals.length ? minutesToHours(percentile(d.tatVals, 50)).toFixed(1) : '--';
+    const p75 = d.tatVals.length ? minutesToHours(percentile(d.tatVals, 75)).toFixed(1) : '--';
+    const p90 = d.tatVals.length ? minutesToHours(percentile(d.tatVals, 90)).toFixed(1) : '--';
+    const frPct = d.frTotal ? ((d.frHit / d.frTotal) * 100).toFixed(1) : '--';
+    const rtPct = d.rtTotal ? ((d.rtHit / d.rtTotal) * 100).toFixed(1) : '--';
+
+    const sevBadge = {
+      'Blocker': 'badge-red',
+      'High': 'badge-orange',
+      'Medium': 'badge-blue',
+      'Low': 'badge-green'
+    }[name] || 'badge-gray';
+
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><span class="badge ${sevBadge}">${esc(name)}</span></td>
+      <td>${d.count}</td>
+      <td>${p25}</td>
+      <td><strong>${p50}</strong></td>
+      <td>${p75}</td>
+      <td>${p90}</td>
+      <td class="${slaClass(frPct, 95)}">${frPct}${frPct !== '--' ? '%' : ''}</td>
+      <td class="${slaClass(rtPct, 95)}">${rtPct}${rtPct !== '--' ? '%' : ''}</td>
+    `;
+    tbody.appendChild(tr);
+  }
+}
+
+// ── Utility ──
+function esc(s) {
+  const el = document.createElement('span');
+  el.textContent = s;
+  return el.innerHTML;
+}
+
+function slaClass(pct, target) {
+  if (pct === '--') return '';
+  const n = parseFloat(pct);
+  if (n >= target) return 'sla-hit';
+  if (n < 80) return 'sla-miss';
+  return '';
+}
+
+// ══════════════════════════════════════════
+// FILE UPLOAD & INIT
+// ══════════════════════════════════════════
+
+function loadCSV(file) {
+  Papa.parse(file, {
+    header: true,
+    skipEmptyLines: true,
+    complete: function(results) {
+      if (!results.data || results.data.length === 0) {
+        alert('CSV file appears empty or could not be parsed.');
+        return;
+      }
+
+      RAW_DATA = results.data;
+      detectColumns(RAW_DATA[0]);
+      populateFilters();
+
+      // Set default date range: find min/max created dates
+      let minDate = null, maxDate = null;
+      for (const r of RAW_DATA) {
+        const d = parseDate(val(r, COL.created));
+        if (d) {
+          if (!minDate || d < minDate) minDate = d;
+          if (!maxDate || d > maxDate) maxDate = d;
+        }
+      }
+      if (minDate) document.getElementById('filterDateFrom').value = minDate.toISOString().slice(0, 10);
+      if (maxDate) document.getElementById('filterDateTo').value = maxDate.toISOString().slice(0, 10);
+
+      applyFilters();
+
+      // Show dashboard, hide empty state
+      document.getElementById('emptyState').classList.add('hidden');
+      document.getElementById('dashboardContent').classList.remove('hidden');
+
+      // Update upload status
+      const statusEl = document.getElementById('uploadStatus');
+      statusEl.textContent = `${RAW_DATA.length} rows loaded from ${file.name}`;
+      statusEl.classList.remove('hidden');
+    },
+    error: function(err) {
+      alert('Error parsing CSV: ' + err.message);
+    }
+  });
+}
+
+// ── Event Listeners ──
+document.getElementById('fileInput').addEventListener('change', function(e) {
+  if (e.target.files.length) loadCSV(e.target.files[0]);
+});
+
+const uploadZone = document.getElementById('uploadZone');
+uploadZone.addEventListener('click', () => document.getElementById('fileInput').click());
+uploadZone.addEventListener('dragover', (e) => { e.preventDefault(); uploadZone.classList.add('dragover'); });
+uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('dragover'));
+uploadZone.addEventListener('drop', (e) => {
+  e.preventDefault();
+  uploadZone.classList.remove('dragover');
+  if (e.dataTransfer.files.length) {
+    document.getElementById('fileInput').files = e.dataTransfer.files;
+    loadCSV(e.dataTransfer.files[0]);
+  }
+});
+
+// Filter change listeners
+for (const id of ['filterDateFrom', 'filterDateTo', 'filterCxLead', 'filterAccount', 'filterCohort', 'filterSeverity']) {
+  document.getElementById(id).addEventListener('change', applyFilters);
+}
+
+document.getElementById('btnReset').addEventListener('click', () => {
+  document.getElementById('filterDateFrom').value = '';
+  document.getElementById('filterDateTo').value = '';
+  document.getElementById('filterCxLead').value = '';
+  document.getElementById('filterAccount').value = '';
+  document.getElementById('filterCohort').value = '';
+  document.getElementById('filterSeverity').value = '';
+
+  // Reset dates to full range
+  if (RAW_DATA.length) {
+    let minDate = null, maxDate = null;
+    for (const r of RAW_DATA) {
+      const d = parseDate(val(r, COL.created));
+      if (d) {
+        if (!minDate || d < minDate) minDate = d;
+        if (!maxDate || d > maxDate) maxDate = d;
+      }
+    }
+    if (minDate) document.getElementById('filterDateFrom').value = minDate.toISOString().slice(0, 10);
+    if (maxDate) document.getElementById('filterDateTo').value = maxDate.toISOString().slice(0, 10);
+  }
+
+  applyFilters();
+});
+
+// ── Table sorting ──
+document.querySelectorAll('.data-table th').forEach(th => {
+  th.addEventListener('click', function() {
+    const table = th.closest('table');
+    const tbody = table.querySelector('tbody');
+    const rows = Array.from(tbody.querySelectorAll('tr'));
+    const idx = Array.from(th.parentNode.children).indexOf(th);
+    const asc = th.dataset.sort !== 'asc';
+    th.dataset.sort = asc ? 'asc' : 'desc';
+
+    // Reset other headers
+    th.parentNode.querySelectorAll('th').forEach(h => { if (h !== th) delete h.dataset.sort; });
+
+    rows.sort((a, b) => {
+      let va = a.children[idx]?.textContent?.trim() || '';
+      let vb = b.children[idx]?.textContent?.trim() || '';
+      // Try numeric
+      const na = parseFloat(va.replace(/[%,]/g, ''));
+      const nb = parseFloat(vb.replace(/[%,]/g, ''));
+      if (!isNaN(na) && !isNaN(nb)) {
+        return asc ? na - nb : nb - na;
+      }
+      return asc ? va.localeCompare(vb) : vb.localeCompare(va);
+    });
+
+    rows.forEach(r => tbody.appendChild(r));
+  });
+});
+</script>
+
+</body>
+</html>

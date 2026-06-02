@@ -1,0 +1,2945 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CX Support Dashboard v2</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+<style>
+  :root {
+    --sidebar-width: 280px;
+    --sidebar-bg: #1a1d23;
+    --sidebar-hover: #2a2d35;
+    --accent: #4f8cff;
+    --accent-light: #6fa0ff;
+    --bg: #f4f6f9;
+    --card-bg: #ffffff;
+    --text: #1e2028;
+    --text-muted: #6b7280;
+    --border: #e5e7eb;
+    --green: #22c55e;
+    --red: #ef4444;
+    --orange: #f59e0b;
+    --purple: #8b5cf6;
+    --shadow: 0 2px 6px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.08);
+    --shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    display: flex;
+    min-height: 100vh;
+  }
+
+  /* -- Sidebar -- */
+  .sidebar {
+    width: var(--sidebar-width);
+    background: var(--sidebar-bg);
+    color: #e5e7eb;
+    padding: 24px 16px;
+    position: fixed;
+    top: 0; left: 0; bottom: 0;
+    overflow-y: auto;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .sidebar h1 {
+    font-size: 20px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: -0.3px;
+    margin-bottom: 4px;
+  }
+  .sidebar .subtitle {
+    font-size: 11px;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+  }
+
+  .upload-zone {
+    border: 2px dashed #3a3d45;
+    border-radius: 10px;
+    padding: 18px 14px;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+    position: relative;
+  }
+  .upload-zone:hover, .upload-zone.dragover {
+    border-color: var(--accent);
+    background: rgba(79,140,255,0.06);
+  }
+  .upload-zone input { display: none; }
+  .upload-zone .icon { font-size: 28px; margin-bottom: 6px; }
+  .upload-zone .label { font-size: 13px; color: #9ca3af; }
+  .upload-zone .loaded { font-size: 12px; color: var(--green); margin-top: 4px; }
+
+  .filter-group { margin-bottom: 2px; }
+  .filter-group label {
+    display: block;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: #9ca3af;
+    margin-bottom: 5px;
+  }
+  .filter-group select, .filter-group input[type="date"] {
+    width: 100%;
+    padding: 8px 10px;
+    border-radius: 6px;
+    border: 1px solid #3a3d45;
+    background: #23262e;
+    color: #e5e7eb;
+    font-size: 13px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .filter-group select:focus, .filter-group input[type="date"]:focus {
+    border-color: var(--accent);
+  }
+  .filter-group input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(0.7);
+  }
+
+  .date-preset {
+    padding: 4px 10px; font-size: 11px; font-weight: 600;
+    background: #2a2d35; color: #9ca3af; border: 1px solid #374151;
+    border-radius: 6px; cursor: pointer; transition: all 0.15s;
+  }
+  .date-preset:hover { background: #4f8cff; color: white; border-color: #4f8cff; }
+  .date-preset.active { background: #4f8cff; color: white; border-color: #4f8cff; }
+
+  .date-row { display: flex; gap: 8px; }
+  .date-row > div { flex: 1; }
+
+  .btn-reset {
+    width: 100%;
+    padding: 9px;
+    border-radius: 6px;
+    border: 1px solid #3a3d45;
+    background: transparent;
+    color: #9ca3af;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 4px;
+  }
+  .btn-reset:hover { background: var(--sidebar-hover); color: #fff; border-color: #555; }
+
+  .sidebar-footer {
+    margin-top: auto;
+    padding-top: 12px;
+    border-top: 1px solid #2a2d35;
+    font-size: 11px;
+    color: #4b5563;
+    text-align: center;
+  }
+
+  /* -- Main Content -- */
+  .main {
+    margin-left: var(--sidebar-width);
+    padding: 24px;
+    width: calc(100% - var(--sidebar-width));
+    max-width: calc(100% - var(--sidebar-width));
+    overflow-x: hidden;
+  }
+
+  .main-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+  .main-header h2 { font-size: 22px; font-weight: 700; color: var(--text); }
+  .main-header .meta { font-size: 13px; color: var(--text-muted); }
+
+  /* -- Empty State -- */
+  .empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 60vh;
+    color: var(--text-muted);
+    text-align: center;
+  }
+  .empty-state .icon { font-size: 56px; margin-bottom: 16px; opacity: 0.4; }
+  .empty-state h3 { font-size: 20px; margin-bottom: 8px; color: var(--text); }
+  .empty-state p { font-size: 14px; max-width: 400px; line-height: 1.6; }
+
+  /* -- KPI Cards -- */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+
+  .kpi-card {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 20px 18px;
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .kpi-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.12);
+  }
+  .kpi-card .kpi-bar {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+  }
+  .kpi-card.gradient-blue    .kpi-bar { background: linear-gradient(90deg, #4f8cff, #6fa0ff, #93bdff); }
+  .kpi-card.gradient-red     .kpi-bar { background: linear-gradient(90deg, #ef4444, #f87171, #fca5a5); }
+  .kpi-card.gradient-purple  .kpi-bar { background: linear-gradient(90deg, #8b5cf6, #a78bfa, #c4b5fd); }
+  .kpi-card.gradient-green   .kpi-bar { background: linear-gradient(90deg, #22c55e, #4ade80, #86efac); }
+  .kpi-card.gradient-orange  .kpi-bar { background: linear-gradient(90deg, #f59e0b, #fbbf24, #fcd34d); }
+  .kpi-card.gradient-cyan    .kpi-bar { background: linear-gradient(90deg, #06b6d4, #22d3ee, #67e8f9); }
+  .kpi-card .kpi-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+  }
+  .kpi-card .kpi-value {
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    line-height: 1;
+  }
+  .kpi-card .kpi-sub {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 6px;
+  }
+
+  /* -- Current Queue Snapshot -- */
+  .queue-snapshot {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 16px 22px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    margin-bottom: 32px;
+  }
+  .queue-snapshot .queue-title {
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+  }
+  .queue-snapshot .queue-values {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text);
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .queue-snapshot .queue-values span {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .queue-snapshot .queue-values .q-label {
+    color: var(--text-muted);
+    font-weight: 500;
+    font-size: 13px;
+  }
+
+  /* -- Section Titles with Info Tooltip -- */
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    color: var(--text);
+  }
+  .section-subtitle {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+    font-style: italic;
+  }
+  .info-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #e5e7eb;
+    color: #6b7280;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: help;
+    position: relative;
+    flex-shrink: 0;
+    font-style: normal;
+  }
+  .info-icon .tooltip {
+    display: none;
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: #1e2028;
+    color: #e5e7eb;
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.5;
+    white-space: normal;
+    width: 320px;
+    z-index: 1000;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+    text-transform: none;
+    letter-spacing: normal;
+  }
+  .info-icon .tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 6px solid transparent;
+    border-top-color: #1e2028;
+  }
+  .info-icon:hover .tooltip {
+    display: block;
+  }
+
+  /* -- Section Divider -- */
+  .section-divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 36px 0;
+  }
+
+  /* -- Chart Grid -- */
+  .chart-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    width: 100%;
+    margin-bottom: 32px;
+  }
+  .chart-grid.three-col {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .chart-card {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 22px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    min-width: 0;
+  }
+  .chart-card h3 {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 14px;
+    color: var(--text);
+  }
+  .chart-card.wide {
+    grid-column: span 2;
+  }
+
+  /* -- Chart Container -- */
+  .chart-container {
+    position: relative;
+    width: 100%;
+    max-width: 100%;
+    height: 300px;
+  }
+
+  /* -- Tables -- */
+  .table-section {
+    margin-bottom: 32px;
+    width: 100%;
+  }
+
+  .data-table-wrap {
+    background: var(--card-bg);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    overflow-x: auto;
+    width: 100%;
+  }
+
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  .data-table th {
+    background: #f9fafb;
+    padding: 11px 14px;
+    text-align: left;
+    font-weight: 700;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-muted);
+    border-bottom: 2px solid var(--border);
+    white-space: nowrap;
+    cursor: pointer;
+    user-select: none;
+    position: relative;
+  }
+  .data-table th:hover { color: var(--accent); }
+  .data-table th .sort-arrow {
+    font-size: 10px;
+    margin-left: 4px;
+    opacity: 0.4;
+  }
+  .data-table th[data-sort="asc"] .sort-arrow { opacity: 1; }
+  .data-table th[data-sort="desc"] .sort-arrow { opacity: 1; }
+  .data-table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid #f0f1f3;
+    white-space: nowrap;
+  }
+  .data-table tbody tr:nth-child(even) {
+    background: #f9fafb;
+  }
+  .data-table tbody tr:hover { background: #eef2ff; }
+  .data-table tbody tr:last-child td { border-bottom: none; }
+
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 99px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+  .badge-green  { background: #dcfce7; color: #166534; }
+  .badge-red    { background: #fee2e2; color: #991b1b; }
+  .badge-orange { background: #fef3c7; color: #92400e; }
+  .badge-yellow { background: #fef9c3; color: #854d0e; }
+  .badge-blue   { background: #dbeafe; color: #1e40af; }
+  .badge-purple { background: #ede9fe; color: #5b21b6; }
+  .badge-gray   { background: #f3f4f6; color: #4b5563; }
+
+  .sla-hit { color: var(--green); font-weight: 700; }
+  .sla-miss { color: var(--red); font-weight: 700; }
+
+  /* -- Health Score Badge -- */
+  .health-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 99px;
+    font-size: 12px;
+    font-weight: 700;
+    min-width: 40px;
+    text-align: center;
+  }
+  .health-green  { background: #dcfce7; color: #166534; }
+  .health-yellow { background: #fef9c3; color: #854d0e; }
+  .health-red    { background: #fee2e2; color: #991b1b; }
+
+  /* -- CSAT Section -- */
+  .csat-summary {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  .csat-card {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 20px 24px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    text-align: center;
+    min-width: 140px;
+  }
+  .csat-card .csat-value {
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--text);
+  }
+  .csat-card .csat-label {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 4px;
+  }
+  .csat-bar-wrap {
+    display: flex;
+    gap: 4px;
+    align-items: flex-end;
+    height: 60px;
+    margin-top: 12px;
+  }
+  .csat-bar-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+  }
+  .csat-bar-item .bar {
+    width: 100%;
+    min-height: 4px;
+    border-radius: 4px 4px 0 0;
+    transition: height 0.3s;
+  }
+  .csat-bar-item .bar-label {
+    font-size: 10px;
+    margin-top: 4px;
+    color: var(--text-muted);
+    font-weight: 600;
+  }
+  .csat-bar-item .bar-count {
+    font-size: 11px;
+    font-weight: 700;
+    margin-bottom: 2px;
+  }
+
+  /* -- Show All Toggle -- */
+  .show-all-toggle {
+    display: inline-block;
+    margin-top: 8px;
+    font-size: 13px;
+    color: var(--accent);
+    text-decoration: none;
+    cursor: pointer;
+    font-weight: 600;
+  }
+  .show-all-toggle:hover {
+    text-decoration: underline;
+  }
+
+  /* -- Footer -- */
+  .dashboard-footer {
+    margin-top: 40px;
+    padding: 16px 20px;
+    background: var(--card-bg);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.6;
+    text-align: center;
+  }
+
+  /* Scrollbar for sidebar */
+  .sidebar::-webkit-scrollbar { width: 6px; }
+  .sidebar::-webkit-scrollbar-track { background: transparent; }
+  .sidebar::-webkit-scrollbar-thumb { background: #3a3d45; border-radius: 3px; }
+
+  /* -- Status-aware section visibility -- */
+  .status-hidden { display: none !important; }
+
+  /* Responsive */
+  @media (max-width: 1100px) {
+    .chart-grid { grid-template-columns: 1fr; }
+    .chart-card.wide { grid-column: span 1; }
+  }
+  @media (max-width: 800px) {
+    .sidebar { width: 100%; position: relative; }
+    .main { margin-left: 0; width: 100%; max-width: 100%; }
+    .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div>
+    <h1>CX Pulse</h1>
+    <div class="subtitle">Support Intelligence v2</div>
+  </div>
+
+  <div class="upload-zone" id="uploadZone">
+    <div class="icon">&#128202;</div>
+    <div class="label">Drop CSV or click to upload</div>
+    <div class="loaded hidden" id="uploadStatus"></div>
+    <input type="file" id="fileInput" accept=".csv">
+  </div>
+
+  <div class="filter-group">
+    <label>Date Range</label>
+    <div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px;">
+      <button class="date-preset" onclick="setDateRange(7)">7d</button>
+      <button class="date-preset" onclick="setDateRange(15)">15d</button>
+      <button class="date-preset" onclick="setDateRange(30)">30d</button>
+      <button class="date-preset" onclick="setDateRange(60)">60d</button>
+      <button class="date-preset" onclick="setDateRange(90)">90d</button>
+      <button class="date-preset" onclick="setDateRange(0)">All</button>
+    </div>
+    <div class="date-row">
+      <div>
+        <input type="date" id="filterDateFrom">
+      </div>
+      <div>
+        <input type="date" id="filterDateTo">
+      </div>
+    </div>
+  </div>
+
+  <div class="filter-group">
+    <label>Status</label>
+    <select id="statusFilter">
+      <option value="all">All</option>
+      <option value="open">Open</option>
+      <option value="closed">Resolved/Closed</option>
+    </select>
+  </div>
+
+  <div class="filter-group">
+    <label>CX Lead</label>
+    <select id="filterCxLead"><option value="">All</option></select>
+  </div>
+
+  <div class="filter-group">
+    <label>Account</label>
+    <select id="filterAccount"><option value="">All</option></select>
+  </div>
+
+  <div class="filter-group">
+    <label>Cohort</label>
+    <select id="filterCohort"><option value="">All</option></select>
+  </div>
+
+  <div class="filter-group">
+    <label>Severity</label>
+    <select id="filterSeverity"><option value="">All</option></select>
+  </div>
+
+  <button class="btn-reset" id="btnReset">Reset All Filters</button>
+
+  <div class="sidebar-footer">
+    CX Pulse Dashboard v2.0<br>
+    Data source: DevRev CSV Export
+  </div>
+</aside>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- Empty state -->
+  <div id="emptyState" class="empty-state">
+    <div class="icon">&#128200;</div>
+    <h3>No Data Loaded</h3>
+    <p>Upload a CSV file exported from the DevRev Google Sheet to populate the dashboard. Use the upload area in the sidebar.</p>
+  </div>
+
+  <!-- Dashboard content (hidden until data loaded) -->
+  <div id="dashboardContent" class="hidden">
+
+    <div class="main-header">
+      <h2>Dashboard</h2>
+      <div class="meta" id="headerMeta"></div>
+    </div>
+
+    <!-- Single scrollable page -- no tabs. Sections controlled by status filter visibility. -->
+
+    <!-- KPI Cards (all views) -->
+    <div class="kpi-grid" id="kpiGrid"></div>
+
+    <!-- ============================================================ -->
+    <!-- CLOSED/ALL SECTIONS (founder priorities at top) -->
+    <!-- ============================================================ -->
+
+    <!-- SLA Adherence (Default SLA Policy) -- #1 PRIORITY for closed view -->
+    <div class="table-section status-section" id="sectionSlaAdherence" data-visibility="closed,all">
+      <div class="section-title">SLA Adherence (Default SLA Policy)
+        <span class="info-icon">i<span class="tooltip">SLA hit% = hit / (hit + miss) from DevRev SLA tracker. Excludes in_progress and empty values. FR = First Response, RT = Resolution Time. Schedule: Mon-Fri 10AM-8PM IST.</span></span>
+      </div>
+      <div class="section-subtitle">FR/RT hit% = hit / (hit + miss) from DevRev SLA tracker. Excludes in_progress. SLA schedule: Mon-Fri 10AM-8PM IST.</div>
+      <div class="data-table-wrap">
+        <table class="data-table" id="tableSlaAdherence">
+          <thead>
+            <tr>
+              <th>Account <span class="sort-arrow">&#9650;</span></th>
+              <th>Pool <span class="sort-arrow">&#9650;</span></th>
+              <th>FR Hits <span class="sort-arrow">&#9650;</span></th>
+              <th>FR Miss <span class="sort-arrow">&#9650;</span></th>
+              <th>FR% <span class="sort-arrow">&#9650;</span></th>
+              <th>RT Hits <span class="sort-arrow">&#9650;</span></th>
+              <th>RT Miss <span class="sort-arrow">&#9650;</span></th>
+              <th>RT% <span class="sort-arrow">&#9650;</span></th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <a href="#" class="show-all-toggle" id="toggleSlaAdherence" style="display:none;" onclick="toggleShowAll(this, 'tableSlaAdherence'); return false;"></a>
+    </div>
+
+    <hr class="section-divider status-section" data-visibility="closed,all">
+
+    <!-- Resolution Time (SLA-aware) -->
+    <div class="table-section status-section" id="sectionTatSeverity" data-visibility="closed,all">
+      <div class="section-title">Resolution Time (SLA-aware)
+        <span class="info-icon">i<span class="tooltip">Uses Completed In[1] from DevRev SLA tracker -- actual support work time. Excludes: time in Awaiting Customer Response (SLA paused), non-business hours (Mon-Fri 10AM-8PM IST). Tickets with 0 minutes excluded (SLA paused entire duration).</span></span>
+      </div>
+      <div class="section-subtitle">RESOLUTION TAT (SLA-aware) -- Uses DevRev's Completed In[1] -- actual support work time, excludes customer wait + non-business hours (Mon-Fri 10AM-8PM IST). Tickets with 0 SLA minutes excluded.</div>
+      <div class="data-table-wrap">
+        <table class="data-table" id="tableTatSeverity">
+          <thead>
+            <tr>
+              <th>Severity <span class="sort-arrow">&#9650;</span></th>
+              <th>Count <span class="sort-arrow">&#9650;</span></th>
+              <th>TAT P10 (h) <span class="sort-arrow">&#9650;</span></th>
+              <th>TAT P50 (h) <span class="sort-arrow">&#9650;</span></th>
+              <th>TAT P90 (h) <span class="sort-arrow">&#9650;</span></th>
+              <th>FR% <span class="sort-arrow">&#9650;</span></th>
+              <th>RT% <span class="sort-arrow">&#9650;</span></th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+
+    <hr class="section-divider status-section" data-visibility="closed,all">
+
+    <!-- First Response Time (SLA-aware) -->
+    <div class="table-section status-section" id="sectionFRTatSeverity" data-visibility="closed,all">
+      <div class="section-title">First Response Time (SLA-aware)
+        <span class="info-icon">i<span class="tooltip">Uses DevRev's Completed In[0] for First Response metric. SLA-aware minutes that exclude off-hours and paused time. Tickets with 0 minutes excluded.</span></span>
+      </div>
+      <div class="section-subtitle">FIRST RESPONSE TAT (SLA-aware) -- Uses DevRev's Completed In[0] -- time to first response, excludes non-business hours. SLA policy: Mon-Fri 10AM-8PM IST.</div>
+      <div class="data-table-wrap">
+        <table class="data-table" id="tableFRTatSeverity">
+          <thead>
+            <tr>
+              <th>Severity <span class="sort-arrow">&#9650;</span></th>
+              <th>Count <span class="sort-arrow">&#9650;</span></th>
+              <th>FR P10 (h) <span class="sort-arrow">&#9650;</span></th>
+              <th>FR P50 (h) <span class="sort-arrow">&#9650;</span></th>
+              <th>FR P90 (h) <span class="sort-arrow">&#9650;</span></th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+
+    <hr class="section-divider status-section" data-visibility="closed,all">
+
+    <!-- Support Ticket CSAT -->
+    <div class="status-section" id="sectionCsat" data-visibility="closed,all">
+      <div class="section-title">Support Ticket CSAT
+        <span class="info-icon">i<span class="tooltip">CSAT from DevRev survey responses. Average of customer ratings (1-5 scale). Only tickets with CSAT Rating[0].count > 0 are included. Response rate = responses / resolved tickets.</span></span>
+      </div>
+      <div class="section-subtitle">From DevRev CSAT survey. Average of customer ratings (1-5 scale). Only tickets with survey responses.</div>
+      <div id="csatSection">
+        <div class="csat-summary" id="csatSummary"></div>
+        <div class="chart-card" style="max-width:600px; margin-bottom:32px;">
+          <h3>CSAT Distribution</h3>
+          <div id="csatDistribution"></div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="section-divider status-section" data-visibility="closed,all">
+
+    <!-- Who Resolves (donut) -->
+    <div id="sectionWhoResolvesChart" class="status-section" data-visibility="closed,all">
+      <div class="section-title">Who Resolves
+        <span class="info-icon">i<span class="tooltip">Distribution of resolved tickets by resolver type: Support, Engineering, Product, etc. From the "Resolved By" field.</span></span>
+      </div>
+      <div class="section-subtitle">From tnt__resolved_by field set by CX Lead at closure. Date range filtered.</div>
+      <div class="chart-grid">
+        <div class="chart-card">
+          <div class="chart-container">
+            <canvas id="chartWhoResolves"></canvas>
+          </div>
+        </div>
+        <div class="chart-card" id="sectionWeeklyChart" data-visibility="closed,all">
+          <h3>Weekly Created vs Resolved
+            <span class="info-icon">i<span class="tooltip">Created tickets grouped by creation week. Resolved tickets grouped by close date week. Shows inflow vs outflow trend.</span></span>
+          </h3>
+          <div class="section-subtitle" style="margin-top:-8px;">Created = tickets with created_date in that week, excl canceled. Resolved = close_date in that week, stage = resolved/Closed.</div>
+          <div class="chart-container">
+            <canvas id="chartWeekly"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="section-divider status-section" data-visibility="closed,all">
+
+    <!-- CX Lead -- Resolved Performance -->
+    <div class="table-section status-section" id="sectionCxLeadPerf" data-visibility="closed,all">
+      <div class="section-title">CX Lead -- Resolved Performance
+        <span class="info-icon">i<span class="tooltip">Resolved count, SLA hit rates, and TAT for resolved tickets in date range. Resolved/Day = resolved / working days (excl weekends).</span></span>
+      </div>
+      <div class="section-subtitle">Resolved count, SLA hit rates, and TAT for resolved tickets in date range. Resolved/Day = resolved / working days (excl weekends).</div>
+      <div class="data-table-wrap">
+        <table class="data-table" id="tableCxLeadPerf">
+          <thead>
+            <tr>
+              <th>CX Lead <span class="sort-arrow">&#9650;</span></th>
+              <th>Resolved <span class="sort-arrow">&#9650;</span></th>
+              <th>FR% <span class="sort-arrow">&#9650;</span></th>
+              <th>RT% <span class="sort-arrow">&#9650;</span></th>
+              <th>TAT P50 (h) <span class="sort-arrow">&#9650;</span></th>
+              <th>CSAT Avg <span class="sort-arrow">&#9650;</span></th>
+              <th>Resolved/Day <span class="sort-arrow">&#9650;</span></th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <a href="#" class="show-all-toggle" id="toggleCxLeadPerf" style="display:none;" onclick="toggleShowAll(this, 'tableCxLeadPerf'); return false;"></a>
+    </div>
+
+    <hr class="section-divider status-section" data-visibility="closed,all">
+
+    <!-- Support Type Distribution -->
+    <div id="sectionSupportType" class="status-section" data-visibility="closed,all">
+      <div class="section-title">Support Type Distribution
+        <span class="info-icon">i<span class="tooltip">Support Type set by CX Lead. Shows what kind of issues are being raised: Problem, Task, Feature understanding gap, etc.</span></span>
+      </div>
+      <div class="section-subtitle">From Support Type field. Shows category of issue (Problem/Task/Feature gap etc.).</div>
+      <div class="chart-grid">
+        <div class="chart-card">
+          <div class="chart-container">
+            <canvas id="chartSupportType"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- OPEN SECTIONS -->
+    <!-- ============================================================ -->
+
+    <!-- Open Ticket Breakdown by CX Lead -->
+    <div class="table-section status-section" id="sectionOpenBreakdown" data-visibility="open,all">
+      <div class="section-title">CX Lead -- Open Tickets
+        <span class="info-icon">i<span class="tooltip">Open = tickets not in resolved/canceled/Closed stage. Stage counts from current ticket stage. Age = today - created_date.</span></span>
+      </div>
+      <div class="section-subtitle">Open = tickets not in resolved/canceled/Closed stage. Stage counts from current ticket stage. Age = today - created_date.</div>
+      <div class="data-table-wrap">
+        <table class="data-table" id="tableOpenBreakdown">
+          <thead>
+            <tr>
+              <th>CX Lead <span class="sort-arrow">&#9650;</span></th>
+              <th>Total <span class="sort-arrow">&#9650;</span></th>
+              <th>Que <span class="sort-arrow">&#9650;</span></th>
+              <th>WIP <span class="sort-arrow">&#9650;</span></th>
+              <th>AwCust <span class="sort-arrow">&#9650;</span></th>
+              <th>AwDev <span class="sort-arrow">&#9650;</span></th>
+              <th>AwProd <span class="sort-arrow">&#9650;</span></th>
+              <th>InDev <span class="sort-arrow">&#9650;</span></th>
+              <th>Resgn <span class="sort-arrow">&#9650;</span></th>
+              <th>Reopen <span class="sort-arrow">&#9650;</span></th>
+              <th>Avg Age <span class="sort-arrow">&#9650;</span></th>
+              <th>7+d <span class="sort-arrow">&#9650;</span></th>
+              <th>15+d <span class="sort-arrow">&#9650;</span></th>
+              <th>30+d <span class="sort-arrow">&#9650;</span></th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <a href="#" class="show-all-toggle" id="toggleOpenBreakdown" style="display:none;" onclick="toggleShowAll(this, 'tableOpenBreakdown'); return false;"></a>
+    </div>
+
+    <hr class="section-divider status-section" data-visibility="open,all">
+
+    <!-- Stage Dwell Analysis (with top accounts) -->
+    <div class="table-section status-section" id="sectionStageDwell" data-visibility="open,all">
+      <div class="section-title">Stage Dwell Analysis
+        <span class="info-icon">i<span class="tooltip">Shows how long tickets have been sitting in each stage. High avg age = bottleneck.</span></span>
+      </div>
+      <div class="section-subtitle">Shows how long tickets have been sitting in each stage. High avg age = bottleneck.</div>
+      <div class="data-table-wrap">
+        <table class="data-table" id="tableStageDwell">
+          <thead>
+            <tr>
+              <th>Stage <span class="sort-arrow">&#9650;</span></th>
+              <th>Count <span class="sort-arrow">&#9650;</span></th>
+              <th>Avg Age (d) <span class="sort-arrow">&#9650;</span></th>
+              <th>Oldest Ticket Age (d) <span class="sort-arrow">&#9650;</span></th>
+              <th>Top Accounts</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+
+    <hr class="section-divider status-section" data-visibility="open,all">
+
+    <!-- Aging Distribution (Open Tickets) -->
+    <div id="sectionAging" class="status-section" data-visibility="open,all">
+      <div class="section-title">Aging Distribution (Open Tickets)
+        <span class="info-icon">i<span class="tooltip">Calendar days since ticket creation. Buckets: 0-1d, 1-3d, 3-7d, 7-14d, 14-30d, 30d+. Only open (non-resolved/closed) tickets counted.</span></span>
+      </div>
+      <div class="section-subtitle">Age = today - created_date. Cumulative buckets (30+ includes 15+ and 7+).</div>
+      <div class="chart-grid">
+        <div class="chart-card">
+          <div class="chart-container">
+            <canvas id="chartAging"></canvas>
+          </div>
+        </div>
+        <div class="chart-card">
+          <h3>Stage Breakdown
+            <span class="info-icon">i<span class="tooltip">Distribution of all non-canceled tickets across DevRev stages: Queued, In Progress, Awaiting Customer Response, Resolved, etc.</span></span>
+          </h3>
+          <div class="chart-container">
+            <canvas id="chartStage"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="section-divider status-section" data-visibility="open,all">
+
+    <!-- Severity Distribution -->
+    <div id="sectionSeverity" class="status-section" data-visibility="open,all">
+      <div class="section-title">Severity Distribution
+        <span class="info-icon">i<span class="tooltip">Count of tickets by severity level: Blocker, High, Medium, Low. Excludes canceled tickets.</span></span>
+      </div>
+      <div class="section-subtitle">From Severity.label field. Open tickets only (not resolved/canceled/Closed).</div>
+      <div class="chart-grid">
+        <div class="chart-card">
+          <div class="chart-container">
+            <canvas id="chartSeverity"></canvas>
+          </div>
+        </div>
+        <div class="chart-card" id="sectionCxLeadLoadChart" data-visibility="open,all">
+          <h3>CX Lead Load (Open Tickets)</h3>
+          <div class="chart-container">
+            <canvas id="chartCxLead"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- ALL-VIEW SECTIONS (sentiment, etc.) -->
+    <!-- ============================================================ -->
+
+    <hr class="section-divider">
+
+    <!-- Sentiment Trend -->
+    <div class="section-title">Sentiment Trend (Weekly)
+      <span class="info-icon">i<span class="tooltip">Weekly count of Frustrated and Unhappy tickets based on DevRev Sentiment.label field. Stacked bar: Red = Frustrated, Orange = Unhappy.</span></span>
+    </div>
+    <div class="section-subtitle">From DevRev AI sentiment analysis. Weekly count of Frustrated + Unhappy tickets.</div>
+    <div class="chart-grid">
+      <div class="chart-card wide">
+        <div class="chart-container">
+          <canvas id="chartSentimentTrend"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <hr class="section-divider">
+
+    <!-- CX Lead Load Detail Table -->
+    <div class="table-section">
+      <div class="section-title">CX Lead -- Open Tickets (Detail)
+        <span class="info-icon">i<span class="tooltip">Full breakdown per CX Lead. Resolved/Day = resolved count / working days in date range (excludes weekends). Reopens = tickets that entered Reopen stage. FR% and RT% from SLA tracker.</span></span>
+      </div>
+      <div class="section-subtitle">Includes Resolved/Day (working days excl weekends) and Reopen count</div>
+      <div class="data-table-wrap">
+        <table class="data-table" id="tableCxLead">
+          <thead>
+            <tr>
+              <th>CX Lead <span class="sort-arrow">&#9650;</span></th>
+              <th>Open <span class="sort-arrow">&#9650;</span></th>
+              <th>Blockers <span class="sort-arrow">&#9650;</span></th>
+              <th>Created <span class="sort-arrow">&#9650;</span></th>
+              <th>Resolved <span class="sort-arrow">&#9650;</span></th>
+              <th>Resolved/Day <span class="sort-arrow">&#9650;</span></th>
+              <th>Reopens <span class="sort-arrow">&#9650;</span></th>
+              <th>FR% <span class="sort-arrow">&#9650;</span></th>
+              <th>RT% <span class="sort-arrow">&#9650;</span></th>
+              <th>TAT P50 (h) <span class="sort-arrow">&#9650;</span></th>
+              <th>Resolve Ratio <span class="sort-arrow">&#9650;</span></th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <a href="#" class="show-all-toggle" id="toggleCxLead" style="display:none;" onclick="toggleShowAll(this, 'tableCxLead'); return false;"></a>
+    </div>
+
+    <hr class="section-divider">
+
+    <!-- SLA by Account -->
+    <div class="table-section">
+      <div class="section-title">SLA by Account
+        <span class="info-icon">i<span class="tooltip">Accounts sorted by total ticket count. FR% and RT% from Metric Status fields. TAT P50 from Completed In[1] (SLA-aware resolution time).</span></span>
+      </div>
+      <div class="section-subtitle">Accounts by ticket volume with SLA and TAT metrics</div>
+      <div class="data-table-wrap">
+        <table class="data-table" id="tableSlaAccount">
+          <thead>
+            <tr>
+              <th>Account <span class="sort-arrow">&#9650;</span></th>
+              <th>Total <span class="sort-arrow">&#9650;</span></th>
+              <th>Open <span class="sort-arrow">&#9650;</span></th>
+              <th>Resolved <span class="sort-arrow">&#9650;</span></th>
+              <th>FR% <span class="sort-arrow">&#9650;</span></th>
+              <th>RT% <span class="sort-arrow">&#9650;</span></th>
+              <th>TAT P50 (h) <span class="sort-arrow">&#9650;</span></th>
+              <th>Blockers <span class="sort-arrow">&#9650;</span></th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <a href="#" class="show-all-toggle" id="toggleSlaAccount" style="display:none;" onclick="toggleShowAll(this, 'tableSlaAccount'); return false;"></a>
+    </div>
+
+    <hr class="section-divider">
+
+    <!-- Account Health Score -->
+    <div class="table-section">
+      <div class="section-title">Account Health Score
+        <span class="info-icon">i<span class="tooltip">Composite health score: SLA% weight 40% + Avg Ticket Age weight 30% + Sentiment weight 30%. SLA% = average of FR% and RT%. Age score = 100 if avg age &lt; 3d, scales down to 0 at 30d+. Sentiment score = 100 - (frustrated+unhappy percentage * 100). Green (&gt;80), Yellow (60-80), Red (&lt;60).</span></span>
+      </div>
+      <div class="section-subtitle">Composite: SLA% (40%) + Avg Age (30%) + Sentiment (30%). Top accounts by ticket volume.</div>
+      <div class="data-table-wrap">
+        <table class="data-table" id="tableHealthScore">
+          <thead>
+            <tr>
+              <th>Account <span class="sort-arrow">&#9650;</span></th>
+              <th>Tickets <span class="sort-arrow">&#9650;</span></th>
+              <th>SLA% <span class="sort-arrow">&#9650;</span></th>
+              <th>Avg Age (d) <span class="sort-arrow">&#9650;</span></th>
+              <th>Neg Sentiment% <span class="sort-arrow">&#9650;</span></th>
+              <th>Health Score <span class="sort-arrow">&#9650;</span></th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+
+    <hr class="section-divider">
+
+    <!-- Resolution RCA by Account -->
+    <div class="table-section">
+      <div class="section-title">Resolution RCA by Account
+        <span class="info-icon">i<span class="tooltip">Root cause categories from "Root cause and resolution details" column, grouped by account. Shows top RCA patterns for the top accounts by ticket volume.</span></span>
+      </div>
+      <div class="section-subtitle">Top RCA patterns from "Root cause and resolution details" column, by account</div>
+      <div class="data-table-wrap">
+        <table class="data-table" id="tableRcaAccount">
+          <thead>
+            <tr>
+              <th>Account <span class="sort-arrow">&#9650;</span></th>
+              <th>Total Tickets <span class="sort-arrow">&#9650;</span></th>
+              <th>With RCA <span class="sort-arrow">&#9650;</span></th>
+              <th>Top RCA Categories</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+
+    <hr class="section-divider">
+
+    <!-- Current Queue Snapshot -->
+    <div class="queue-snapshot status-section" id="queueSnapshot" data-visibility="open,all">
+      <div class="queue-title">Current Queue Snapshot</div>
+      <div class="queue-values">
+        <span><span class="q-label">Open:</span> <span id="queueOpen">--</span></span>
+        <span><span class="q-label">Blockers:</span> <span id="queueBlockers">--</span></span>
+        <span><span class="q-label">Queued:</span> <span id="queueQueued">--</span></span>
+        <span><span class="q-label">Avg Age:</span> <span id="queueAvgAge">--</span></span>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="dashboard-footer">
+      Data source: DevRev Export &middot; Filter: subtype=Support, excl WMS/Roadmap, excl WMS Inbound/Outbound &middot; TAT uses SLA-aware completed_in field &middot; FR uses Completed In[0] &middot; RT uses Completed In[1]
+    </div>
+
+  </div><!-- /dashboardContent -->
+</div><!-- /main -->
+
+<script>
+// CX Pulse Dashboard v2 -- Main Script
+
+// -- State --
+let RAW_DATA = [];
+let FILTERED_DATA = [];
+const CHARTS = {};
+
+// -- Show All Toggle --
+function toggleShowAll(link, tableId) {
+  const table = document.getElementById(tableId);
+  const rows = table.querySelectorAll('tbody tr');
+  const isExpanded = link.dataset.expanded === 'true';
+
+  rows.forEach((row, i) => {
+    if (i >= 10) row.style.display = isExpanded ? 'none' : '';
+  });
+
+  link.dataset.expanded = isExpanded ? 'false' : 'true';
+  link.textContent = isExpanded ?
+    'Show all (' + rows.length + ' rows) \u25BC' :
+    'Show top 10 \u25B2';
+}
+
+function initShowAllToggle(tableId, toggleId) {
+  const table = document.getElementById(tableId);
+  const toggle = document.getElementById(toggleId);
+  if (!table || !toggle) return;
+  const rows = table.querySelectorAll('tbody tr');
+  if (rows.length > 10) {
+    rows.forEach((row, i) => {
+      if (i >= 10) row.style.display = 'none';
+    });
+    toggle.style.display = 'inline-block';
+    toggle.dataset.expanded = 'false';
+    toggle.textContent = 'Show all (' + rows.length + ' rows) \u25BC';
+  } else {
+    toggle.style.display = 'none';
+  }
+}
+
+// -- Column name mappings --
+function findCol(row, names) {
+  if (typeof names === 'string') names = [names];
+  for (const n of names) {
+    if (row.hasOwnProperty(n)) return n;
+    const lower = n.toLowerCase();
+    for (const k of Object.keys(row)) {
+      if (k.toLowerCase() === lower) return k;
+    }
+  }
+  return names[0];
+}
+
+let COL = {};
+
+function detectColumns(row) {
+  COL = {
+    items:       findCol(row, ['Items', 'items', 'Ticket ID']),
+    created:     findCol(row, ['Created date', 'Created Date', 'created_date']),
+    closed:      findCol(row, ['Close date', 'Close Date', 'close_date', 'Closed date']),
+    stage:       findCol(row, ['Stage', 'stage']),
+    subtype:     findCol(row, ['Subtype', 'subtype']),
+    cohort:      findCol(row, ['Customer Cohort', 'customer_cohort', 'tnt__customer_cohort_dropdown']),
+    pod:         findCol(row, ['POD', 'Pod', 'pod']),
+    account:     findCol(row, ['Account', 'account']),
+    cxLead:      findCol(row, ['CX Lead', 'cx_lead', 'CX lead']),
+    severity:    findCol(row, ['Severity.label', 'Severity', 'severity']),
+    metricSt0:   findCol(row, ['Metric Status[0]', 'Metric Status 0']),
+    metricSt1:   findCol(row, ['Metric Status[1]', 'Metric Status 1']),
+    completedIn0:findCol(row, ['Completed In[0]', 'Completed In 0']),
+    completedIn1:findCol(row, ['Completed In[1]', 'Completed In 1']),
+    resolvedBy:  findCol(row, ['Resolved By', 'resolved_by']),
+    sentiment:   findCol(row, ['Sentiment.label', 'Sentiment', 'sentiment']),
+    supportType: findCol(row, ['Support Type', 'support_type', 'Ticket Type']),
+    csatAvg:     findCol(row, ['CSAT Rating[0].average', 'CSAT Rating.average', 'CSAT Average']),
+    csatCount:   findCol(row, ['CSAT Rating[0].count', 'CSAT Rating.count', 'CSAT Count']),
+    rca:         findCol(row, ['Root cause and resolution details', 'Root Cause', 'RCA', 'root_cause']),
+  };
+}
+
+// -- Helpers --
+function val(row, col) {
+  const v = row[col];
+  return v === undefined || v === null ? '' : String(v).trim();
+}
+
+function parseDate(s) {
+  if (!s) return null;
+  const d = new Date(s);
+  return isNaN(d.getTime()) ? null : d;
+}
+
+function isOpen(stage) {
+  const s = (stage || '').toLowerCase();
+  const closedStages = ['resolved', 'closed', 'canceled', 'cancelled'];
+  return !closedStages.includes(s);
+}
+
+function isResolved(stage) {
+  const s = (stage || '').toLowerCase();
+  return s === 'resolved' || s === 'closed';
+}
+
+function isCanceled(stage) {
+  const s = (stage || '').toLowerCase();
+  return s === 'canceled' || s === 'cancelled';
+}
+
+function isReopen(stage) {
+  const s = (stage || '').toLowerCase();
+  return s === 'reopen' || s === 'reopened' || s === 're-open';
+}
+
+const EXCLUDED_COHORTS = ['WMS', 'Roadmap'];
+const EXCLUDED_PODS = ['WMS Inbound', 'WMS Outbound'];
+
+function passesBaseFilter(row) {
+  const sub = val(row, COL.subtype);
+  if (sub.toLowerCase() !== 'support') return false;
+  const cohort = val(row, COL.cohort);
+  if (EXCLUDED_COHORTS.includes(cohort)) return false;
+  const pod = val(row, COL.pod);
+  if (EXCLUDED_PODS.includes(pod)) return false;
+  return true;
+}
+
+// -- Status filter function --
+function getStatusFilteredData(data) {
+  const status = document.getElementById('statusFilter').value;
+  if (status === 'all') return data;
+  if (status === 'open') return data.filter(t => !['resolved', 'canceled', 'cancelled', 'closed'].includes((val(t, COL.stage) || '').toLowerCase()));
+  if (status === 'closed') return data.filter(t => {
+    const s = (val(t, COL.stage) || '').toLowerCase();
+    return s === 'resolved' || s === 'closed';
+  });
+  return data;
+}
+
+// -- Toggle section visibility based on status filter --
+function updateSectionVisibility() {
+  const status = document.getElementById('statusFilter').value;
+  document.querySelectorAll('.status-section').forEach(el => {
+    const visAttr = el.getAttribute('data-visibility');
+    if (!visAttr) return;
+    const allowedModes = visAttr.split(',').map(s => s.trim());
+    if (allowedModes.includes(status)) {
+      el.classList.remove('status-hidden');
+    } else {
+      el.classList.add('status-hidden');
+    }
+  });
+}
+
+function passesUserFilter(row) {
+  const dateFrom = document.getElementById('filterDateFrom').value;
+  const dateTo = document.getElementById('filterDateTo').value;
+  const cxLead = document.getElementById('filterCxLead').value;
+  const account = document.getElementById('filterAccount').value;
+  const cohort = document.getElementById('filterCohort').value;
+  const severity = document.getElementById('filterSeverity').value;
+
+  if (dateFrom) {
+    const created = parseDate(val(row, COL.created));
+    if (!created || created < new Date(dateFrom + 'T00:00:00')) return false;
+  }
+  if (dateTo) {
+    const created = parseDate(val(row, COL.created));
+    if (!created || created > new Date(dateTo + 'T23:59:59')) return false;
+  }
+  if (cxLead && val(row, COL.cxLead) !== cxLead) return false;
+  if (account && val(row, COL.account) !== account) return false;
+  if (cohort && val(row, COL.cohort) !== cohort) return false;
+  if (severity && val(row, COL.severity) !== severity) return false;
+
+  return true;
+}
+
+function setDateRange(days) {
+  const to = new Date();
+  const toStr = to.toISOString().split('T')[0];
+  document.getElementById('filterDateTo').value = toStr;
+
+  if (days === 0) {
+    document.getElementById('filterDateFrom').value = '';
+  } else {
+    const from = new Date(Date.now() - days * 86400000);
+    document.getElementById('filterDateFrom').value = from.toISOString().split('T')[0];
+  }
+
+  // Highlight active button
+  document.querySelectorAll('.date-preset').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+
+  applyFilters();
+}
+
+function applyFilters() {
+  FILTERED_DATA = RAW_DATA.filter(r => passesBaseFilter(r) && passesUserFilter(r));
+  updateSectionVisibility();
+  render();
+}
+
+// -- Percentile --
+function percentile(arr, p) {
+  if (!arr.length) return 0;
+  const sorted = [...arr].sort((a, b) => a - b);
+  const idx = (p / 100) * (sorted.length - 1);
+  const lo = Math.floor(idx);
+  const hi = Math.ceil(idx);
+  if (lo === hi) return sorted[lo];
+  return sorted[lo] + (sorted[hi] - sorted[lo]) * (idx - lo);
+}
+
+function minutesToHours(m) {
+  return +(m / 60).toFixed(1);
+}
+
+// -- Get TAT from Completed In[1] --
+function getTATMinutes(row) {
+  const raw = val(row, COL.completedIn1);
+  if (!raw) return null;
+  const n = parseFloat(raw);
+  return isNaN(n) ? null : n;
+}
+
+// -- Get FR time from Completed In[0] --
+function getFRMinutes(row) {
+  const raw = val(row, COL.completedIn0);
+  if (!raw) return null;
+  const n = parseFloat(raw);
+  return isNaN(n) ? null : n;
+}
+
+// -- Working days (NETWORKDAYS equivalent) --
+function getWorkingDays(startDate, endDate) {
+  if (!startDate || !endDate) return 1;
+  let count = 0;
+  const d = new Date(startDate);
+  d.setHours(0,0,0,0);
+  const end = new Date(endDate);
+  end.setHours(0,0,0,0);
+  while (d <= end) {
+    const day = d.getDay();
+    if (day !== 0 && day !== 6) count++;
+    d.setDate(d.getDate() + 1);
+  }
+  return Math.max(count, 1);
+}
+
+// -- SLA filter helpers: exclude empty and in_progress --
+function isSlaCountable(status) {
+  const s = (status || '').toLowerCase().trim();
+  return s === 'hit' || s === 'miss';
+}
+
+// -- Populate filter dropdowns --
+function populateFilters() {
+  const sets = { cxLead: new Set(), account: new Set(), cohort: new Set(), severity: new Set() };
+  for (const row of RAW_DATA) {
+    if (!passesBaseFilter(row)) continue;
+    const cx = val(row, COL.cxLead); if (cx) sets.cxLead.add(cx);
+    const ac = val(row, COL.account); if (ac) sets.account.add(ac);
+    const co = val(row, COL.cohort); if (co) sets.cohort.add(co);
+    const sv = val(row, COL.severity); if (sv) sets.severity.add(sv);
+  }
+
+  fillSelect('filterCxLead', [...sets.cxLead].sort());
+  fillSelect('filterAccount', [...sets.account].sort());
+  fillSelect('filterCohort', [...sets.cohort].sort());
+  fillSelect('filterSeverity', [...sets.severity].sort((a,b) => {
+    const order = {'Blocker':0,'High':1,'Medium':2,'Low':3};
+    return (order[a] ?? 9) - (order[b] ?? 9);
+  }));
+}
+
+function fillSelect(id, items) {
+  const el = document.getElementById(id);
+  const current = el.value;
+  el.innerHTML = '<option value="">All</option>';
+  for (const item of items) {
+    const opt = document.createElement('option');
+    opt.value = item;
+    opt.textContent = item;
+    el.appendChild(opt);
+  }
+  el.value = current;
+}
+
+// -- ISO Week Key --
+function getWeekKey(d) {
+  const dt = new Date(d);
+  const day = dt.getDay() || 7;
+  dt.setDate(dt.getDate() + 4 - day);
+  const yearStart = new Date(dt.getFullYear(), 0, 1);
+  const weekNo = Math.ceil(((dt - yearStart) / 86400000 + 1) / 7);
+  return `${dt.getFullYear()}-W${String(weekNo).padStart(2, '0')}`;
+}
+
+// -- Stage name normalizer for open breakdown --
+function normalizeStageForBreakdown(stage) {
+  const s = (stage || '').toLowerCase().trim();
+  if (s === 'queued') return 'queued';
+  if (s === 'work_in_progress' || s === 'in progress' || s === 'in_progress') return 'work_in_progress';
+  if (s === 'awaiting_customer_response' || s === 'awaiting customer response') return 'awaiting_customer_response';
+  if (s === 'awaiting_development' || s === 'awaiting development') return 'awaiting_development';
+  if (s === 'awaiting_product_assist' || s === 'awaiting product assist') return 'awaiting_product_assist';
+  if (s === 'in_development' || s === 'in development') return 'in_development';
+  if (s === 'reassigned to customer support' || s === 'reassigned') return 'reassigned';
+  if (s === 'reopen' || s === 'reopened' || s === 're-open') return 'reopen';
+  return s;
+}
+
+// RENDER
+function render() {
+  const statusFilter = document.getElementById('statusFilter').value;
+  const data = FILTERED_DATA;
+
+  // Apply status filter to the data
+  const statusData = getStatusFilteredData(data);
+
+  // -- Common derived sets (from status-filtered data) --
+  const notCanceled = statusData.filter(r => !isCanceled(val(r, COL.stage)));
+  const open = notCanceled.filter(r => isOpen(val(r, COL.stage)));
+  const resolved = notCanceled.filter(r => isResolved(val(r, COL.stage)));
+  const created = notCanceled;
+  const blockers = open.filter(r => val(r, COL.severity) === 'Blocker');
+
+  // Also compute from full (non-status-filtered) data for some metrics
+  const allNotCanceled = data.filter(r => !isCanceled(val(r, COL.stage)));
+  const allOpen = allNotCanceled.filter(r => isOpen(val(r, COL.stage)));
+  const allResolved = allNotCanceled.filter(r => isResolved(val(r, COL.stage)));
+
+  // FR% and RT% (exclude in_progress and empty)
+  const frData = notCanceled.filter(r => isSlaCountable(val(r, COL.metricSt0)));
+  const frHit = frData.filter(r => val(r, COL.metricSt0).toLowerCase() === 'hit').length;
+  const frMiss = frData.length - frHit;
+  const frPct = frData.length ? ((frHit / frData.length) * 100).toFixed(1) : '--';
+
+  const rtData = notCanceled.filter(r => isSlaCountable(val(r, COL.metricSt1)));
+  const rtHit = rtData.filter(r => val(r, COL.metricSt1).toLowerCase() === 'hit').length;
+  const rtMiss = rtData.length - rtHit;
+  const rtPct = rtData.length ? ((rtHit / rtData.length) * 100).toFixed(1) : '--';
+
+  // TAT P50 using Completed In[1]
+  const tatValues = [];
+  for (const r of notCanceled) {
+    const t = getTATMinutes(r);
+    if (t !== null && t > 0) tatValues.push(t);
+  }
+  const tatP50 = tatValues.length ? minutesToHours(percentile(tatValues, 50)) : '--';
+
+  // Resolve ratio
+  const ratio = created.length ? (resolved.length / created.length).toFixed(2) : '--';
+
+  // Queue stats (from non-status-filtered data for open metrics)
+  const queued = allOpen.filter(r => val(r, COL.stage).toLowerCase() === 'queued');
+  const now = new Date();
+  let totalAgeDays = 0;
+  let ageCount = 0;
+  for (const r of allOpen) {
+    const cr = parseDate(val(r, COL.created));
+    if (cr) {
+      totalAgeDays += (now - cr) / (1000 * 60 * 60 * 24);
+      ageCount++;
+    }
+  }
+  const avgAge = ageCount > 0 ? (totalAgeDays / ageCount).toFixed(1) : '--';
+
+  // SLA breached open tickets
+  const slaBreachedOpen = allOpen.filter(r => {
+    const fr = val(r, COL.metricSt0).toLowerCase();
+    const rt = val(r, COL.metricSt1).toLowerCase();
+    return fr === 'miss' || rt === 'miss';
+  });
+
+  // Unanswered = queued (no first response yet)
+  const unanswered = queued.length;
+
+  // CSAT average for resolved
+  let csatTotalAvg = 0, csatTotalCount = 0;
+  for (const r of allResolved) {
+    const avg = parseFloat(val(r, COL.csatAvg));
+    const count = parseInt(val(r, COL.csatCount));
+    if (!isNaN(count) && count > 0 && !isNaN(avg)) {
+      csatTotalAvg += avg * count;
+      csatTotalCount += count;
+    }
+  }
+  const csatAvgVal = csatTotalCount > 0 ? (csatTotalAvg / csatTotalCount).toFixed(2) : '--';
+
+  // Who resolves split summary — only Support/Engineering/Product
+  const whoResolveCounts = {};
+  const validResolvers = ['Support', 'Engineering', 'Product'];
+  for (const r of allResolved) {
+    let rb = val(r, COL.resolvedBy) || '';
+    rb = rb.replace(/^Resolved by\s*/i, '').trim();
+    if (!rb || !validResolvers.includes(rb)) continue;
+    whoResolveCounts[rb] = (whoResolveCounts[rb] || 0) + 1;
+  }
+  const whoResolveSorted = Object.entries(whoResolveCounts).sort((a,b) => b[1] - a[1]);
+  const whoResolveSummary = whoResolveSorted.slice(0, 3).map(([k,v]) => `${k}:${v}`).join(' | ');
+
+  // -- Build KPI cards dynamically based on status filter --
+  const kpiGrid = document.getElementById('kpiGrid');
+  kpiGrid.innerHTML = '';
+
+  if (statusFilter === 'open') {
+    // Open: Open Count, Blockers, Queued (unactioned), Avg Age, SLA Breached (open), Unanswered
+    kpiGrid.innerHTML = `
+      <div class="kpi-card gradient-purple">
+        <div class="kpi-bar"></div>
+        <div class="kpi-label">Open Count</div>
+        <div class="kpi-value">${allOpen.length}</div>
+        <div class="kpi-sub">tickets currently open</div>
+      </div>
+      <div class="kpi-card gradient-red">
+        <div class="kpi-bar"></div>
+        <div class="kpi-label">Blockers</div>
+        <div class="kpi-value">${allOpen.filter(r => val(r, COL.severity) === 'Blocker').length}</div>
+        <div class="kpi-sub">${allOpen.filter(r => val(r, COL.severity) === 'Blocker').length > 0 ? 'need attention' : 'none active'}</div>
+      </div>
+      <div class="kpi-card gradient-orange">
+        <div class="kpi-bar"></div>
+        <div class="kpi-label">Queued (Unactioned)</div>
+        <div class="kpi-value">${queued.length}</div>
+        <div class="kpi-sub">awaiting first action</div>
+      </div>
+      <div class="kpi-card gradient-cyan">
+        <div class="kpi-bar"></div>
+        <div class="kpi-label">Avg Age (days)</div>
+        <div class="kpi-value">${avgAge}</div>
+        <div class="kpi-sub">across ${ageCount} open tickets</div>
+      </div>
+      <div class="kpi-card gradient-red">
+        <div class="kpi-bar"></div>
+        <div class="kpi-label">SLA Breached (Open)</div>
+        <div class="kpi-value">${slaBreachedOpen.length}</div>
+        <div class="kpi-sub">FR or RT miss on open tickets</div>
+      </div>
+      <div class="kpi-card gradient-orange">
+        <div class="kpi-bar"></div>
+        <div class="kpi-label">Unanswered</div>
+        <div class="kpi-value">${unanswered}</div>
+        <div class="kpi-sub">still in queued stage</div>
+      </div>
+    `;
+  } else if (statusFilter === 'closed') {
+    // Closed: Resolved Count, FR%, RT%, TAT P50, Resolve Ratio, CSAT Avg
+    const allCreatedNC = allNotCanceled;
+    const resolveRatio = allCreatedNC.length ? (allResolved.length / allCreatedNC.length).toFixed(2) : '--';
+    kpiGrid.innerHTML = `
+      <div class="kpi-card gradient-green">
+        <div class="kpi-bar"></div>
+        <div class="kpi-label">Resolved Count</div>
+        <div class="kpi-value">${resolved.length}</div>
+        <div class="kpi-sub">in selected range</div>
+      </div>
+      <div class="kpi-card gradient-green">
+        <div class="kpi-bar"></div>
+        <div class="kpi-label">FR% (First Response)</div>
+        <div class="kpi-value" style="color:${frPct !== '--' && parseFloat(frPct) >= 95 ? 'var(--green)' : frPct !== '--' && parseFloat(frPct) < 80 ? 'var(--red)' : ''}">${frPct === '--' ? '--' : frPct + '%'}</div>
+        <div class="kpi-sub">${frData.length ? frHit + '/' + frData.length + ' hit' : 'No data'}</div>
+      </div>
+      <div class="kpi-card gradient-orange">
+        <div class="kpi-bar"></div>
+        <div class="kpi-label">RT% (Resolution Time)</div>
+        <div class="kpi-value" style="color:${rtPct !== '--' && parseFloat(rtPct) >= 95 ? 'var(--green)' : rtPct !== '--' && parseFloat(rtPct) < 80 ? 'var(--red)' : ''}">${rtPct === '--' ? '--' : rtPct + '%'}</div>
+        <div class="kpi-sub">${rtData.length ? rtHit + '/' + rtData.length + ' hit' : 'No data'}</div>
+      </div>
+      <div class="kpi-card gradient-cyan">
+        <div class="kpi-bar"></div>
+        <div class="kpi-label">TAT P50 (hours)</div>
+        <div class="kpi-value">${tatP50}</div>
+        <div class="kpi-sub">${tatValues.length ? 'from ' + tatValues.length + ' tickets' : 'No data'}</div>
+      </div>
+      <div class="kpi-card gradient-blue">
+        <div class="kpi-bar"></div>
+        <div class="kpi-label">Resolve Ratio</div>
+        <div class="kpi-value">${resolveRatio}</div>
+        <div class="kpi-sub">${allResolved.length} resolved / ${allCreatedNC.length} created</div>
+      </div>
+      <div class="kpi-card gradient-purple">
+        <div class="kpi-bar"></div>
+        <div class="kpi-label">CSAT Avg</div>
+        <div class="kpi-value" style="color:${csatAvgVal !== '--' && parseFloat(csatAvgVal) >= 4 ? 'var(--green)' : csatAvgVal !== '--' && parseFloat(csatAvgVal) < 3 ? 'var(--red)' : 'var(--orange)'}">${csatAvgVal}</div>
+        <div class="kpi-sub">${csatTotalCount} responses</div>
+      </div>
+    `;
+  } else {
+    // All: Created, Resolved, Resolve Ratio, FR%, RT%, TAT P50, Open Count, Blockers
+    kpiGrid.innerHTML = `
+      <div class="kpi-card gradient-purple">
+        <div class="kpi-bar"></div>
+        <div class="kpi-label">Created</div>
+        <div class="kpi-value">${created.length}</div>
+        <div class="kpi-sub">excl. ${data.length - allNotCanceled.length} canceled</div>
+      </div>
+      <div class="kpi-card gradient-green">
+        <div class="kpi-bar"></div>
+        <div class="kpi-label">Resolved</div>
+        <div class="kpi-value">${allResolved.length}</div>
+        <div class="kpi-sub">${allNotCanceled.length ? ((allResolved.length/allNotCanceled.length)*100).toFixed(0) : 0}% of created</div>
+      </div>
+      <div class="kpi-card gradient-blue">
+        <div class="kpi-bar"></div>
+        <div class="kpi-label">Resolve Ratio</div>
+        <div class="kpi-value">${allNotCanceled.length ? (allResolved.length / allNotCanceled.length).toFixed(2) : '--'}</div>
+        <div class="kpi-sub">${allResolved.length} resolved / ${allNotCanceled.length} created</div>
+      </div>
+      <div class="kpi-card gradient-green">
+        <div class="kpi-bar"></div>
+        <div class="kpi-label">FR% (First Response)</div>
+        <div class="kpi-value" style="color:${frPct !== '--' && parseFloat(frPct) >= 95 ? 'var(--green)' : frPct !== '--' && parseFloat(frPct) < 80 ? 'var(--red)' : ''}">${frPct === '--' ? '--' : frPct + '%'}</div>
+        <div class="kpi-sub">${frData.length ? frHit + '/' + frData.length + ' hit' : 'No data'}</div>
+      </div>
+      <div class="kpi-card gradient-orange">
+        <div class="kpi-bar"></div>
+        <div class="kpi-label">RT% (Resolution Time)</div>
+        <div class="kpi-value" style="color:${rtPct !== '--' && parseFloat(rtPct) >= 95 ? 'var(--green)' : rtPct !== '--' && parseFloat(rtPct) < 80 ? 'var(--red)' : ''}">${rtPct === '--' ? '--' : rtPct + '%'}</div>
+        <div class="kpi-sub">${rtData.length ? rtHit + '/' + rtData.length + ' hit' : 'No data'}</div>
+      </div>
+      <div class="kpi-card gradient-cyan">
+        <div class="kpi-bar"></div>
+        <div class="kpi-label">TAT P50 (hours)</div>
+        <div class="kpi-value">${tatP50}</div>
+        <div class="kpi-sub">${tatValues.length ? 'from ' + tatValues.length + ' tickets' : 'No data'}</div>
+      </div>
+      <div class="kpi-card gradient-purple">
+        <div class="kpi-bar"></div>
+        <div class="kpi-label">Open Count</div>
+        <div class="kpi-value">${allOpen.length}</div>
+        <div class="kpi-sub">currently open</div>
+      </div>
+      <div class="kpi-card gradient-red">
+        <div class="kpi-bar"></div>
+        <div class="kpi-label">Blockers</div>
+        <div class="kpi-value">${allOpen.filter(r => val(r, COL.severity) === 'Blocker').length}</div>
+        <div class="kpi-sub">${allOpen.filter(r => val(r, COL.severity) === 'Blocker').length > 0 ? 'need attention' : 'none active'}</div>
+      </div>
+    `;
+  }
+
+  // -- Current Queue Snapshot --
+  document.getElementById('queueOpen').textContent = allOpen.length;
+  document.getElementById('queueBlockers').textContent = allOpen.filter(r => val(r, COL.severity) === 'Blocker').length;
+  document.getElementById('queueQueued').textContent = queued.length;
+  document.getElementById('queueAvgAge').textContent = avgAge !== '--' ? avgAge + 'd' : '--';
+
+  // -- Header meta --
+  const statusLabel = statusFilter === 'open' ? ' (Open only)' : statusFilter === 'closed' ? ' (Resolved/Closed only)' : '';
+  document.getElementById('headerMeta').textContent = `${notCanceled.length} tickets (filtered)${statusLabel} | ${RAW_DATA.filter(passesBaseFilter).length} total support tickets`;
+
+  // -- Charts --
+  renderAgingChart(allOpen);
+  renderStageChart(statusFilter === 'open' ? open : notCanceled);
+  renderSeverityChart(statusFilter === 'closed' ? notCanceled : open.length > 0 ? open : notCanceled);
+  renderWhoResolvesChart(resolved);
+  renderSentimentTrendChart(notCanceled);
+  renderSupportTypeChart(notCanceled);
+  renderWeeklyChart(notCanceled);
+
+  // -- Tables --
+  renderTatSeverityTable(notCanceled);
+  renderFRTatSeverityTable(notCanceled);
+
+  // -- Open Ticket Breakdown --
+  renderOpenBreakdownTable(allOpen);
+
+  // -- Stage Dwell Analysis --
+  renderStageDwellTable(allOpen);
+
+  // -- CX Lead Performance (resolved) --
+  renderCxLeadPerfTable(allResolved);
+
+  // -- SLA & Quality --
+  renderSlaAdherenceTable(notCanceled);
+  renderCSATSection(notCanceled, resolved);
+  renderSlaAccountTable(notCanceled);
+
+  // -- People --
+  renderCxLeadChart(allOpen);
+  renderCxLeadResolvedChart(allResolved);
+  renderCxLeadTable(allNotCanceled);
+
+  // -- Accounts --
+  renderHealthScoreTable(allNotCanceled);
+  renderRcaAccountTable(allNotCanceled);
+
+  // Rebind table sorting after rendering
+  bindTableSorting();
+
+  // Init show-all toggles
+  initShowAllToggle('tableSlaAdherence', 'toggleSlaAdherence');
+  initShowAllToggle('tableCxLeadPerf', 'toggleCxLeadPerf');
+  initShowAllToggle('tableOpenBreakdown', 'toggleOpenBreakdown');
+  initShowAllToggle('tableCxLead', 'toggleCxLead');
+  initShowAllToggle('tableSlaAccount', 'toggleSlaAccount');
+}
+
+// CHARTS
+
+const CHART_COLORS = [
+  '#4f8cff', '#22c55e', '#f59e0b', '#ef4444', '#8b5cf6',
+  '#06b6d4', '#ec4899', '#f97316', '#14b8a6', '#6366f1',
+  '#84cc16', '#e11d48', '#0ea5e9', '#a855f7', '#eab308'
+];
+
+function destroyChart(key) {
+  if (CHARTS[key]) { CHARTS[key].destroy(); delete CHARTS[key]; }
+}
+
+function chartDefaults() {
+  return {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      datalabels: { display: false }
+    }
+  };
+}
+
+// -- Aging Bar Chart --
+function renderAgingChart(openTickets) {
+  destroyChart('aging');
+  const now = new Date();
+  const buckets = { '0-1d': 0, '1-3d': 0, '3-7d': 0, '7-14d': 0, '14-30d': 0, '30d+': 0 };
+
+  for (const r of openTickets) {
+    const created = parseDate(val(r, COL.created));
+    if (!created) continue;
+    const days = (now - created) / (1000 * 60 * 60 * 24);
+    if (days <= 1)       buckets['0-1d']++;
+    else if (days <= 3)  buckets['1-3d']++;
+    else if (days <= 7)  buckets['3-7d']++;
+    else if (days <= 14) buckets['7-14d']++;
+    else if (days <= 30) buckets['14-30d']++;
+    else                 buckets['30d+']++;
+  }
+
+  CHARTS.aging = new Chart(document.getElementById('chartAging'), {
+    type: 'bar',
+    data: {
+      labels: Object.keys(buckets),
+      datasets: [{
+        data: Object.values(buckets),
+        backgroundColor: ['#4f8cff', '#22c55e', '#f59e0b', '#f97316', '#ef4444', '#991b1b'],
+        borderRadius: 4,
+        barPercentage: 0.7
+      }]
+    },
+    options: {
+      ...chartDefaults(),
+      scales: {
+        y: { beginAtZero: true, ticks: { stepSize: 1, font: { size: 11 } }, grid: { color: '#f0f1f3' } },
+        x: { ticks: { font: { size: 11 } }, grid: { display: false } }
+      },
+      plugins: {
+        ...chartDefaults().plugins,
+        tooltip: { callbacks: { label: ctx => `${ctx.parsed.y} tickets` } }
+      }
+    }
+  });
+}
+
+// -- Stage Bar Chart --
+function renderStageChart(tickets) {
+  destroyChart('stage');
+  const counts = {};
+  for (const r of tickets) {
+    const s = val(r, COL.stage) || 'Unknown';
+    counts[s] = (counts[s] || 0) + 1;
+  }
+  const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+
+  CHARTS.stage = new Chart(document.getElementById('chartStage'), {
+    type: 'bar',
+    data: {
+      labels: sorted.map(e => e[0]),
+      datasets: [{
+        data: sorted.map(e => e[1]),
+        backgroundColor: sorted.map((_, i) => CHART_COLORS[i % CHART_COLORS.length]),
+        borderRadius: 4,
+        barPercentage: 0.7
+      }]
+    },
+    options: {
+      ...chartDefaults(),
+      indexAxis: 'y',
+      scales: {
+        x: { beginAtZero: true, ticks: { stepSize: 1, font: { size: 11 } }, grid: { color: '#f0f1f3' } },
+        y: { ticks: { font: { size: 11 } }, grid: { display: false } }
+      }
+    }
+  });
+}
+
+// -- Severity Donut --
+function renderSeverityChart(tickets) {
+  destroyChart('severity');
+  const sevOrder = ['Blocker', 'High', 'Medium', 'Low'];
+  const sevColors = { 'Blocker': '#ef4444', 'High': '#f97316', 'Medium': '#f59e0b', 'Low': '#22c55e' };
+  const counts = {};
+  for (const r of tickets) {
+    const s = val(r, COL.severity) || 'Unknown';
+    counts[s] = (counts[s] || 0) + 1;
+  }
+  const labels = [];
+  const values = [];
+  const colors = [];
+  for (const s of sevOrder) {
+    if (counts[s]) {
+      labels.push(s);
+      values.push(counts[s]);
+      colors.push(sevColors[s] || '#9ca3af');
+      delete counts[s];
+    }
+  }
+  for (const [s, c] of Object.entries(counts)) {
+    labels.push(s);
+    values.push(c);
+    colors.push('#9ca3af');
+  }
+
+  CHARTS.severity = new Chart(document.getElementById('chartSeverity'), {
+    type: 'doughnut',
+    data: {
+      labels,
+      datasets: [{
+        data: values,
+        backgroundColor: colors,
+        borderWidth: 2,
+        borderColor: '#fff'
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      cutout: '55%',
+      plugins: {
+        legend: { position: 'right', labels: { padding: 14, font: { size: 12 }, usePointStyle: true, pointStyle: 'circle' } },
+        datalabels: { display: false }
+      }
+    }
+  });
+}
+
+// -- Who Resolves Donut --
+function renderWhoResolvesChart(resolved) {
+  destroyChart('whoResolves');
+  const counts = {};
+  const validResolvers = ['Support', 'Engineering', 'Product'];
+  for (const r of resolved) {
+    let rb = val(r, COL.resolvedBy) || '';
+    rb = rb.replace(/^Resolved by\s*/i, '').trim();
+    if (!rb || !validResolvers.includes(rb)) continue;
+    counts[rb] = (counts[rb] || 0) + 1;
+  }
+  const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+
+  CHARTS.whoResolves = new Chart(document.getElementById('chartWhoResolves'), {
+    type: 'doughnut',
+    data: {
+      labels: sorted.map(e => e[0]),
+      datasets: [{
+        data: sorted.map(e => e[1]),
+        backgroundColor: sorted.map((_, i) => CHART_COLORS[i % CHART_COLORS.length]),
+        borderWidth: 2,
+        borderColor: '#fff'
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      cutout: '55%',
+      plugins: {
+        legend: { position: 'right', labels: { padding: 14, font: { size: 12 }, usePointStyle: true, pointStyle: 'circle' } },
+        datalabels: { display: false }
+      }
+    }
+  });
+}
+
+// -- CX Lead Bar (open tickets) --
+function renderCxLeadChart(openTickets) {
+  destroyChart('cxLead');
+  const counts = {};
+  for (const r of openTickets) {
+    const cx = val(r, COL.cxLead) || 'Unassigned';
+    counts[cx] = (counts[cx] || 0) + 1;
+  }
+  const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 15);
+
+  CHARTS.cxLead = new Chart(document.getElementById('chartCxLead'), {
+    type: 'bar',
+    data: {
+      labels: sorted.map(e => e[0]),
+      datasets: [{
+        data: sorted.map(e => e[1]),
+        backgroundColor: '#4f8cff',
+        borderRadius: 4,
+        barPercentage: 0.7
+      }]
+    },
+    options: {
+      ...chartDefaults(),
+      indexAxis: 'y',
+      scales: {
+        x: { beginAtZero: true, ticks: { stepSize: 1, font: { size: 11 } }, grid: { color: '#f0f1f3' } },
+        y: { ticks: { font: { size: 11 } }, grid: { display: false } }
+      }
+    }
+  });
+}
+
+// -- CX Lead Resolved Bar --
+function renderCxLeadResolvedChart(resolvedTickets) {
+  destroyChart('cxLeadResolved');
+  const counts = {};
+  for (const r of resolvedTickets) {
+    const cx = val(r, COL.cxLead) || 'Unassigned';
+    counts[cx] = (counts[cx] || 0) + 1;
+  }
+  const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 15);
+
+  CHARTS.cxLeadResolved = new Chart(document.getElementById('chartCxLeadResolved'), {
+    type: 'bar',
+    data: {
+      labels: sorted.map(e => e[0]),
+      datasets: [{
+        data: sorted.map(e => e[1]),
+        backgroundColor: '#22c55e',
+        borderRadius: 4,
+        barPercentage: 0.7
+      }]
+    },
+    options: {
+      ...chartDefaults(),
+      indexAxis: 'y',
+      scales: {
+        x: { beginAtZero: true, ticks: { stepSize: 1, font: { size: 11 } }, grid: { color: '#f0f1f3' } },
+        y: { ticks: { font: { size: 11 } }, grid: { display: false } }
+      }
+    }
+  });
+}
+
+// -- Weekly Resolution Line/Bar --
+function renderWeeklyChart(tickets) {
+  destroyChart('weekly');
+
+  const weekMap = {};
+  for (const r of tickets) {
+    if (isCanceled(val(r, COL.stage))) continue;
+    const created = parseDate(val(r, COL.created));
+    if (created) {
+      const wk = getWeekKey(created);
+      if (!weekMap[wk]) weekMap[wk] = { created: 0, resolved: 0 };
+      weekMap[wk].created++;
+    }
+    if (isResolved(val(r, COL.stage))) {
+      const closed = parseDate(val(r, COL.closed));
+      if (closed) {
+        const wk = getWeekKey(closed);
+        if (!weekMap[wk]) weekMap[wk] = { created: 0, resolved: 0 };
+        weekMap[wk].resolved++;
+      }
+    }
+  }
+
+  const sortedWeeks = Object.keys(weekMap).sort();
+
+  CHARTS.weekly = new Chart(document.getElementById('chartWeekly'), {
+    type: 'bar',
+    data: {
+      labels: sortedWeeks,
+      datasets: [
+        {
+          label: 'Created',
+          data: sortedWeeks.map(w => weekMap[w].created),
+          backgroundColor: 'rgba(79,140,255,0.7)',
+          borderRadius: 3,
+          order: 2
+        },
+        {
+          label: 'Resolved',
+          data: sortedWeeks.map(w => weekMap[w].resolved),
+          type: 'line',
+          borderColor: '#22c55e',
+          backgroundColor: 'rgba(34,197,94,0.1)',
+          pointBackgroundColor: '#22c55e',
+          pointRadius: 4,
+          borderWidth: 2,
+          fill: true,
+          tension: 0.3,
+          order: 1
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'top', labels: { font: { size: 12 }, usePointStyle: true, pointStyle: 'circle', padding: 16 } },
+        datalabels: { display: false }
+      },
+      scales: {
+        y: { beginAtZero: true, ticks: { font: { size: 11 } }, grid: { color: '#f0f1f3' } },
+        x: { ticks: { font: { size: 10 }, maxRotation: 45 }, grid: { display: false } }
+      }
+    }
+  });
+}
+
+// -- Sentiment Trend (Stacked Bar) --
+function renderSentimentTrendChart(tickets) {
+  destroyChart('sentimentTrend');
+
+  const weekMap = {};
+  for (const r of tickets) {
+    const sentimentLabel = val(r, COL.sentiment).toLowerCase();
+    if (sentimentLabel !== 'frustrated' && sentimentLabel !== 'unhappy') continue;
+    const created = parseDate(val(r, COL.created));
+    if (!created) continue;
+    const wk = getWeekKey(created);
+    if (!weekMap[wk]) weekMap[wk] = { frustrated: 0, unhappy: 0 };
+    if (sentimentLabel === 'frustrated') weekMap[wk].frustrated++;
+    else weekMap[wk].unhappy++;
+  }
+
+  const sortedWeeks = Object.keys(weekMap).sort();
+
+  CHARTS.sentimentTrend = new Chart(document.getElementById('chartSentimentTrend'), {
+    type: 'bar',
+    data: {
+      labels: sortedWeeks,
+      datasets: [
+        {
+          label: 'Frustrated',
+          data: sortedWeeks.map(w => weekMap[w].frustrated),
+          backgroundColor: '#ef4444',
+          borderRadius: 2,
+        },
+        {
+          label: 'Unhappy',
+          data: sortedWeeks.map(w => weekMap[w].unhappy),
+          backgroundColor: '#f97316',
+          borderRadius: 2,
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'top', labels: { font: { size: 12 }, usePointStyle: true, pointStyle: 'circle', padding: 16 } },
+        datalabels: { display: false }
+      },
+      scales: {
+        x: { stacked: true, ticks: { font: { size: 10 }, maxRotation: 45 }, grid: { display: false } },
+        y: { stacked: true, beginAtZero: true, ticks: { stepSize: 1, font: { size: 11 } }, grid: { color: '#f0f1f3' } }
+      }
+    }
+  });
+}
+
+// -- Support Type Donut --
+function renderSupportTypeChart(tickets) {
+  destroyChart('supportType');
+
+  const counts = {};
+  for (const r of tickets) {
+    const st = val(r, COL.supportType) || 'Unknown';
+    if (st) counts[st] = (counts[st] || 0) + 1;
+  }
+  const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+
+  CHARTS.supportType = new Chart(document.getElementById('chartSupportType'), {
+    type: 'doughnut',
+    data: {
+      labels: sorted.map(e => e[0]),
+      datasets: [{
+        data: sorted.map(e => e[1]),
+        backgroundColor: sorted.map((_, i) => CHART_COLORS[i % CHART_COLORS.length]),
+        borderWidth: 2,
+        borderColor: '#fff'
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      cutout: '55%',
+      plugins: {
+        legend: { position: 'right', labels: { padding: 12, font: { size: 11 }, usePointStyle: true, pointStyle: 'circle' } },
+        datalabels: { display: false }
+      }
+    }
+  });
+}
+
+
+// TABLES
+
+// -- Open Ticket Breakdown by CX Lead --
+function renderOpenBreakdownTable(openTickets) {
+  const now = new Date();
+  const leads = {};
+
+  for (const r of openTickets) {
+    const cx = val(r, COL.cxLead) || 'Unassigned';
+    if (!leads[cx]) leads[cx] = {
+      total: 0, queued: 0, wip: 0, awCust: 0, awDev: 0, awProd: 0,
+      inDev: 0, reassigned: 0, reopen: 0, ages: []
+    };
+    const l = leads[cx];
+    l.total++;
+
+    const stage = normalizeStageForBreakdown(val(r, COL.stage));
+    if (stage === 'queued') l.queued++;
+    else if (stage === 'work_in_progress') l.wip++;
+    else if (stage === 'awaiting_customer_response') l.awCust++;
+    else if (stage === 'awaiting_development') l.awDev++;
+    else if (stage === 'awaiting_product_assist') l.awProd++;
+    else if (stage === 'in_development') l.inDev++;
+    else if (stage === 'reassigned') l.reassigned++;
+    else if (stage === 'reopen') l.reopen++;
+
+    const cr = parseDate(val(r, COL.created));
+    if (cr) {
+      l.ages.push((now - cr) / (1000 * 60 * 60 * 24));
+    }
+  }
+
+  const sorted = Object.entries(leads).sort((a, b) => b[1].total - a[1].total);
+  const tbody = document.querySelector('#tableOpenBreakdown tbody');
+  tbody.innerHTML = '';
+
+  for (const [name, d] of sorted) {
+    const avgAge = d.ages.length ? (d.ages.reduce((a,b) => a+b, 0) / d.ages.length).toFixed(1) : '--';
+    const d7 = d.ages.filter(a => a >= 7).length;
+    const d15 = d.ages.filter(a => a >= 15).length;
+    const d30 = d.ages.filter(a => a >= 30).length;
+
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><strong>${esc(name)}</strong></td>
+      <td>${d.total}</td>
+      <td>${d.queued || 0}</td>
+      <td>${d.wip || 0}</td>
+      <td>${d.awCust || 0}</td>
+      <td>${d.awDev || 0}</td>
+      <td>${d.awProd || 0}</td>
+      <td>${d.inDev || 0}</td>
+      <td>${d.reassigned || 0}</td>
+      <td>${d.reopen || 0}</td>
+      <td>${avgAge}</td>
+      <td>${d7 > 0 ? '<span class="badge badge-orange">' + d7 + '</span>' : '0'}</td>
+      <td>${d15 > 0 ? '<span class="badge badge-red">' + d15 + '</span>' : '0'}</td>
+      <td>${d30 > 0 ? '<span class="badge badge-red">' + d30 + '</span>' : '0'}</td>
+    `;
+    tbody.appendChild(tr);
+  }
+}
+
+// -- Stage Dwell Analysis (with top accounts per stage) --
+function renderStageDwellTable(openTickets) {
+  const now = new Date();
+  const stages = {};
+
+  for (const r of openTickets) {
+    const stage = val(r, COL.stage) || 'Unknown';
+    if (!stages[stage]) stages[stage] = { count: 0, ages: [], acctCounts: {} };
+    const s = stages[stage];
+    s.count++;
+
+    const cr = parseDate(val(r, COL.created));
+    if (cr) {
+      s.ages.push((now - cr) / (1000 * 60 * 60 * 24));
+    }
+
+    // Track account counts per stage
+    const acct = val(r, COL.account) || 'Unknown';
+    s.acctCounts[acct] = (s.acctCounts[acct] || 0) + 1;
+  }
+
+  const sorted = Object.entries(stages).sort((a, b) => b[1].count - a[1].count);
+  const tbody = document.querySelector('#tableStageDwell tbody');
+  tbody.innerHTML = '';
+
+  for (const [name, d] of sorted) {
+    const avgAge = d.ages.length ? (d.ages.reduce((a,b) => a+b, 0) / d.ages.length).toFixed(1) : '--';
+    const maxAge = d.ages.length ? Math.max(...d.ages).toFixed(1) : '--';
+
+    // Top 3 accounts for this stage
+    const topAccts = Object.entries(d.acctCounts)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 3)
+      .map(([acctName, count]) => `${esc(acctName)} (${count})`)
+      .join(', ');
+
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><strong>${esc(name)}</strong></td>
+      <td>${d.count}</td>
+      <td>${avgAge}</td>
+      <td>${maxAge}</td>
+      <td style="white-space:normal; max-width:350px; font-size:12px;">${topAccts || '--'}</td>
+    `;
+    tbody.appendChild(tr);
+  }
+}
+
+// -- CX Lead Performance (Resolved only) --
+function renderCxLeadPerfTable(resolvedTickets) {
+  const dateFrom = document.getElementById('filterDateFrom').value;
+  const dateTo = document.getElementById('filterDateTo').value;
+  const workingDays = getWorkingDays(
+    dateFrom ? new Date(dateFrom) : null,
+    dateTo ? new Date(dateTo) : null
+  );
+
+  const leads = {};
+  for (const r of resolvedTickets) {
+    const cx = val(r, COL.cxLead) || 'Unassigned';
+    if (!leads[cx]) leads[cx] = { resolved: 0, frHit: 0, frTotal: 0, rtHit: 0, rtTotal: 0, tatVals: [], csatSum: 0, csatCount: 0 };
+    const l = leads[cx];
+    l.resolved++;
+
+    const fr = val(r, COL.metricSt0).toLowerCase();
+    if (isSlaCountable(fr)) { l.frTotal++; if (fr === 'hit') l.frHit++; }
+    const rt = val(r, COL.metricSt1).toLowerCase();
+    if (isSlaCountable(rt)) { l.rtTotal++; if (rt === 'hit') l.rtHit++; }
+
+    const t = getTATMinutes(r);
+    if (t !== null && t > 0) l.tatVals.push(t);
+
+    const cavg = parseFloat(val(r, COL.csatAvg));
+    const ccnt = parseInt(val(r, COL.csatCount));
+    if (!isNaN(ccnt) && ccnt > 0 && !isNaN(cavg)) {
+      l.csatSum += cavg * ccnt;
+      l.csatCount += ccnt;
+    }
+  }
+
+  const sorted = Object.entries(leads).sort((a, b) => b[1].resolved - a[1].resolved);
+  const tbody = document.querySelector('#tableCxLeadPerf tbody');
+  tbody.innerHTML = '';
+
+  for (const [name, d] of sorted) {
+    const frPct = d.frTotal ? ((d.frHit / d.frTotal) * 100).toFixed(1) : '--';
+    const rtPct = d.rtTotal ? ((d.rtHit / d.rtTotal) * 100).toFixed(1) : '--';
+    const tat = d.tatVals.length ? minutesToHours(percentile(d.tatVals, 50)).toFixed(1) : '--';
+    const csatAvg = d.csatCount > 0 ? (d.csatSum / d.csatCount).toFixed(2) : '--';
+    const resolvedPerDay = (d.resolved / workingDays).toFixed(1);
+
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><strong>${esc(name)}</strong></td>
+      <td>${d.resolved}</td>
+      <td class="${slaClassFine(frPct)}">${frPct}${frPct !== '--' ? '%' : ''}</td>
+      <td class="${slaClassFine(rtPct)}">${rtPct}${rtPct !== '--' ? '%' : ''}</td>
+      <td>${tat}</td>
+      <td>${csatAvg}</td>
+      <td>${resolvedPerDay}</td>
+    `;
+    tbody.appendChild(tr);
+  }
+}
+
+// -- CX Lead Table (enhanced with Resolved/Day and Reopens) --
+function renderCxLeadTable(tickets) {
+  // Calculate working days from filter dates
+  const dateFrom = document.getElementById('filterDateFrom').value;
+  const dateTo = document.getElementById('filterDateTo').value;
+  const workingDays = getWorkingDays(
+    dateFrom ? new Date(dateFrom) : null,
+    dateTo ? new Date(dateTo) : null
+  );
+
+  const leads = {};
+  for (const r of tickets) {
+    const cx = val(r, COL.cxLead) || 'Unassigned';
+    if (!leads[cx]) leads[cx] = { open: 0, blockers: 0, created: 0, resolved: 0, reopens: 0, frHit: 0, frTotal: 0, rtHit: 0, rtTotal: 0, tatVals: [] };
+    const l = leads[cx];
+    l.created++;
+    const stage = val(r, COL.stage);
+    if (isOpen(stage)) l.open++;
+    if (isOpen(stage) && val(r, COL.severity) === 'Blocker') l.blockers++;
+    if (isResolved(stage)) l.resolved++;
+    if (isReopen(stage)) l.reopens++;
+
+    const fr = val(r, COL.metricSt0).toLowerCase();
+    if (isSlaCountable(fr)) { l.frTotal++; if (fr === 'hit') l.frHit++; }
+    const rt = val(r, COL.metricSt1).toLowerCase();
+    if (isSlaCountable(rt)) { l.rtTotal++; if (rt === 'hit') l.rtHit++; }
+
+    const t = getTATMinutes(r);
+    if (t !== null && t > 0) l.tatVals.push(t);
+  }
+
+  const sorted = Object.entries(leads).sort((a, b) => b[1].open - a[1].open);
+  const tbody = document.querySelector('#tableCxLead tbody');
+  tbody.innerHTML = '';
+
+  for (const [name, d] of sorted) {
+    const frPct = d.frTotal ? ((d.frHit / d.frTotal) * 100).toFixed(1) : '--';
+    const rtPct = d.rtTotal ? ((d.rtHit / d.rtTotal) * 100).toFixed(1) : '--';
+    const tat = d.tatVals.length ? minutesToHours(percentile(d.tatVals, 50)).toFixed(1) : '--';
+    const ratio = d.created ? (d.resolved / d.created).toFixed(2) : '--';
+    const resolvedPerDay = (d.resolved / workingDays).toFixed(1);
+
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><strong>${esc(name)}</strong></td>
+      <td>${d.open}</td>
+      <td>${d.blockers > 0 ? `<span class="badge badge-red">${d.blockers}</span>` : '0'}</td>
+      <td>${d.created}</td>
+      <td>${d.resolved}</td>
+      <td>${resolvedPerDay}</td>
+      <td>${d.reopens > 0 ? `<span class="badge badge-orange">${d.reopens}</span>` : '0'}</td>
+      <td class="${slaClassFine(frPct)}">${frPct}${frPct !== '--' ? '%' : ''}</td>
+      <td class="${slaClassFine(rtPct)}">${rtPct}${rtPct !== '--' ? '%' : ''}</td>
+      <td>${tat}</td>
+      <td>${ratio}</td>
+    `;
+    tbody.appendChild(tr);
+  }
+}
+
+// -- SLA by Account --
+function renderSlaAccountTable(tickets) {
+  const accounts = {};
+  for (const r of tickets) {
+    const acc = val(r, COL.account) || 'Unknown';
+    if (!accounts[acc]) accounts[acc] = { total: 0, open: 0, resolved: 0, frHit: 0, frTotal: 0, rtHit: 0, rtTotal: 0, tatVals: [], blockers: 0 };
+    const a = accounts[acc];
+    a.total++;
+    const stage = val(r, COL.stage);
+    if (isOpen(stage)) a.open++;
+    if (isResolved(stage)) a.resolved++;
+    if (isOpen(stage) && val(r, COL.severity) === 'Blocker') a.blockers++;
+
+    const fr = val(r, COL.metricSt0).toLowerCase();
+    if (isSlaCountable(fr)) { a.frTotal++; if (fr === 'hit') a.frHit++; }
+    const rt = val(r, COL.metricSt1).toLowerCase();
+    if (isSlaCountable(rt)) { a.rtTotal++; if (rt === 'hit') a.rtHit++; }
+
+    const t = getTATMinutes(r);
+    if (t !== null && t > 0) a.tatVals.push(t);
+  }
+
+  const sorted = Object.entries(accounts).sort((a, b) => b[1].total - a[1].total);
+  const tbody = document.querySelector('#tableSlaAccount tbody');
+  tbody.innerHTML = '';
+
+  for (const [name, d] of sorted) {
+    const frPct = d.frTotal ? ((d.frHit / d.frTotal) * 100).toFixed(1) : '--';
+    const rtPct = d.rtTotal ? ((d.rtHit / d.rtTotal) * 100).toFixed(1) : '--';
+    const tat = d.tatVals.length ? minutesToHours(percentile(d.tatVals, 50)).toFixed(1) : '--';
+
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><strong>${esc(name)}</strong></td>
+      <td>${d.total}</td>
+      <td>${d.open}</td>
+      <td>${d.resolved}</td>
+      <td class="${slaClassFine(frPct)}">${frPct}${frPct !== '--' ? '%' : ''}</td>
+      <td class="${slaClassFine(rtPct)}">${rtPct}${rtPct !== '--' ? '%' : ''}</td>
+      <td>${tat}</td>
+      <td>${d.blockers > 0 ? `<span class="badge badge-red">${d.blockers}</span>` : '0'}</td>
+    `;
+    tbody.appendChild(tr);
+  }
+}
+
+// -- Resolution TAT by Severity --
+function renderTatSeverityTable(tickets) {
+  const sevs = {};
+  // Add "All" aggregate
+  const allTatVals = [];
+  let allFrHit = 0, allFrTotal = 0, allRtHit = 0, allRtTotal = 0, allCount = 0;
+
+  for (const r of tickets) {
+    const sev = val(r, COL.severity) || 'Unknown';
+    if (!sevs[sev]) sevs[sev] = { count: 0, tatVals: [], frHit: 0, frTotal: 0, rtHit: 0, rtTotal: 0 };
+    const s = sevs[sev];
+    s.count++;
+    allCount++;
+
+    const t = getTATMinutes(r);
+    if (t !== null && t > 0) { s.tatVals.push(t); allTatVals.push(t); }
+
+    const fr = val(r, COL.metricSt0).toLowerCase();
+    if (isSlaCountable(fr)) { s.frTotal++; allFrTotal++; if (fr === 'hit') { s.frHit++; allFrHit++; } }
+    const rt = val(r, COL.metricSt1).toLowerCase();
+    if (isSlaCountable(rt)) { s.rtTotal++; allRtTotal++; if (rt === 'hit') { s.rtHit++; allRtHit++; } }
+  }
+
+  const order = ['Blocker', 'High', 'Medium', 'Low'];
+  const sorted = Object.entries(sevs).sort((a, b) => {
+    const ai = order.indexOf(a[0]);
+    const bi = order.indexOf(b[0]);
+    return (ai === -1 ? 99 : ai) - (bi === -1 ? 99 : bi);
+  });
+
+  const tbody = document.querySelector('#tableTatSeverity tbody');
+  tbody.innerHTML = '';
+
+  // Render "All" row first
+  {
+    const p10 = allTatVals.length ? minutesToHours(percentile(allTatVals, 10)).toFixed(1) : '--';
+    const p25 = allTatVals.length ? minutesToHours(percentile(allTatVals, 25)).toFixed(1) : '--';
+    const p50 = allTatVals.length ? minutesToHours(percentile(allTatVals, 50)).toFixed(1) : '--';
+    const p75 = allTatVals.length ? minutesToHours(percentile(allTatVals, 75)).toFixed(1) : '--';
+    const p90 = allTatVals.length ? minutesToHours(percentile(allTatVals, 90)).toFixed(1) : '--';
+    const frPct = allFrTotal ? ((allFrHit / allFrTotal) * 100).toFixed(1) : '--';
+    const rtPct = allRtTotal ? ((allRtHit / allRtTotal) * 100).toFixed(1) : '--';
+
+    const tr = document.createElement('tr');
+    tr.style.fontWeight = '700';
+    tr.style.backgroundColor = '#f0f4ff';
+    tr.innerHTML = `
+      <td><span class="badge badge-purple">All</span></td>
+      <td>${allCount}</td>
+      <td>${p10}</td>
+      <td><strong>${p50}</strong></td>
+      <td>${p90}</td>
+      <td class="${slaClassFine(frPct)}">${frPct}${frPct !== '--' ? '%' : ''}</td>
+      <td class="${slaClassFine(rtPct)}">${rtPct}${rtPct !== '--' ? '%' : ''}</td>
+    `;
+    tbody.appendChild(tr);
+  }
+
+  for (const [name, d] of sorted) {
+    const p10 = d.tatVals.length ? minutesToHours(percentile(d.tatVals, 10)).toFixed(1) : '--';
+    const p50 = d.tatVals.length ? minutesToHours(percentile(d.tatVals, 50)).toFixed(1) : '--';
+    const p90 = d.tatVals.length ? minutesToHours(percentile(d.tatVals, 90)).toFixed(1) : '--';
+    const frPct = d.frTotal ? ((d.frHit / d.frTotal) * 100).toFixed(1) : '--';
+    const rtPct = d.rtTotal ? ((d.rtHit / d.rtTotal) * 100).toFixed(1) : '--';
+
+    const sevBadge = {
+      'Blocker': 'badge-red',
+      'High': 'badge-orange',
+      'Medium': 'badge-blue',
+      'Low': 'badge-green'
+    }[name] || 'badge-gray';
+
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><span class="badge ${sevBadge}">${esc(name)}</span></td>
+      <td>${d.count}</td>
+      <td>${p10}</td>
+      <td><strong>${p50}</strong></td>
+      <td>${p90}</td>
+      <td class="${slaClassFine(frPct)}">${frPct}${frPct !== '--' ? '%' : ''}</td>
+      <td class="${slaClassFine(rtPct)}">${rtPct}${rtPct !== '--' ? '%' : ''}</td>
+    `;
+    tbody.appendChild(tr);
+  }
+}
+
+// -- First Response TAT by Severity --
+function renderFRTatSeverityTable(tickets) {
+  const sevs = {};
+  const allFrVals = [];
+  let allCount = 0;
+
+  for (const r of tickets) {
+    const sev = val(r, COL.severity) || 'Unknown';
+    if (!sevs[sev]) sevs[sev] = { count: 0, frVals: [] };
+    const s = sevs[sev];
+
+    const fr = getFRMinutes(r);
+    if (fr !== null && fr > 0) {
+      s.count++;
+      s.frVals.push(fr);
+      allFrVals.push(fr);
+      allCount++;
+    }
+  }
+
+  const order = ['Blocker', 'High', 'Medium', 'Low'];
+  const sorted = Object.entries(sevs).sort((a, b) => {
+    const ai = order.indexOf(a[0]);
+    const bi = order.indexOf(b[0]);
+    return (ai === -1 ? 99 : ai) - (bi === -1 ? 99 : bi);
+  });
+
+  const tbody = document.querySelector('#tableFRTatSeverity tbody');
+  tbody.innerHTML = '';
+
+  // Render "All" row first
+  {
+    const p10 = allFrVals.length ? minutesToHours(percentile(allFrVals, 10)).toFixed(1) : '--';
+    const p25 = allFrVals.length ? minutesToHours(percentile(allFrVals, 25)).toFixed(1) : '--';
+    const p50 = allFrVals.length ? minutesToHours(percentile(allFrVals, 50)).toFixed(1) : '--';
+    const p75 = allFrVals.length ? minutesToHours(percentile(allFrVals, 75)).toFixed(1) : '--';
+    const p90 = allFrVals.length ? minutesToHours(percentile(allFrVals, 90)).toFixed(1) : '--';
+
+    const tr = document.createElement('tr');
+    tr.style.fontWeight = '700';
+    tr.style.backgroundColor = '#f0f4ff';
+    tr.innerHTML = `
+      <td><span class="badge badge-purple">All</span></td>
+      <td>${allCount}</td>
+      <td>${p10}</td>
+      <td><strong>${p50}</strong></td>
+      <td>${p90}</td>
+    `;
+    tbody.appendChild(tr);
+  }
+
+  for (const [name, d] of sorted) {
+    if (d.frVals.length === 0) continue;
+    const p10 = minutesToHours(percentile(d.frVals, 10)).toFixed(1);
+    const p50 = minutesToHours(percentile(d.frVals, 50)).toFixed(1);
+    const p90 = minutesToHours(percentile(d.frVals, 90)).toFixed(1);
+
+    const sevBadge = {
+      'Blocker': 'badge-red',
+      'High': 'badge-orange',
+      'Medium': 'badge-blue',
+      'Low': 'badge-green'
+    }[name] || 'badge-gray';
+
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><span class="badge ${sevBadge}">${esc(name)}</span></td>
+      <td>${d.frVals.length}</td>
+      <td>${p10}</td>
+      <td><strong>${p50}</strong></td>
+      <td>${p90}</td>
+    `;
+    tbody.appendChild(tr);
+  }
+}
+
+// -- SLA Adherence per Account --
+function renderSlaAdherenceTable(tickets) {
+  const accounts = {};
+  for (const r of tickets) {
+    const acc = val(r, COL.account) || 'Unknown';
+    if (!accounts[acc]) accounts[acc] = { pool: 0, frHit: 0, frMiss: 0, rtHit: 0, rtMiss: 0 };
+    const a = accounts[acc];
+    a.pool++;
+
+    const fr = val(r, COL.metricSt0).toLowerCase();
+    if (fr === 'hit') a.frHit++;
+    else if (fr === 'miss') a.frMiss++;
+
+    const rt = val(r, COL.metricSt1).toLowerCase();
+    if (rt === 'hit') a.rtHit++;
+    else if (rt === 'miss') a.rtMiss++;
+  }
+
+  // Sort by pool size
+  const sorted = Object.entries(accounts).sort((a, b) => b[1].pool - a[1].pool);
+  const tbody = document.querySelector('#tableSlaAdherence tbody');
+  tbody.innerHTML = '';
+
+  for (const [name, d] of sorted) {
+    const frTotal = d.frHit + d.frMiss;
+    const rtTotal = d.rtHit + d.rtMiss;
+    const frPct = frTotal ? ((d.frHit / frTotal) * 100).toFixed(1) : '--';
+    const rtPct = rtTotal ? ((d.rtHit / rtTotal) * 100).toFixed(1) : '--';
+
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><strong>${esc(name)}</strong></td>
+      <td>${d.pool}</td>
+      <td>${d.frHit}</td>
+      <td>${d.frMiss}</td>
+      <td><span class="badge ${slaAdherenceBadge(frPct)}">${frPct}${frPct !== '--' ? '%' : ''}</span></td>
+      <td>${d.rtHit}</td>
+      <td>${d.rtMiss}</td>
+      <td><span class="badge ${slaAdherenceBadge(rtPct)}">${rtPct}${rtPct !== '--' ? '%' : ''}</span></td>
+    `;
+    tbody.appendChild(tr);
+  }
+}
+
+// -- CSAT Section --
+function renderCSATSection(tickets, resolvedTickets) {
+  let totalAvg = 0;
+  let totalCount = 0;
+  let totalResponses = 0;
+  const distribution = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
+
+  for (const r of tickets) {
+    const avg = parseFloat(val(r, COL.csatAvg));
+    const count = parseInt(val(r, COL.csatCount));
+    if (!isNaN(count) && count > 0 && !isNaN(avg)) {
+      totalAvg += avg * count;
+      totalCount += count;
+      totalResponses++;
+      // Estimate distribution from average (since we only have average per ticket)
+      const rounded = Math.round(avg);
+      if (rounded >= 1 && rounded <= 5) {
+        distribution[rounded] += count;
+      }
+    }
+  }
+
+  const overallAvg = totalCount > 0 ? (totalAvg / totalCount).toFixed(2) : '--';
+  const responseRate = resolvedTickets.length > 0 ? ((totalResponses / resolvedTickets.length) * 100).toFixed(1) : '--';
+
+  const summaryEl = document.getElementById('csatSummary');
+  summaryEl.innerHTML = `
+    <div class="csat-card">
+      <div class="csat-value" style="color:${overallAvg !== '--' && parseFloat(overallAvg) >= 4 ? 'var(--green)' : overallAvg !== '--' && parseFloat(overallAvg) < 3 ? 'var(--red)' : 'var(--orange)'}">${overallAvg}</div>
+      <div class="csat-label">Average CSAT</div>
+    </div>
+    <div class="csat-card">
+      <div class="csat-value">${totalCount}</div>
+      <div class="csat-label">Total Responses</div>
+    </div>
+    <div class="csat-card">
+      <div class="csat-value">${responseRate}${responseRate !== '--' ? '%' : ''}</div>
+      <div class="csat-label">Response Rate</div>
+    </div>
+  `;
+
+  // Distribution bar
+  const maxDist = Math.max(...Object.values(distribution), 1);
+  const distEl = document.getElementById('csatDistribution');
+  const barColors = { 1: '#ef4444', 2: '#f97316', 3: '#f59e0b', 4: '#84cc16', 5: '#22c55e' };
+
+  let barHtml = '<div style="display:flex; gap:12px; align-items:flex-end; height:100px; padding:10px 0;">';
+  for (let star = 1; star <= 5; star++) {
+    const h = Math.max((distribution[star] / maxDist) * 80, 4);
+    barHtml += `
+      <div style="flex:1; display:flex; flex-direction:column; align-items:center;">
+        <div style="font-size:12px; font-weight:700; margin-bottom:4px;">${distribution[star]}</div>
+        <div style="width:100%; height:${h}px; background:${barColors[star]}; border-radius:4px 4px 0 0;"></div>
+        <div style="font-size:11px; margin-top:4px; color:var(--text-muted); font-weight:600;">${star}-star</div>
+      </div>
+    `;
+  }
+  barHtml += '</div>';
+  distEl.innerHTML = barHtml;
+}
+
+// -- Account Health Score --
+function renderHealthScoreTable(tickets) {
+  const now = new Date();
+  const accounts = {};
+
+  for (const r of tickets) {
+    const acc = val(r, COL.account) || 'Unknown';
+    if (!accounts[acc]) accounts[acc] = {
+      total: 0, frHit: 0, frTotal: 0, rtHit: 0, rtTotal: 0,
+      ageDays: [], sentimentNeg: 0, sentimentTotal: 0
+    };
+    const a = accounts[acc];
+    a.total++;
+
+    // SLA
+    const fr = val(r, COL.metricSt0).toLowerCase();
+    if (isSlaCountable(fr)) { a.frTotal++; if (fr === 'hit') a.frHit++; }
+    const rt = val(r, COL.metricSt1).toLowerCase();
+    if (isSlaCountable(rt)) { a.rtTotal++; if (rt === 'hit') a.rtHit++; }
+
+    // Age (for open tickets)
+    if (isOpen(val(r, COL.stage))) {
+      const created = parseDate(val(r, COL.created));
+      if (created) {
+        a.ageDays.push((now - created) / (1000 * 60 * 60 * 24));
+      }
+    }
+
+    // Sentiment
+    const sent = val(r, COL.sentiment).toLowerCase();
+    if (sent) {
+      a.sentimentTotal++;
+      if (sent === 'frustrated' || sent === 'unhappy') a.sentimentNeg++;
+    }
+  }
+
+  // Calculate health scores and sort by total
+  const scored = Object.entries(accounts)
+    .filter(([_, d]) => d.total >= 3) // minimum 3 tickets
+    .map(([name, d]) => {
+      // SLA score (0-100): average of FR% and RT%
+      const frPct = d.frTotal ? (d.frHit / d.frTotal) * 100 : 100;
+      const rtPct = d.rtTotal ? (d.rtHit / d.rtTotal) * 100 : 100;
+      const slaScore = (frPct + rtPct) / 2;
+
+      // Age score (0-100): 100 if avg < 3d, linear to 0 at 30d
+      const avgAge = d.ageDays.length ? d.ageDays.reduce((a,b) => a+b, 0) / d.ageDays.length : 0;
+      const ageScore = d.ageDays.length === 0 ? 100 : Math.max(0, Math.min(100, 100 - ((avgAge - 3) / 27) * 100));
+
+      // Sentiment score (0-100): 100 - neg%*100
+      const negPct = d.sentimentTotal ? (d.sentimentNeg / d.sentimentTotal) * 100 : 0;
+      const sentimentScore = 100 - negPct;
+
+      // Composite: SLA 40% + Age 30% + Sentiment 30%
+      const healthScore = (slaScore * 0.4) + (ageScore * 0.3) + (sentimentScore * 0.3);
+
+      return {
+        name,
+        total: d.total,
+        slaPct: ((frPct + rtPct) / 2).toFixed(1),
+        avgAge: d.ageDays.length ? avgAge.toFixed(1) : '--',
+        negPct: negPct.toFixed(1),
+        healthScore: healthScore.toFixed(1),
+      };
+    })
+    .sort((a, b) => b.total - a.total)
+    .slice(0, 25);
+
+  const tbody = document.querySelector('#tableHealthScore tbody');
+  tbody.innerHTML = '';
+
+  for (const d of scored) {
+    const hs = parseFloat(d.healthScore);
+    let healthClass = 'health-green';
+    let healthLabel = 'Good';
+    if (hs < 60) { healthClass = 'health-red'; healthLabel = 'At Risk'; }
+    else if (hs < 80) { healthClass = 'health-yellow'; healthLabel = 'Watch'; }
+
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><strong>${esc(d.name)}</strong></td>
+      <td>${d.total}</td>
+      <td>${d.slaPct}%</td>
+      <td>${d.avgAge}</td>
+      <td>${d.negPct}%</td>
+      <td><strong>${d.healthScore}</strong></td>
+      <td><span class="health-badge ${healthClass}">${healthLabel}</span></td>
+    `;
+    tbody.appendChild(tr);
+  }
+}
+
+// -- Resolution RCA by Account --
+function renderRcaAccountTable(tickets) {
+  const accounts = {};
+
+  for (const r of tickets) {
+    const acc = val(r, COL.account) || 'Unknown';
+    if (!accounts[acc]) accounts[acc] = { total: 0, withRca: 0, rcaCats: {} };
+    const a = accounts[acc];
+    a.total++;
+
+    const rca = val(r, COL.rca);
+    if (rca && rca.length > 2) {
+      a.withRca++;
+      // Extract first line or first ~50 chars as category
+      const cat = rca.split(/[\n\r.!?]/)[0].trim().substring(0, 80) || rca.substring(0, 80);
+      // Normalize common patterns
+      const normalized = cat.toLowerCase().replace(/[^a-z0-9 ]/g, '').trim();
+      if (normalized.length > 2) {
+        a.rcaCats[cat] = (a.rcaCats[cat] || 0) + 1;
+      }
+    }
+  }
+
+  const sorted = Object.entries(accounts)
+    .filter(([_, d]) => d.total >= 3)
+    .sort((a, b) => b[1].total - a[1].total)
+    .slice(0, 20);
+
+  const tbody = document.querySelector('#tableRcaAccount tbody');
+  tbody.innerHTML = '';
+
+  for (const [name, d] of sorted) {
+    // Top 3 RCA categories
+    const topRca = Object.entries(d.rcaCats)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 3)
+      .map(([cat, cnt]) => `${esc(cat.substring(0, 60))} (${cnt})`)
+      .join('<br>');
+
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><strong>${esc(name)}</strong></td>
+      <td>${d.total}</td>
+      <td>${d.withRca}</td>
+      <td style="white-space:normal; max-width:400px; font-size:12px;">${topRca || '<span style="color:var(--text-muted)">No RCA data</span>'}</td>
+    `;
+    tbody.appendChild(tr);
+  }
+}
+
+
+// -- Utility --
+function esc(s) {
+  const el = document.createElement('span');
+  el.textContent = s;
+  return el.innerHTML;
+}
+
+function slaClass(pct, target) {
+  if (pct === '--') return '';
+  const n = parseFloat(pct);
+  if (n >= target) return 'sla-hit';
+  if (n < 80) return 'sla-miss';
+  return '';
+}
+
+// Finer-grained SLA coloring for v2
+function slaClassFine(pct) {
+  if (pct === '--') return '';
+  const n = parseFloat(pct);
+  if (n >= 75) return 'sla-hit';
+  if (n < 40) return 'sla-miss';
+  return '';
+}
+
+// SLA Adherence badge color: >=75 green, 60-74 yellow, 40-59 orange, <40 red
+function slaAdherenceBadge(pct) {
+  if (pct === '--') return 'badge-gray';
+  const n = parseFloat(pct);
+  if (n >= 75) return 'badge-green';
+  if (n >= 60) return 'badge-yellow';
+  if (n >= 40) return 'badge-orange';
+  return 'badge-red';
+}
+
+
+// TABLE SORTING (dynamic rebind)
+
+function bindTableSorting() {
+  document.querySelectorAll('.data-table th').forEach(th => {
+    // Remove existing listener by cloning
+    const newTh = th.cloneNode(true);
+    th.parentNode.replaceChild(newTh, th);
+
+    newTh.addEventListener('click', function() {
+      const table = newTh.closest('table');
+      const tbody = table.querySelector('tbody');
+      const rows = Array.from(tbody.querySelectorAll('tr'));
+      const idx = Array.from(newTh.parentNode.children).indexOf(newTh);
+      const asc = newTh.dataset.sort !== 'asc';
+      newTh.dataset.sort = asc ? 'asc' : 'desc';
+
+      // Reset other headers
+      newTh.parentNode.querySelectorAll('th').forEach(h => { if (h !== newTh) delete h.dataset.sort; });
+
+      rows.sort((a, b) => {
+        let va = a.children[idx]?.textContent?.trim() || '';
+        let vb = b.children[idx]?.textContent?.trim() || '';
+        const na = parseFloat(va.replace(/[%,]/g, ''));
+        const nb = parseFloat(vb.replace(/[%,]/g, ''));
+        if (!isNaN(na) && !isNaN(nb)) {
+          return asc ? na - nb : nb - na;
+        }
+        return asc ? va.localeCompare(vb) : vb.localeCompare(va);
+      });
+
+      rows.forEach(r => tbody.appendChild(r));
+    });
+  });
+}
+
+
+// FILE UPLOAD & INIT
+
+function loadCSV(file) {
+  Papa.parse(file, {
+    header: true,
+    skipEmptyLines: true,
+    complete: function(results) {
+      if (!results.data || results.data.length === 0) {
+        alert('CSV file appears empty or could not be parsed.');
+        return;
+      }
+
+      RAW_DATA = results.data;
+      detectColumns(RAW_DATA[0]);
+      populateFilters();
+
+      // Set default date range
+      let minDate = null, maxDate = null;
+      for (const r of RAW_DATA) {
+        const d = parseDate(val(r, COL.created));
+        if (d) {
+          if (!minDate || d < minDate) minDate = d;
+          if (!maxDate || d > maxDate) maxDate = d;
+        }
+      }
+      if (minDate) document.getElementById('filterDateFrom').value = minDate.toISOString().slice(0, 10);
+      if (maxDate) document.getElementById('filterDateTo').value = maxDate.toISOString().slice(0, 10);
+
+      applyFilters();
+
+      // Show dashboard, hide empty state
+      document.getElementById('emptyState').classList.add('hidden');
+      document.getElementById('dashboardContent').classList.remove('hidden');
+
+      // Update upload status
+      const statusEl = document.getElementById('uploadStatus');
+      statusEl.textContent = `${RAW_DATA.length} rows loaded from ${file.name}`;
+      statusEl.classList.remove('hidden');
+    },
+    error: function(err) {
+      alert('Error parsing CSV: ' + err.message);
+    }
+  });
+}
+
+// -- Event Listeners --
+document.getElementById('fileInput').addEventListener('change', function(e) {
+  if (e.target.files.length) loadCSV(e.target.files[0]);
+});
+
+const uploadZone = document.getElementById('uploadZone');
+uploadZone.addEventListener('click', () => document.getElementById('fileInput').click());
+uploadZone.addEventListener('dragover', (e) => { e.preventDefault(); uploadZone.classList.add('dragover'); });
+uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('dragover'));
+uploadZone.addEventListener('drop', (e) => {
+  e.preventDefault();
+  uploadZone.classList.remove('dragover');
+  if (e.dataTransfer.files.length) {
+    document.getElementById('fileInput').files = e.dataTransfer.files;
+    loadCSV(e.dataTransfer.files[0]);
+  }
+});
+
+// Filter change listeners (including statusFilter)
+for (const id of ['filterDateFrom', 'filterDateTo', 'filterCxLead', 'filterAccount', 'filterCohort', 'filterSeverity', 'statusFilter']) {
+  document.getElementById(id).addEventListener('change', applyFilters);
+}
+
+document.getElementById('btnReset').addEventListener('click', () => {
+  document.getElementById('filterDateFrom').value = '';
+  document.getElementById('filterDateTo').value = '';
+  document.getElementById('filterCxLead').value = '';
+  document.getElementById('filterAccount').value = '';
+  document.getElementById('filterCohort').value = '';
+  document.getElementById('filterSeverity').value = '';
+  document.getElementById('statusFilter').value = 'all';
+
+  if (RAW_DATA.length) {
+    let minDate = null, maxDate = null;
+    for (const r of RAW_DATA) {
+      const d = parseDate(val(r, COL.created));
+      if (d) {
+        if (!minDate || d < minDate) minDate = d;
+        if (!maxDate || d > maxDate) maxDate = d;
+      }
+    }
+    if (minDate) document.getElementById('filterDateFrom').value = minDate.toISOString().slice(0, 10);
+    if (maxDate) document.getElementById('filterDateTo').value = maxDate.toISOString().slice(0, 10);
+  }
+
+  applyFilters();
+});
+</script>
+
+</body>
+</html>
