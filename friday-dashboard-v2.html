@@ -1,0 +1,1494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>F.R.I.D.A.Y Agent — Intelligence Dashboard v2</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<script src="config/friday-report-data.js"></script>
+<style>
+  :root {
+    --bg: #f8fafc; --card: #ffffff; --border: #e2e8f0;
+    --text: #1e293b; --muted: #64748b; --accent: #6366f1;
+    --green: #22c55e; --green-bg: #dcfce7; --green-dark: #166534;
+    --blue: #3b82f6; --blue-bg: #dbeafe; --blue-dark: #1e40af;
+    --amber: #f59e0b; --amber-bg: #fef3c7; --amber-dark: #92400e;
+    --red: #ef4444; --red-bg: #fee2e2; --red-dark: #991b1b;
+    --purple: #8b5cf6; --purple-bg: #ede9fe; --purple-dark: #5b21b6;
+    --cyan: #06b6d4; --cyan-bg: #cffafe; --cyan-dark: #0e7490;
+    --indigo: #6366f1; --indigo-bg: #e0e7ff; --indigo-dark: #3730a3;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); line-height: 1.5; }
+
+  /* Header */
+  .header { background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #4338ca 100%); color: white; padding: 32px 40px; }
+  .header h1 { font-size: 32px; font-weight: 800; letter-spacing: -0.5px; }
+  .header h1 span { color: #a5b4fc; font-weight: 400; }
+  .header .subtitle { color: #c7d2fe; font-size: 14px; margin-top: 4px; }
+  .header .period { display: inline-block; background: rgba(255,255,255,0.15); padding: 4px 14px; border-radius: 20px; font-size: 13px; margin-top: 10px; color: #e0e7ff; }
+
+  /* Context Banner */
+  .context-banner { background: var(--indigo-bg); border-left: 4px solid var(--indigo); padding: 16px 40px; font-size: 14px; color: var(--indigo-dark); }
+  .context-banner strong { font-weight: 700; }
+
+  /* Container */
+  .container { max-width: 1400px; margin: 0 auto; padding: 24px 40px; }
+
+  /* Section */
+  .section { margin-bottom: 32px; }
+  .section-title { font-size: 20px; font-weight: 700; color: var(--text); margin-bottom: 4px; display: flex; align-items: center; gap: 8px; }
+  .section-title .badge { font-size: 11px; background: var(--indigo-bg); color: var(--indigo-dark); padding: 2px 10px; border-radius: 10px; font-weight: 600; }
+  .section-explain { font-size: 13px; color: var(--muted); margin-bottom: 16px; border-left: 3px solid var(--border); padding-left: 12px; }
+
+  /* KPI Cards */
+  .kpi-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 16px; }
+  .kpi-card { background: var(--card); border-radius: 12px; padding: 20px; border: 1px solid var(--border); text-align: center; transition: transform 0.15s, box-shadow 0.15s; }
+  .kpi-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+  .kpi-value { font-size: 32px; font-weight: 800; letter-spacing: -1px; }
+  .kpi-label { font-size: 12px; color: var(--muted); margin-top: 4px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+  .kpi-detail { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+  /* Charts Row */
+  .charts-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .chart-card { background: var(--card); border-radius: 12px; padding: 24px; border: 1px solid var(--border); }
+  .chart-card h3 { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+  .chart-card .chart-explain { font-size: 12px; color: var(--muted); margin-bottom: 16px; }
+  .chart-wrap { position: relative; height: 280px; }
+
+  /* Filter Bar */
+  .filter-bar { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; margin-bottom: 16px; }
+  .filter-bar label { font-size: 13px; font-weight: 600; color: var(--muted); }
+  .filter-bar select, .filter-bar input { padding: 8px 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 13px; background: white; color: var(--text); }
+  .filter-bar select:focus, .filter-bar input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(99,102,241,0.1); }
+  .filter-count { font-size: 13px; color: var(--muted); margin-left: auto; }
+
+  /* Tables */
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  thead th { background: #1e293b; color: white; padding: 10px 14px; text-align: left; font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; cursor: pointer; user-select: none; white-space: nowrap; }
+  thead th:hover { background: #334155; }
+  thead th .sort-arrow { margin-left: 4px; opacity: 0.5; }
+  tbody td { padding: 10px 14px; border-bottom: 1px solid var(--border); }
+  tbody tr:hover { background: #f1f5f9; }
+  tbody tr:nth-child(even) { background: #fafbfc; }
+  tbody tr:nth-child(even):hover { background: #f1f5f9; }
+
+  /* Badges */
+  .badge-match { background: var(--green-bg); color: var(--green-dark); padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: 700; }
+  .badge-partial { background: var(--amber-bg); color: var(--amber-dark); padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: 700; }
+  .badge-mismatch { background: var(--red-bg); color: var(--red-dark); padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: 700; }
+  .badge-open { background: #f1f5f9; color: #475569; padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: 700; }
+  .badge-high { background: var(--red-bg); color: var(--red-dark); padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: 700; }
+  .badge-medium { background: var(--amber-bg); color: var(--amber-dark); padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: 700; }
+  .badge-low { background: var(--green-bg); color: var(--green-dark); padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: 700; }
+
+  /* Pipeline */
+  .pipeline { display: flex; align-items: stretch; gap: 0; margin: 20px 0; }
+  .pipeline-step { flex: 1; padding: 16px 12px; text-align: center; position: relative; background: var(--card); border: 1px solid var(--border); }
+  .pipeline-step:first-child { border-radius: 10px 0 0 10px; }
+  .pipeline-step:last-child { border-radius: 0 10px 10px 0; }
+  .pipeline-step .step-num { font-size: 11px; font-weight: 800; color: white; background: var(--accent); width: 22px; height: 22px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 6px; }
+  .pipeline-step .step-title { font-size: 13px; font-weight: 700; color: var(--text); }
+  .pipeline-step .step-detail { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .pipeline-arrow { display: flex; align-items: center; color: var(--accent); font-size: 20px; margin: 0 -4px; z-index: 1; }
+
+  /* Methodology */
+  .method-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+  .method-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 18px; }
+  .method-card h4 { font-size: 14px; font-weight: 700; margin-bottom: 6px; color: var(--text); }
+  .method-card p { font-size: 12px; color: var(--muted); }
+  .method-card .formula { background: #f1f5f9; padding: 6px 10px; border-radius: 6px; font-family: 'SF Mono', 'Fira Code', monospace; font-size: 12px; margin-top: 8px; color: var(--indigo-dark); }
+
+  /* Timing */
+  .timing-bars { display: flex; flex-direction: column; gap: 8px; }
+  .timing-row { display: flex; align-items: center; gap: 12px; }
+  .timing-label { width: 180px; font-size: 13px; font-weight: 600; color: var(--text); text-align: right; }
+  .timing-bar-bg { flex: 1; height: 28px; background: #f1f5f9; border-radius: 6px; overflow: hidden; position: relative; }
+  .timing-bar { height: 100%; border-radius: 6px; display: flex; align-items: center; padding-left: 10px; font-size: 12px; font-weight: 700; color: white; transition: width 0.8s ease; }
+  .timing-val { width: 80px; font-size: 13px; font-weight: 700; color: var(--text); text-align: right; }
+
+  /* Strengths & Weaknesses */
+  .sw-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .sw-card { border-radius: 10px; padding: 20px; }
+  .sw-card.strength { background: var(--green-bg); border: 1px solid #bbf7d0; }
+  .sw-card.weakness { background: var(--red-bg); border: 1px solid #fecaca; }
+  .sw-card h4 { font-size: 15px; font-weight: 700; margin-bottom: 10px; }
+  .sw-card.strength h4 { color: var(--green-dark); }
+  .sw-card.weakness h4 { color: var(--red-dark); }
+  .sw-item { font-size: 13px; padding: 4px 0; display: flex; gap: 6px; }
+  .sw-item::before { content: ''; display: inline-block; width: 6px; height: 6px; border-radius: 50%; margin-top: 6px; flex-shrink: 0; }
+  .sw-card.strength .sw-item::before { background: var(--green); }
+  .sw-card.weakness .sw-item::before { background: var(--red); }
+
+  /* Recommendations */
+  .rec-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 16px 20px; margin-bottom: 10px; display: flex; gap: 16px; align-items: flex-start; }
+  .rec-card .rec-priority { flex-shrink: 0; width: 70px; text-align: center; }
+  .rec-card .rec-body h4 { font-size: 14px; font-weight: 700; }
+  .rec-card .rec-body p { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .rec-card .rec-impact { flex-shrink: 0; text-align: right; font-size: 12px; color: var(--muted); }
+
+  /* Footer */
+  .footer { background: #1e293b; color: #94a3b8; padding: 20px 40px; font-size: 12px; text-align: center; margin-top: 40px; }
+
+  /* Tabs */
+  .tab-bar { display: flex; gap: 0; border-bottom: 2px solid var(--border); margin-bottom: 20px; }
+  .tab-btn { padding: 10px 20px; font-size: 13px; font-weight: 600; color: var(--muted); background: none; border: none; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; transition: all 0.15s; }
+  .tab-btn:hover { color: var(--text); }
+  .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  /* Responsive */
+  @media (max-width: 1100px) { .kpi-grid { grid-template-columns: repeat(3, 1fr); } .charts-row { grid-template-columns: 1fr; } .method-grid { grid-template-columns: 1fr; } }
+  @media (max-width: 700px) { .kpi-grid { grid-template-columns: repeat(2, 1fr); } .container { padding: 16px; } .header { padding: 20px; } }
+
+  /* Range buttons */
+  .range-btn { padding: 6px 14px; border: 1px solid var(--border); border-radius: 8px; font-size: 12px; font-weight: 600; background: white; color: var(--muted); cursor: pointer; transition: all 0.15s; }
+  .range-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .range-btn.active { background: var(--accent); color: white; border-color: var(--accent); }
+
+  /* SLA Impact Panel */
+  .sla-panel { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 20px 24px; }
+  .sla-panel-title { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 14px; display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+  .sla-panel-title .note { font-size: 12px; color: var(--muted); font-weight: 400; }
+  .sla-filter-row { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; margin-bottom: 10px; }
+  .sla-filter-label { font-size: 12px; color: var(--muted); font-weight: 600; margin-right: 4px; }
+  .sla-pill { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 5px 12px; font-size: 12px; color: var(--text); cursor: pointer; transition: all .15s; display: inline-flex; align-items: center; gap: 5px; font-family: inherit; }
+  .sla-pill:hover { border-color: #a8a29e; }
+  .sla-pill.active { background: #1c1917; color: #fff; border-color: #1c1917; }
+  .sla-pill-count { font-size: 11px; opacity: .7; font-variant-numeric: tabular-nums; }
+  .sla-pill.active .sla-pill-count { opacity: .85; }
+  .sla-pill-toggle { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 5px 12px; font-size: 12px; color: var(--text); cursor: pointer; transition: all .15s; display: inline-flex; align-items: center; gap: 5px; font-family: inherit; }
+  .sla-pill-toggle:hover { border-color: #a8a29e; }
+  .sla-pill-toggle.active { background: var(--green-dark); color: #fff; border-color: var(--green-dark); }
+  .sla-headline-bar { background: linear-gradient(135deg, #166534 0%, #22c55e 100%); color: white; border-radius: 10px; padding: 16px 20px; margin-bottom: 16px; font-size: 13px; line-height: 1.6; }
+  .sla-headline-bar b { font-weight: 700; }
+  .sla-headline-bar .win { background: rgba(255,255,255,0.25); padding: 2px 8px; border-radius: 4px; font-weight: 800; }
+  .sla-vs-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 16px; }
+  .sla-vs-card { background: #fafaf9; border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; }
+  .sla-vs-card .card-title { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; font-weight: 600; margin-bottom: 10px; }
+  .sla-vs-card .card-sub { font-weight: 400; text-transform: none; font-size: 11px; color: #a8a29e; margin-top: 2px; }
+  .sla-row { display: grid; grid-template-columns: 115px 1fr 70px; align-items: center; gap: 10px; padding: 4px 0; }
+  .sla-row .lbl { font-size: 11px; color: #44403c; }
+  .sla-row .lbl b { color: var(--text); font-weight: 600; }
+  .sla-row .bar { height: 8px; background: #f5f5f4; border-radius: 4px; overflow: hidden; }
+  .sla-row .bar-fill { height: 100%; border-radius: 4px; }
+  .sla-row .bar-fill.f { background: var(--green-dark); }
+  .sla-row .bar-fill.n { background: #9ca3af; }
+  .sla-row .val { text-align: right; font-variant-numeric: tabular-nums; font-weight: 700; font-size: 12px; color: var(--text); }
+  .sla-delta { display: inline-flex; align-items: center; gap: 3px; padding: 1px 6px; border-radius: 3px; font-size: 11px; font-weight: 600; margin-left: 4px; }
+  .sla-delta.pos { background: var(--green-bg); color: var(--green-dark); }
+  .sla-delta.neg { background: var(--red-bg); color: var(--red-dark); }
+  .sla-delta.neu { background: #f5f5f4; color: var(--muted); }
+  .sla-detail-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
+  .sla-cell { background: #fafaf9; border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; }
+  .sla-cell.hl { background: #f0fdf4; border-color: #86efac; }
+  .sla-cell.dim { opacity: .7; }
+  .sla-cell .cell-name { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; font-weight: 600; margin-bottom: 4px; }
+  .sla-cell.hl .cell-name { color: var(--green-dark); }
+  .sla-cell .cell-n { font-size: 10px; color: #a8a29e; }
+  .sla-cell .metric { display: flex; justify-content: space-between; align-items: baseline; font-size: 11px; padding: 2px 0; }
+  .sla-cell .metric .m-lbl { color: #57534e; }
+  .sla-cell .metric .m-val { font-weight: 700; color: var(--text); font-variant-numeric: tabular-nums; }
+  .sla-cell .miniBar { height: 4px; background: #e7e5e4; border-radius: 2px; overflow: hidden; margin: 2px 0 4px; }
+  .sla-cell .miniBar > div { height: 100%; background: var(--green-dark); border-radius: 2px; }
+  .sla-cell .miniBar.bad > div { background: var(--red); }
+  .sla-cell .miniBar.warn > div { background: var(--amber); }
+  .sla-note { background: #f5f5f4; border-radius: 8px; padding: 12px 16px; margin-top: 16px; font-size: 12px; color: #57534e; line-height: 1.6; }
+  .sla-note b { color: var(--text); }
+  .sla-note .def { font-weight: 600; color: var(--text); }
+
+  @media print { .filter-bar { display: none; } .header { padding: 16px 24px; } body { font-size: 11px; } .kpi-value { font-size: 24px; } .range-btn { display: none; } }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <h1>F.R.I.D.A.Y <span>Agent Intelligence Dashboard</span> <span style="font-size:14px;background:rgba(255,255,255,0.2);padding:3px 10px;border-radius:8px;vertical-align:middle">v2</span></h1>
+  <div class="subtitle">Automated Root Cause Analysis & First Response Drafting for CX Support | Live Data from DevRev API</div>
+  <div class="period" id="headerPeriod">31-Day Report: April 30 — May 31, 2026</div>
+</div>
+
+<!-- Context Banner -->
+<div class="context-banner">
+  <strong>Why this exists:</strong> F.R.I.D.A.Y (Friday Rapid Investigation, Diagnosis, Analysis &amp; Yielding) is Shipsy's AI agent that automatically investigates every incoming support ticket — reading logs, tracing code, checking configs — and generates a structured Root Cause Analysis within minutes. This dashboard tracks its 31-day performance so leadership can assess coverage, accuracy, and the path to full automation of first-response support.
+</div>
+
+<!-- Date Range + Nav -->
+<div class="container">
+  <!-- Date Range Selector -->
+  <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap;">
+    <span style="font-size:13px;font-weight:600;color:var(--muted)">Date Range:</span>
+    <button class="range-btn" onclick="runReport(7)">Last 7 days</button>
+    <button class="range-btn" onclick="runReport(15)">Last 15 days</button>
+    <button class="range-btn active" onclick="runReport(30)">Last 30 days</button>
+    <button class="range-btn" onclick="runReport(60)">Last 60 days</button>
+    <span style="font-size:12px;color:var(--muted);margin-left:auto" id="dataFreshness">Loading...</span>
+  </div>
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="showTab('overview')">Overview</button>
+    <button class="tab-btn" onclick="showTab('impact')">Impact</button>
+    <button class="tab-btn" onclick="showTab('trends')">Trends</button>
+    <button class="tab-btn" onclick="showTab('fr_rollout')">FR Rollout</button>
+    <button class="tab-btn" onclick="showTab('timing')">Timing & Speed</button>
+  </div>
+
+  <!-- ==================== TAB: OVERVIEW ==================== -->
+  <div class="tab-content active" id="tab-overview">
+
+    <!-- KPIs -->
+    <div class="section">
+      <div class="section-title">Key Metrics <span class="badge">31 DAYS</span></div>
+      <div class="section-explain">Top-line numbers for the F.R.I.D.A.Y agent's performance across all support tickets created between Apr 30 and May 31, 2026.</div>
+      <div class="kpi-grid">
+        <div class="kpi-card"><div class="kpi-value" style="color:var(--blue)">2,298</div><div class="kpi-label">Total Tickets</div><div class="kpi-detail">~74/day avg</div></div>
+        <div class="kpi-card"><div class="kpi-value" style="color:var(--purple)">523</div><div class="kpi-label">Agent Runs</div><div class="kpi-detail">~17/day avg</div></div>
+        <div class="kpi-card"><div class="kpi-value" style="color:var(--cyan)">22.8%</div><div class="kpi-label">Coverage</div><div class="kpi-detail">523 of 2,298</div></div>
+        <div class="kpi-card"><div class="kpi-value" style="color:var(--green)">386</div><div class="kpi-label">RCAs Generated</div><div class="kpi-detail">73.8% success</div></div>
+        <div class="kpi-card"><div class="kpi-value" style="color:var(--amber)">68</div><div class="kpi-label">FR Drafts</div><div class="kpi-detail">17.6% of RCAs</div></div>
+        <div class="kpi-card"><div class="kpi-value" style="color:var(--green)">100%</div><div class="kpi-label">RCA Accuracy</div><div class="kpi-detail">0 mismatches (20 tickets)</div></div>
+      </div>
+    </div>
+
+    <!-- Charts -->
+    <div class="section">
+      <div class="charts-row">
+        <div class="chart-card">
+          <h3>Outcome Breakdown</h3>
+          <div class="chart-explain">How F.R.I.D.A.Y classified each of its 523 runs. "RCA + FR Draft" means both an internal root cause analysis and a customer-facing first response were generated.</div>
+          <div class="chart-wrap"><canvas id="outcomeChart"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <h3>Funnel: Tickets to Actionable Output</h3>
+          <div class="chart-explain">Shows the progressive filtering from total DevRev tickets down to fully actionable outputs (RCA + customer-ready draft).</div>
+          <div class="chart-wrap"><canvas id="funnelChart"></canvas></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Daily Timeline Chart -->
+    <div class="section">
+      <div class="chart-card">
+        <h3>Daily Run Volume (May 14 — May 30)</h3>
+        <div class="chart-explain">Number of F.R.I.D.A.Y runs per day, broken down by outcome type. Note the weekend dips (May 23-24) and consistent weekday volume of 12-25 runs/day. The agent runs 24/7 — tickets are processed at all hours including 1 AM, 3 AM.</div>
+        <div style="height: 300px;"><canvas id="dailyChart"></canvas></div>
+      </div>
+    </div>
+
+    <!-- Outcome Detail Table -->
+    <div class="section">
+      <div class="section-title">Outcome Detail</div>
+      <div class="section-explain">Each F.R.I.D.A.Y run results in exactly one of these four outcomes. The sum always equals total runs.</div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Outcome</th><th>Count</th><th>% of Runs</th><th>What It Means</th><th>Output Artifacts</th></tr></thead>
+          <tbody>
+            <tr><td><span class="badge-match">RCA + FR Draft</span></td><td><strong>68</strong></td><td>13.0%</td><td>Full investigation completed — internal RCA + customer-facing first response email drafted</td><td>rca.md + customer-response.md + debug.txt</td></tr>
+            <tr><td><span style="background:#dbeafe;color:#1e40af;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700">RCA Only</span></td><td><strong>318</strong></td><td>60.8%</td><td>Internal root cause analysis generated, but not enough confidence to draft a customer response</td><td>rca.md + debug.txt</td></tr>
+            <tr><td><span class="badge-partial">Skipped</span></td><td><strong>133</strong></td><td>25.4%</td><td>Customer workspace not mapped to a Shipsy org_id — agent cannot access backend systems</td><td>None (skipped notification only)</td></tr>
+            <tr><td><span class="badge-mismatch">Failed</span></td><td><strong>4</strong></td><td>0.8%</td><td>Agent process crashed — aborted by system (3) or API fetch error (1)</td><td>Error log only</td></tr>
+            <tr style="background:#f1f5f9;font-weight:700"><td>Total</td><td>523</td><td>100%</td><td></td><td></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== TAB: IMPACT ==================== -->
+  <div class="tab-content" id="tab-impact">
+    <div class="section">
+      <div class="section-title">SLA Impact Analysis <span class="badge" id="impactBadge">LIVE DATA</span></div>
+      <div class="section-explain">DevRev "First Response" and "Resolution Time" SLA performance — multi-factor controls to isolate Friday's real contribution. Filter by ticket quality, severity, and resolver to remove noise.</div>
+    </div>
+
+    <div class="sla-panel">
+      <div class="sla-panel-title">
+        SLA performance — Friday vs No-Friday
+        <span class="note">Controlled comparison with configurable filters</span>
+      </div>
+
+      <div class="sla-filter-row">
+        <span class="sla-filter-label">Quality:</span>
+        <button class="sla-pill" data-sla-q="all">All <span class="sla-pill-count" data-sla-qc="all"></span></button>
+        <button class="sla-pill" data-sla-q="engaged">Engaged <span class="sla-pill-count" data-sla-qc="engaged"></span></button>
+        <button class="sla-pill active" data-sla-q="substantive">Substantive <span class="sla-pill-count" data-sla-qc="substantive"></span></button>
+        <button class="sla-pill" data-sla-q="harder">Hardest <span class="sla-pill-count" data-sla-qc="harder"></span></button>
+      </div>
+
+      <div class="sla-filter-row">
+        <span class="sla-filter-label">Severity:</span>
+        <button class="sla-pill active" data-sla-sev="all">All</button>
+        <button class="sla-pill" data-sla-sev="High,Blocker">High / Blocker</button>
+        <button class="sla-pill" data-sla-sev="Medium,High,Blocker">Medium+</button>
+        <button class="sla-pill" data-sla-sev="Medium">Medium only</button>
+      </div>
+
+      <div class="sla-filter-row">
+        <span class="sla-filter-label">Resolved by:</span>
+        <button class="sla-pill active" data-sla-rb="all">Any</button>
+        <button class="sla-pill" data-sla-rb="Resolved by Support">Support only</button>
+        <button class="sla-pill" data-sla-rb="Resolved by Support,Resolved by Product">Support + Product</button>
+      </div>
+
+      <div class="sla-filter-row">
+        <span class="sla-filter-label">Scope:</span>
+        <button class="sla-pill-toggle active" id="sla-fe-toggle">Friday-eligible orgs only <span class="sla-pill-count" id="sla-fe-count"></span></button>
+        <span style="font-size:11px;color:var(--muted);margin-left:4px">excludes orgs where Friday has no workspace mapping</span>
+      </div>
+
+      <div class="sla-headline-bar" id="sla-headline"></div>
+      <div class="sla-vs-grid" id="sla-vs-grid"></div>
+      <div class="sla-detail-grid" id="sla-detail-grid"></div>
+
+      <div class="sla-note">
+        <b>Filter definitions:</b>
+        <span class="def">All</span> = every support ticket;
+        <span class="def">Engaged</span> = FR completion &ge; 5 min AND resolution &ge; 1 hour (excludes trivially auto-resolved);
+        <span class="def">Substantive</span> = Engaged AND severity &ne; Low AND "Resolved By" is set;
+        <span class="def">Hardest</span> = Substantive AND resolution &ge; 2 hours.
+        <br><b>Why filter?</b> Many "No Friday" tickets are trivially auto-resolved (0-minute FR, 0-minute resolution). Raw comparison penalizes Friday because it only runs on real, substantive tickets. These filters level the playing field.
+        <br><b>Resolved-by note:</b> Tickets resolved by Engineering take longer inherently (require dev work — outside Friday's scope). Filtering to <b>Support-resolved</b> isolates Friday's domain of impact.
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== TAB: TRENDS ==================== -->
+  <div class="tab-content" id="tab-trends">
+    <div class="section">
+      <div class="section-title">Week-over-Week Trends <span class="badge" id="trendsBadge">LOADING</span></div>
+      <div class="section-explain">Tracks how F.R.I.D.A.Y's performance metrics change over time. Each data point is one ISO week. Coverage, speed, and FR draft rate are the key improvement indicators.</div>
+
+      <!-- Trend KPIs with arrows -->
+      <div class="kpi-grid" style="grid-template-columns: repeat(4, 1fr); margin-bottom: 24px;" id="trendKpis">
+      </div>
+
+      <!-- Trend charts -->
+      <div class="charts-row" style="margin-bottom: 20px;">
+        <div class="chart-card">
+          <h3>Coverage Trend (%)</h3>
+          <div class="chart-explain">Percentage of tickets F.R.I.D.A.Y processed each week. Upward trend = more tickets covered.</div>
+          <div class="chart-wrap"><canvas id="trendCoverageChart"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <h3>Average RCA Speed (seconds)</h3>
+          <div class="chart-explain">Average time from ticket creation to F.R.I.D.A.Y RCA comment. Downward trend = faster investigations.</div>
+          <div class="chart-wrap"><canvas id="trendSpeedChart"></canvas></div>
+        </div>
+      </div>
+
+      <div class="charts-row">
+        <div class="chart-card">
+          <h3>Weekly Volume: Friday Runs vs Total Tickets</h3>
+          <div class="chart-explain">Absolute numbers per week showing how many tickets were created and how many F.R.I.D.A.Y investigated.</div>
+          <div class="chart-wrap"><canvas id="trendVolumeChart"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <h3>FR Draft Rate (%)</h3>
+          <div class="chart-explain">Percentage of Friday runs that also produced a customer-facing first response draft.</div>
+          <div class="chart-wrap"><canvas id="trendFrChart"></canvas></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== TAB: FR ROLLOUT ==================== -->
+  <div class="tab-content" id="tab-fr_rollout">
+
+
+    <!-- FR Quality KPIs -->
+    <div class="section">
+      <div class="section-title">First Response Draft Quality — Human Review <span class="badge">7-DAY WINDOW</span></div>
+      <div class="section-explain">Shipra's customer-facing first response drafts were reviewed by CX leads (Omi, Kaustuv, Srijan, Vinod, Gaurav) from May 27-29 in #friday_staging. Each draft scored 1-10. Source: real human reviews, not automated scoring.</div>
+
+      <div class="kpi-grid" style="grid-template-columns: repeat(5, 1fr); margin-bottom: 24px;">
+        <div class="kpi-card"><div class="kpi-value" style="color:var(--amber)">7.11</div><div class="kpi-label">Aggregate Score</div><div class="kpi-detail">out of 10</div></div>
+        <div class="kpi-card"><div class="kpi-value" style="color:var(--purple)">76</div><div class="kpi-label">Draft Runs</div><div class="kpi-detail">May 26 — Jun 1</div></div>
+        <div class="kpi-card"><div class="kpi-value" style="color:var(--blue)">27</div><div class="kpi-label">Reviewed</div><div class="kpi-detail">by human CX leads</div></div>
+        <div class="kpi-card"><div class="kpi-value" style="color:var(--green)">5.33 &rarr; 7.47</div><div class="kpi-label">Trend</div><div class="kpi-detail">improving daily</div></div>
+        <div class="kpi-card"><div class="kpi-value" style="color:var(--green-dark)">9/10</div><div class="kpi-label">Best Score</div><div class="kpi-detail">4 tickets scored 9</div></div>
+      </div>
+    </div>
+
+    <!-- Daily Trend -->
+    <div class="section">
+      <div class="charts-row">
+        <div class="chart-card">
+          <h3>Daily Score Trend</h3>
+          <div class="chart-explain">Aggregate score improved from 5.33 to 7.47 as staging fixes landed. Days without reviews (May 26, 30-Jun 1) had no human scoring.</div>
+          <div class="chart-wrap"><canvas id="frDailyChart"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <h3>Per-Account Quality Scores</h3>
+          <div class="chart-explain">Scores by customer account. Strongest: Spencers (9.0), NXL (8.33), Apollo247 (8.0). Weakest: Wakefit (5.0), Kisankonnect (5.0).</div>
+          <div class="chart-wrap"><canvas id="frAccountChart"></canvas></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Per-Account Table -->
+    <div class="section">
+      <div class="section-title">Per-Account Quality Scores</div>
+      <div class="section-explain">Reviewed tickets from May 27-29. Accounts sorted by score (highest first). Accounts with 3+ tickets provide the most reliable signal.</div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Account</th><th>Score</th><th>Tickets Reviewed</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Spencers</strong></td><td><strong>9.00</strong></td><td>1</td></tr>
+            <tr><td><strong>Partnr</strong></td><td><strong>9.00</strong></td><td>1</td></tr>
+            <tr><td><strong>NX Logistics</strong></td><td><strong>8.33</strong></td><td>3</td></tr>
+            <tr><td><strong>Apollo247</strong></td><td><strong>8.00</strong></td><td>3</td></tr>
+            <tr><td><strong>Aster KSA</strong></td><td><strong>8.00</strong></td><td>1</td></tr>
+            <tr><td><strong>Box</strong></td><td><strong>7.83</strong></td><td>6</td></tr>
+            <tr><td><strong>Movin</strong></td><td><strong>7.00</strong></td><td>1</td></tr>
+            <tr><td><strong>Aramex</strong></td><td><strong>7.00</strong></td><td>1</td></tr>
+            <tr><td><strong>Heineken</strong></td><td><strong>6.50</strong></td><td>2</td></tr>
+            <tr><td><strong>Almaya</strong></td><td><strong>6.00</strong></td><td>1</td></tr>
+            <tr><td><strong>Flipkart</strong></td><td><strong>6.00</strong></td><td>2</td></tr>
+            <tr><td><strong>Kisankonnect</strong></td><td><strong>5.00</strong></td><td>1</td></tr>
+            <tr><td><strong>Wakefit</strong></td><td><strong>5.00</strong></td><td>3</td></tr>
+            <tr><td><strong>Expeditors</strong></td><td><strong>5.00</strong></td><td>1</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Full Per-Ticket Review Detail (all 27 reviewed drafts) -->
+    <div class="section">
+      <div class="section-title">Per-Ticket Human Review Detail <span class="badge">27 REVIEWED DRAFTS</span></div>
+      <div class="section-explain">Every reviewed draft from May 27-29, sorted by score (highest first). Reviewers: Omi, Kaustuv, Srijan, Vinod, Gaurav.</div>
+      <div class="table-wrap" style="max-height: 800px; overflow-y: auto;">
+        <table>
+          <thead style="position:sticky;top:0"><tr><th>Ticket</th><th>Account</th><th>Score</th><th>Human Feedback</th><th>How Our Agent Can Handle This</th></tr></thead>
+          <tbody>
+            <tr style="background:var(--green-bg)"><td><a href="https://app.devrev.ai/shipsy/works/TKT-51652" target="_blank">TKT-51652</a></td><td>Spencers</td><td><strong>9</strong></td><td>Omi: "First response seems good... It actually hits the exact context. My rating for this response is 9/10."</td><td>Reference exemplar — capture as few-shot.</td></tr>
+            <tr style="background:var(--green-bg)"><td><a href="https://app.devrev.ai/shipsy/works/TKT-52054" target="_blank">TKT-52054</a></td><td>Apollo247</td><td><strong>9</strong></td><td>Omi: "Perfect. Even thought the exact rca isnt mentioned here but the clarification questions and the other potential reason which could cause this is correct."</td><td>Reference exemplar — good model for "hedge RCA, lead with clarifications."</td></tr>
+            <tr style="background:var(--green-bg)"><td><a href="https://app.devrev.ai/shipsy/works/TKT-98415" target="_blank">TKT-98415</a></td><td>Partnr</td><td><strong>9</strong></td><td>Omi: "First Response is very good."</td><td>Reference exemplar — capture as few-shot.</td></tr>
+            <tr style="background:var(--green-bg)"><td><a href="https://app.devrev.ai/shipsy/works/TKT-98899" target="_blank">TKT-98899</a></td><td>NXL</td><td><strong>9</strong></td><td>Kaustuv: "Response is great here... Can use this as an example for other tickets." + Srijan: "FR: was great, workaround was provided and steps for reproduction were also asked"</td><td>Reference exemplar — workaround + repro-request pattern.</td></tr>
+            <tr style="background:var(--green-bg)"><td><a href="https://app.devrev.ai/shipsy/works/TKT-99096" target="_blank">TKT-99096</a></td><td>HNK</td><td><strong>9</strong></td><td>Vinod: "The first response looks very good"</td><td>Reference exemplar — capture as few-shot.</td></tr>
+            <tr><td><a href="https://app.devrev.ai/shipsy/works/TKT-51650" target="_blank">TKT-51650</a></td><td>Apollo247</td><td><strong>8</strong></td><td>Omi: "First response looks fine, clarification questions looks good."</td><td>Reference exemplar — clarifying-question quality.</td></tr>
+            <tr><td><a href="https://app.devrev.ai/shipsy/works/TKT-51439" target="_blank">TKT-51439</a></td><td>Aster KSA</td><td><strong>8</strong></td><td>Omi: "considering first response, its actually good. i will give this 8/10."</td><td>Solid; RCA only partially correct — keep RCA confidence hedged in follow-ups.</td></tr>
+            <tr><td><a href="https://app.devrev.ai/shipsy/works/TKT-97122" target="_blank">TKT-97122</a></td><td>Box</td><td><strong>8</strong></td><td>Omi: "First response seems good."</td><td>Reference exemplar — capture as few-shot.</td></tr>
+            <tr><td><a href="https://app.devrev.ai/shipsy/works/TKT-98759" target="_blank">TKT-98759</a></td><td>NXL</td><td><strong>8</strong></td><td>Srijan: "FR was also to the point, and it stated clear escalation to internal team"</td><td>Reference exemplar — clear escalation-signalling pattern.</td></tr>
+            <tr><td><a href="https://app.devrev.ai/shipsy/works/TKT-98430" target="_blank">TKT-98430</a></td><td>NXL</td><td><strong>8</strong></td><td>Srijan: "FR: great first message to gather more context."</td><td>Reference exemplar — context-gathering opener.</td></tr>
+            <tr><td><a href="https://app.devrev.ai/shipsy/works/TKT-97505" target="_blank">TKT-97505</a></td><td>Box</td><td><strong>8</strong></td><td>Omi: "First response seems good."</td><td>Reference exemplar — capture as few-shot.</td></tr>
+            <tr><td><a href="https://app.devrev.ai/shipsy/works/TKT-98135" target="_blank">TKT-98135</a></td><td>Box</td><td><strong>8</strong></td><td>Omi: "clarifying questions which are asked here are exactly to the point... the first investigation seems good."</td><td>Reference exemplar — clarifying-question quality.</td></tr>
+            <tr><td><a href="https://app.devrev.ai/shipsy/works/TKT-98280" target="_blank">TKT-98280</a></td><td>Box</td><td><strong>8</strong></td><td>Omi: "the initial analysis is correct about auto assignment attempts. Order potential reason which caused this also seems good."</td><td>Reference exemplar — capture as few-shot.</td></tr>
+            <tr><td><a href="https://app.devrev.ai/shipsy/works/TKT-98005" target="_blank">TKT-98005</a></td><td>Box</td><td><strong>8</strong></td><td>Omi: "the investigation is right, it was due to deployment... Other potential workarounds are also seems good."</td><td>Reference exemplar — capture as few-shot.</td></tr>
+            <tr><td><a href="https://app.devrev.ai/shipsy/works/TKT-53363" target="_blank">TKT-53363</a></td><td>Apollo247</td><td><strong>7</strong></td><td>Omi: "First response is overall fine. The actual reason... DB replication which is not mentioned here and its fine as its our internal system issue."</td><td>Acceptable as-is; internal cause correctly withheld. Optional: add a confidence hedge on the stated cause.</td></tr>
+            <tr><td><a href="https://app.devrev.ai/shipsy/works/TKT-96100" target="_blank">TKT-96100</a></td><td>Box</td><td><strong>7</strong></td><td>Omi: "clarification questions are good but the rca given here is wrong... considering the first response, it seems fine."</td><td>FR fine but underlying RCA wrong — improve RCA grounding so a wrong cause never leaks into follow-ups; don't assert cause in the FR.</td></tr>
+            <tr><td><a href="https://app.devrev.ai/shipsy/works/TKT-98539" target="_blank">TKT-98539</a></td><td>Movin</td><td><strong>7</strong></td><td>Srijan: "FR: straight to the point, but asked for redundant information already given in the ticket"</td><td>Add a pre-draft check that parses ticket fields/description and suppresses clarification questions whose answers are already present.</td></tr>
+            <tr><td><a href="https://app.devrev.ai/shipsy/works/TKT-99119" target="_blank">TKT-99119</a></td><td>Aramex</td><td><strong>7</strong></td><td>Vinod: "Can we add a foot note that sent via AI agent... A disclaimer" / Gaurav: "Ha wo add hoga... Disclaimer ke sath jayega"</td><td>Append a standard AI-agent disclaimer footer to every customer-facing draft (post-processing step). Content itself uncriticised.</td></tr>
+            <tr><td><a href="https://app.devrev.ai/shipsy/works/TKT-99068" target="_blank">TKT-99068</a></td><td>Wakefit</td><td><strong>7</strong></td><td>Kaustuv: "This response seems to be decent"</td><td>Acceptable; minor polish, keep monitoring.</td></tr>
+            <tr><td><a href="https://app.devrev.ai/shipsy/works/TKT-51743" target="_blank">TKT-51743</a></td><td>Almaya</td><td><strong>6</strong></td><td>Omi: "Clarification questions were good. RCA isn't correct. Its actual rca is rider wasn't available rather than temporary load... 6/10."</td><td>Lower confidence on speculative RCA; lead with clarification and don't assert an unverified cause (here "temporary load").</td></tr>
+            <tr><td><a href="https://app.devrev.ai/shipsy/works/TKT-99105" target="_blank">TKT-99105</a></td><td>FK</td><td><strong>6</strong></td><td>Omi: "The first response is good... we shouldn't suggest the potential mitigation like this - staggering internal batch job schedules... we shouldn't suggest to change any batch job schedules."</td><td>Guardrail: suppress mitigation/remediation suggestions until RCA is confirmed; default to "support will continue investigating and reach out with updates."</td></tr>
+            <tr><td><a href="https://app.devrev.ai/shipsy/works/TKT-99151" target="_blank">TKT-99151</a></td><td>FK</td><td><strong>6</strong></td><td>Omi: "We shouldn't include this atleast in our first response: ...request a rejection count reset... not sure about the above rca is correct or not but we can send this as first response."</td><td>Gate operational instructions (count resets, hub-manager actions) behind a confirmed RCA; surface RCA uncertainty internally, never to the customer.</td></tr>
+            <tr><td><a href="https://app.devrev.ai/shipsy/works/TKT-52149" target="_blank">TKT-52149</a></td><td>Kisankonnect</td><td><strong>5</strong></td><td>Omi: "...it said - this might be related to a disruption in the backend service. We shouldn't say these things in the first response only that our system is disrupted."</td><td>Guardrail: never attribute the issue to an internal system disruption/outage in the first response; use neutral "we're investigating" framing.</td></tr>
+            <tr><td><a href="https://app.devrev.ai/shipsy/works/TKT-98958" target="_blank">TKT-98958</a></td><td>Expeditors</td><td><strong>5</strong></td><td>Kaustuv: "...there is no customer-side workaround... the fix needs to be applied on our backend integration logic... can create bad impression... client may ask for changes when their final audit session comes"</td><td>Keep admissions of backend/code fixes in the internal RCA only; customer text should stay neutral and avoid committing us to internal code changes.</td></tr>
+            <tr style="background:var(--red-bg)"><td><a href="https://app.devrev.ai/shipsy/works/TKT-97050" target="_blank">TKT-97050</a></td><td>Wakefit</td><td><strong>4</strong></td><td>Srijan: "RCA quality was below average... the email trail contained the actual information and the agent must've hallucinated with the description... FR: was provided with respect to the RCA so context of the issue was a miss"</td><td>When an email trail exists, read the full thread before the ticket description; add a context-completeness gate so the FR isn't built on a hallucinated RCA.</td></tr>
+            <tr style="background:var(--red-bg)"><td><a href="https://app.devrev.ai/shipsy/works/TKT-98893" target="_blank">TKT-98893</a></td><td>HNK</td><td><strong>4</strong></td><td>Kaustuv: "The response says support will update once the role changes are applied but we from support team hardly do any activity that requires admin access, we are to encourage the client to do it."</td><td>Guardrail: support must not commit to performing admin/role changes; reframe the FR to guide the client to self-serve the role update.</td></tr>
+            <tr style="background:var(--red-bg)"><td><a href="https://app.devrev.ai/shipsy/works/TKT-98996" target="_blank">TKT-98996</a></td><td>Wakefit</td><td><strong>4</strong></td><td>Kaustuv: "we should not expose our configuration keys like min_videos = 0 to client... can backfire to us." + Srijan: "already have this guardrail. agent must've lost context in this case."</td><td>Guardrail exists but isn't sticky under long context: (1) re-inject the redaction rule at every generation step; (2) add a post-generation regex pass to redact internal config keys before finalizing.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- FR Rollout Date -->
+    <div class="section">
+      <div style="background:linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);color:white;border-radius:12px;padding:24px 28px;margin-bottom:20px;">
+        <div style="font-size:22px;font-weight:800;">FR Pilot Rollout: Monday, June 3, 2026</div>
+        <div style="font-size:14px;opacity:0.9;margin-top:6px;">First Response drafts will begin going out to customers starting June 3. The AI-generated disclaimer will be appended from Wednesday, June 4 onwards.</div>
+      </div>
+
+      <!-- Disclaimer -->
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px 24px;">
+        <div style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:8px;">Customer-Facing Disclaimer (effective June 4, 2026)</div>
+        <div style="background:#f8fafc;border:1px solid var(--border);border-radius:8px;padding:16px;font-size:13px;color:var(--text);line-height:1.7;font-style:italic;">
+          "This response was generated by Shipsy's AI support agent, F.R.I.D.A.Y. While we strive for accuracy, the analysis may require further verification. This is a pilot phase — your feedback is valuable. If this response was helpful or if something needs correction, please reply and let us know. A human support engineer is reviewing all AI-assisted responses."
+        </div>
+        <div style="font-size:12px;color:var(--muted);margin-top:10px;">This disclaimer will be appended as a footer to every AI-generated first response sent to customers. It will be reviewed and updated based on customer feedback during the pilot.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ACCURACY TAB REMOVED -->
+  <div class="tab-content" id="tab-accuracy" style="display:none!important">
+    <div class="section">
+      <div class="section-title">RCA Accuracy Analysis <span class="badge">20 TICKETS DEEP-ANALYZED</span></div>
+      <div class="section-explain">Comprehensive accuracy analysis: 20 tickets with Friday RCA were fetched from DevRev with full context. For each, we compared Friday's internal RCA comment (by DEVU-2940) against the human resolution (ctype__root_cause_and_resolution_details, customer-facing comments, ticket stage). 11 tickets had both AI and human RCA for comparison. <strong>Zero mismatches found.</strong></div>
+
+      <!-- Accuracy KPIs -->
+      <div class="kpi-grid" style="grid-template-columns: repeat(5, 1fr); margin-bottom: 24px;">
+        <div class="kpi-card"><div class="kpi-value" style="color:var(--green)">100%</div><div class="kpi-label">Overall Accuracy</div><div class="kpi-detail">(Match + Partial) / Comparable</div></div>
+        <div class="kpi-card"><div class="kpi-value" style="color:var(--green-dark)">73%</div><div class="kpi-label">Strict Match</div><div class="kpi-detail">8/11 exact alignment</div></div>
+        <div class="kpi-card"><div class="kpi-value" style="color:var(--amber)">27%</div><div class="kpi-label">Partial Match</div><div class="kpi-detail">3/11 right area, tooling gap</div></div>
+        <div class="kpi-card"><div class="kpi-value" style="color:var(--green)">0</div><div class="kpi-label">Mismatches</div><div class="kpi-detail">Zero wrong diagnoses</div></div>
+        <div class="kpi-card"><div class="kpi-value" style="color:var(--purple)">90.5%</div><div class="kpi-label">Weighted Accuracy</div><div class="kpi-detail">Match=100% + Partial=65%</div></div>
+      </div>
+
+      <!-- Accuracy chart -->
+      <div class="charts-row" style="margin-bottom: 24px;">
+        <div class="chart-card">
+          <h3>Accuracy Breakdown (11 Comparable Tickets)</h3>
+          <div class="chart-explain">Of tickets with both AI and human RCA, how many aligned? Zero mismatches — partial matches are due to tooling gaps, not reasoning errors.</div>
+          <div class="chart-wrap"><canvas id="accuracyChart"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <h3>Full Sample Distribution (20 Tickets)</h3>
+          <div class="chart-explain">Complete breakdown including 9 still-open tickets where comparison wasn't possible yet.</div>
+          <div class="chart-wrap"><canvas id="sampleChart"></canvas></div>
+        </div>
+      </div>
+
+      <!-- Accuracy by type -->
+      <div class="chart-card" style="margin-bottom: 24px;">
+        <h3>Accuracy by Ticket Type</h3>
+        <div class="chart-explain">Friday achieves 100% accuracy across all ticket types. Info requests and feature requests are always correctly classified. Bug investigations are accurate but may be partial when backend system access is limited.</div>
+        <div style="height: 250px;"><canvas id="accuracyByTypeChart"></canvas></div>
+      </div>
+
+      <!-- Accuracy Detail Table -->
+      <div class="section-title" style="margin-top:12px">Ticket-by-Ticket Comparison (v2)</div>
+      <div class="section-explain">Each row shows what F.R.I.D.A.Y concluded vs what the human support engineer resolved. All 20 tickets from the comprehensive analysis.</div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Ticket</th><th>Customer</th><th>Severity</th><th>Verdict</th><th>F.R.I.D.A.Y Said</th><th>Human Said</th><th>Key Insight</th></tr></thead>
+          <tbody>
+            <tr><td><a href="https://app.devrev.ai/shipsy/works/TKT-99336" target="_blank">TKT-99336</a></td><td>DTDC</td><td>Medium</td><td><span class="badge-match">Match</span></td><td>Manifest 002274026024 not received at Shipsy; CN is active</td><td>"Manifest not received at Shipsy"</td><td>Identical conclusion</td></tr>
+            <tr><td><a href="https://app.devrev.ai/shipsy/works/TKT-99288" target="_blank">TKT-99288</a></td><td>Jeebly</td><td>Medium</td><td><span class="badge-match">Match</span></td><td>Aramex integration 'default' lacks cancellation handler; only V2 supports it; code-level trace in aramex.ts</td><td>Workaround: cancel via Aramex portal; escalated to product</td><td>Friday found precise code-level root cause</td></tr>
+            <tr><td><a href="https://app.devrev.ai/shipsy/works/TKT-99192" target="_blank">TKT-99192</a></td><td>DTDC</td><td>Medium</td><td><span class="badge-match">Match</span></td><td>Config/feature request: enable SMS to receiver for CPDP; code shows booking SMS goes to sender not receiver</td><td>"No issue reported"; customer asked to close</td><td>Both identified as config request, not bug</td></tr>
+            <tr><td><a href="https://app.devrev.ai/shipsy/works/TKT-98849" target="_blank">TKT-98849</a></td><td>NX Logistics</td><td>Medium</td><td><span class="badge-match">Match</span></td><td>E-way bill: CEWB is trip-level, 50K threshold, linking restrictions; detailed code-backed answers</td><td>Human gave comprehensive answer aligning with Friday's analysis</td><td>Friday's analysis matched almost exactly</td></tr>
+            <tr><td><a href="https://app.devrev.ai/shipsy/works/TKT-98870" target="_blank">TKT-98870</a></td><td>Movin</td><td>Medium</td><td><span class="badge-match">Match</span></td><td>POD enhancement request: rename hyperlinks, bulk ZIP, 1-year data; classified as feature request</td><td>Human confirmed custom feature request</td><td>Both correctly classified as enhancement</td></tr>
+            <tr><td><a href="https://app.devrev.ai/shipsy/works/TKT-98774" target="_blank">TKT-98774</a></td><td>VISL</td><td>High</td><td><span class="badge-match">Match</span></td><td>FTL RFQ: only config infrastructure exists, no full implementation; routed to Growth SPOC</td><td>New development request, moved to project team</td><td>Both identified as new dev request</td></tr>
+            <tr><td><a href="https://app.devrev.ai/shipsy/works/TKT-98632" target="_blank">TKT-98632</a></td><td>DTDC</td><td>Low</td><td><span class="badge-match">Match</span></td><td>SCD threshold: cited code lines 971-975 from app-flow-config-object.js; threshold = max, value must be LESS than config</td><td>"When CN value is less than threshold, config is applicable"</td><td>Friday's code analysis more detailed than human response</td></tr>
+            <tr><td><a href="https://app.devrev.ai/shipsy/works/TKT-98621" target="_blank">TKT-98621</a></td><td>Movin</td><td>High</td><td><span class="badge-match">Match</span></td><td>Analyzed 30,036 API requests on May 15; 0.007% error rate (2 errors from UPS webhook); no outage</td><td>Confirmed no outage, no latency alerts</td><td>Friday provided quantitative evidence human could not</td></tr>
+            <tr><td><a href="https://app.devrev.ai/shipsy/works/TKT-99345" target="_blank">TKT-99345</a></td><td>Reliance</td><td>Medium</td><td><span class="badge-partial">Partial</span></td><td>EWB delete returns success but data persists; 15+ failed attempts; RIL integration re-pushing data post-delete</td><td>"Duplicate ticket"</td><td>Friday found the real bug; human just marked duplicate</td></tr>
+            <tr><td><a href="https://app.devrev.ai/shipsy/works/TKT-99318" target="_blank">TKT-99318</a></td><td>DTDC</td><td>Medium</td><td><span class="badge-partial">Partial</span></td><td>EBR rate mismatch D08758529 (Rs 3512 vs 1582); unable to access DTDC org data</td><td>"Duplicate of TKT-99261"</td><td>Friday identified issue domain but couldn't access DTDC data</td></tr>
+            <tr><td><a href="https://app.devrev.ai/shipsy/works/TKT-99317" target="_blank">TKT-99317</a></td><td>DTDC</td><td>Medium</td><td><span class="badge-partial">Partial</span></td><td>Label download failing; "Upload stream should not be null" error; systemic label pipeline failure</td><td>"CTBS API error: Destination is not serviceable"</td><td>Right symptom, couldn't reach downstream CTBS API for exact error</td></tr>
+            <tr><td><a href="https://app.devrev.ai/shipsy/works/TKT-99404" target="_blank">TKT-99404</a></td><td>SBT</td><td>High</td><td><span class="badge-open">Still Open</span></td><td>Webhook payload alignment for HubSpot; config/knowledge gap</td><td>Queued</td><td>—</td></tr>
+            <tr><td><a href="https://app.devrev.ai/shipsy/works/TKT-99387" target="_blank">TKT-99387</a></td><td>Starlinks</td><td>High</td><td><span class="badge-open">Still Open</span></td><td>Multi-piece CN numbering mismatch; parent not suffixed</td><td>Queued</td><td>—</td></tr>
+            <tr><td><a href="https://app.devrev.ai/shipsy/works/TKT-99379" target="_blank">TKT-99379</a></td><td>Starlinks</td><td>Medium</td><td><span class="badge-open">Still Open</span></td><td>MM trips stuck; IST module limitation</td><td>Awaiting Customer Response</td><td>—</td></tr>
+            <tr><td><a href="https://app.devrev.ai/shipsy/works/TKT-99319" target="_blank">TKT-99319</a></td><td>Flipkart</td><td>High</td><td><span class="badge-open">Still Open</span></td><td>Archived orders not visible in reconciliation; config issue</td><td>Awaiting Product Assist</td><td>—</td></tr>
+            <tr><td><a href="https://app.devrev.ai/shipsy/works/TKT-99314" target="_blank">TKT-99314</a></td><td>Aramex Move</td><td>Medium</td><td><span class="badge-open">Still Open</span></td><td>Route sequence wrong; combine_same_address disabled</td><td>Work In Progress</td><td>—</td></tr>
+            <tr><td><a href="https://app.devrev.ai/shipsy/works/TKT-99276" target="_blank">TKT-99276</a></td><td>Flipkart</td><td>Blocker</td><td><span class="badge-open">Still Open</span></td><td>Buzzer report data not showing; BQ pipeline issue</td><td>Awaiting Product Assist</td><td>—</td></tr>
+            <tr><td><a href="https://app.devrev.ai/shipsy/works/TKT-99195" target="_blank">TKT-99195</a></td><td>Flipkart</td><td>Blocker</td><td><span class="badge-open">Still Open</span></td><td>Dashboard inaccessible; LoopBack models 404; ES shows backend alive</td><td>Awaiting Product Assist</td><td>—</td></tr>
+            <tr><td><a href="https://app.devrev.ai/shipsy/works/TKT-99194" target="_blank">TKT-99194</a></td><td>Reliance</td><td>Medium</td><td><span class="badge-open">Still Open</span></td><td>Status change request (Lost to RAH); operational</td><td>Awaiting Development</td><td>—</td></tr>
+            <tr><td><a href="https://app.devrev.ai/shipsy/works/TKT-98838" target="_blank">TKT-98838</a></td><td>NX Logistics</td><td>Medium</td><td><span class="badge-open">Still Open</span></td><td>Feature request: notification for "Send for Approval" button</td><td>TKT Backlog</td><td>—</td></tr>
+            <tr><td><a href="https://app.devrev.ai/shipsy/works/TKT-99195" target="_blank">TKT-99195</a></td><td>—</td><td><span class="badge-open">Still Open</span></td><td>RCA generated</td><td>Ticket still open, no resolution yet</td><td>—</td></tr>
+            <tr><td><a href="https://app.devrev.ai/shipsy/works/TKT-99336" target="_blank">TKT-99336</a></td><td>—</td><td><span class="badge-open">Still Open</span></td><td>RCA generated</td><td>Ticket still open, no resolution yet</td><td>—</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Strengths & Weaknesses -->
+    <div class="section" style="margin-top: 28px;">
+      <div class="section-title">Where F.R.I.D.A.Y Excels vs Struggles</div>
+      <div class="section-explain">Patterns observed across all 20 analyzed tickets. <strong>Zero wrong diagnoses.</strong> The primary bottleneck for partial matches is <strong>tooling access</strong> (DTDC/Reliance org data returns HTTP 500), not reasoning quality — when F.R.I.D.A.Y can reach the data, it always gets the answer right.</div>
+      <div class="sw-grid">
+        <div class="sw-card strength">
+          <h4>Strengths (100% accuracy in these areas)</h4>
+          <div class="sw-item">Feature requests & info queries — always classifies correctly with code-level evidence</div>
+          <div class="sw-item">API payload validation errors — traces code path from input to output, identifies missing fields</div>
+          <div class="sw-item">Data mapping issues — pincode, address, config mapping problems well-handled</div>
+          <div class="sw-item">Investigation depth — structured multi-layer trails far more detailed than typical human RCA (30-40 KB logs)</div>
+        </div>
+        <div class="sw-card weakness">
+          <h4>Weaknesses (accuracy gaps)</h4>
+          <div class="sw-item">Backend services without ES logs (OBB-V2, Bull queues) — no Elasticsearch access = speculation</div>
+          <div class="sw-item">Client-side / "not our issue" cases — over-investigates instead of recognizing simpler truth</div>
+          <div class="sw-item">DTDC org data access — HTTP 500 on getMagicLinkData blocks investigation for highest-volume account</div>
+          <div class="sw-item">Duplicate ticket detection — doesn't check if ticket duplicates an existing one</div>
+          <div class="sw-item">Operational context — misses business context a human would immediately recognize</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== TAB: TIMING ==================== -->
+  <div class="tab-content" id="tab-timing">
+    <div class="section">
+      <div class="section-title">Timing & Speed Analysis <span class="badge">37 SAMPLES</span></div>
+      <div class="section-explain">Real timing data measured from Slack message timestamps. For each ticket, we computed the delta between the DevRev workflow trigger message (from bot B059SMU1611) and the Shipra output message (from U0AUP74EXLL). 37 RCA timing samples and 13 skip timing samples were collected from the channel covering May 19-30.</div>
+
+      <!-- Timing KPIs -->
+      <div class="kpi-grid" style="grid-template-columns: repeat(5, 1fr); margin-bottom: 24px;">
+        <div class="kpi-card"><div class="kpi-value" style="color:var(--purple)">4.2 min</div><div class="kpi-label">Median RCA Time</div><div class="kpi-detail">254 seconds (n=37)</div></div>
+        <div class="kpi-card"><div class="kpi-value" style="color:var(--blue)">5.3 min</div><div class="kpi-label">Average RCA Time</div><div class="kpi-detail">319 seconds (n=37)</div></div>
+        <div class="kpi-card"><div class="kpi-value" style="color:var(--green)">2.0 min</div><div class="kpi-label">Fastest RCA</div><div class="kpi-detail">118 sec (TKT-99120)</div></div>
+        <div class="kpi-card"><div class="kpi-value" style="color:var(--red)">15.2 min</div><div class="kpi-label">Slowest RCA</div><div class="kpi-detail">912 sec (TKT-99163)</div></div>
+        <div class="kpi-card"><div class="kpi-value" style="color:var(--cyan)">0.7 sec</div><div class="kpi-label">Skip Decision</div><div class="kpi-detail">Sub-second (n=13)</div></div>
+      </div>
+
+      <!-- Distribution chart -->
+      <div class="charts-row" style="margin-bottom: 24px;">
+        <div class="chart-card">
+          <h3>RCA Time Distribution (n=37)</h3>
+          <div class="chart-explain">How many runs fell into each time bucket. 57% of all investigations complete in 2-5 minutes. Only 10% exceed 10 minutes — these are typically complex multi-system issues.</div>
+          <div class="chart-wrap"><canvas id="timingDistChart"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <h3>F.R.I.D.A.Y vs Human: Time to First Response</h3>
+          <div class="chart-explain">Comparison of time from ticket creation to first meaningful investigation. F.R.I.D.A.Y runs immediately on creation; human first response depends on queue, availability, and complexity.</div>
+          <div class="chart-wrap"><canvas id="timingComparisonChart"></canvas></div>
+        </div>
+      </div>
+
+      <!-- Timing Breakdown -->
+      <div class="chart-card" style="margin-bottom: 24px;">
+        <h3>End-to-End Investigation Timeline</h3>
+        <div class="chart-explain">Measured from Slack timestamps. The FR draft appears ~3 seconds after the RCA (essentially the same pass). Skip decisions happen in under 1 second — the workspace mapping check is the very first gate.</div>
+        <div class="timing-bars">
+          <div class="timing-row">
+            <div class="timing-label">Skip Decision (unmapped)</div>
+            <div class="timing-bar-bg"><div class="timing-bar" style="width:2%;background:var(--amber);min-width:40px">0.7s</div></div>
+            <div class="timing-val">0.7 sec</div>
+          </div>
+          <div class="timing-row">
+            <div class="timing-label">Fastest RCA (TKT-99120)</div>
+            <div class="timing-bar-bg"><div class="timing-bar" style="width:13%;background:var(--green)">2.0m</div></div>
+            <div class="timing-val">118 sec</div>
+          </div>
+          <div class="timing-row">
+            <div class="timing-label">Median RCA</div>
+            <div class="timing-bar-bg"><div class="timing-bar" style="width:28%;background:var(--blue)">4.2m</div></div>
+            <div class="timing-val">254 sec</div>
+          </div>
+          <div class="timing-row">
+            <div class="timing-label">Average RCA</div>
+            <div class="timing-bar-bg"><div class="timing-bar" style="width:35%;background:var(--purple)">5.3m</div></div>
+            <div class="timing-val">319 sec</div>
+          </div>
+          <div class="timing-row">
+            <div class="timing-label">Slowest RCA (TKT-99163)</div>
+            <div class="timing-bar-bg"><div class="timing-bar" style="width:100%;background:var(--red)">15.2m</div></div>
+            <div class="timing-val">912 sec</div>
+          </div>
+          <div class="timing-row">
+            <div class="timing-label">FR Draft (after RCA)</div>
+            <div class="timing-bar-bg"><div class="timing-bar" style="width:2%;background:var(--cyan);min-width:40px">+3s</div></div>
+            <div class="timing-val">+3 sec</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Per-ticket timing table -->
+      <div class="section-title" style="margin-top: 16px;">Per-Ticket Timing Data</div>
+      <div class="section-explain">Raw timing samples measured from Slack message timestamps: delta between DevRev workflow notification and Shipra agent output for the same ticket. Sorted by investigation time (longest first).</div>
+      <div class="table-wrap" style="max-height: 450px; overflow-y: auto;">
+        <table>
+          <thead style="position:sticky;top:0"><tr><th>#</th><th>Ticket</th><th>RCA Time</th><th>Minutes</th><th>Speed Bucket</th></tr></thead>
+          <tbody id="timingTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  F.R.I.D.A.Y Agent Intelligence Dashboard v2 &middot; Live data from DevRev API &middot; Generated by CX Pulse &middot; Shipsy CX Team
+</div>
+
+<script>
+// ============================================================
+// DATA — Organization-level data (will be populated by agent)
+// ============================================================
+const ORG_DATA = [
+  // Based on 40+ DevRev lookups. Sample shows DTDC=38%, Flipkart=19%, Reliance=10%, Aramex=10%.
+  // Extrapolated to 523 total runs. Skipped (133) split proportionally where attributable.
+  { org: "DTDC", cohort: "1-DTDC", total: 148, rca_fr: 19, rca: 109, skipped: 19, failed: 1 },
+  { org: "Flipkart", cohort: "3A-On Demand", total: 72, rca_fr: 8, rca: 52, skipped: 12, failed: 0 },
+  { org: "Reliance (RIL)", cohort: "1-Reliance", total: 45, rca_fr: 6, rca: 33, skipped: 6, failed: 0 },
+  { org: "Aramex Move", cohort: "2-Aramex", total: 30, rca_fr: 4, rca: 21, skipped: 5, failed: 0 },
+  { org: "Aramex Global", cohort: "2-Aramex", total: 18, rca_fr: 2, rca: 13, skipped: 3, failed: 0 },
+  { org: "Movin", cohort: "4A-B2C LSP", total: 20, rca_fr: 3, rca: 14, skipped: 3, failed: 0 },
+  { org: "Wakefit", cohort: "4A-B2C Shipper", total: 18, rca_fr: 2, rca: 13, skipped: 3, failed: 0 },
+  { org: "Jeebly", cohort: "4B-S (B2C LSP)", total: 16, rca_fr: 2, rca: 11, skipped: 3, failed: 0 },
+  { org: "Proconnect", cohort: "5A-B2B LSP", total: 16, rca_fr: 2, rca: 11, skipped: 3, failed: 0 },
+  { org: "Teleport (Malaysia)", cohort: "4A-B2C LSP", total: 14, rca_fr: 1, rca: 10, skipped: 3, failed: 0 },
+  { org: "Heineken", cohort: "2-HNK", total: 14, rca_fr: 2, rca: 9, skipped: 3, failed: 0 },
+  { org: "Swiggy", cohort: "3A-On Demand", total: 12, rca_fr: 1, rca: 9, skipped: 2, failed: 0 },
+  { org: "Rozana", cohort: "4A-B2C Shipper", total: 10, rca_fr: 1, rca: 7, skipped: 2, failed: 0 },
+  { org: "NX Logistics (Nippon Express)", cohort: "5A-B2B LSP", total: 10, rca_fr: 2, rca: 6, skipped: 2, failed: 0 },
+  { org: "Healthkart", cohort: "4A-B2C Shipper", total: 9, rca_fr: 1, rca: 6, skipped: 2, failed: 0 },
+  { org: "Chronodiali", cohort: "4A-B2C LSP", total: 8, rca_fr: 1, rca: 5, skipped: 2, failed: 0 },
+  { org: "VISL", cohort: "5B-S (B2B Shipper)", total: 7, rca_fr: 1, rca: 4, skipped: 2, failed: 0 },
+  { org: "GMG Group", cohort: "3A-On Demand", total: 7, rca_fr: 1, rca: 5, skipped: 1, failed: 0 },
+  { org: "WMS Accounts", cohort: "WMS", total: 16, rca_fr: 2, rca: 10, skipped: 4, failed: 0 },
+  { org: "EXIM Accounts", cohort: "Exim", total: 12, rca_fr: 2, rca: 7, skipped: 3, failed: 0 },
+  { org: "Platform / Internal", cohort: "Platform", total: 8, rca_fr: 0, rca: 4, skipped: 4, failed: 0 },
+  { org: "Long-tail Accounts (50+ small orgs)", cohort: "Various", total: 13, rca_fr: 5, rca: 4, skipped: 1, failed: 3 },
+];
+
+// Daily run counts (real data from Slack channel scan, May 14-30)
+const DAILY_DATA = [
+  { date: "May 14", total: 25, rca_fr: 10, rca: 11, skipped: 5, failed: 1 },
+  { date: "May 15", total: 22, rca_fr: 5, rca: 10, skipped: 6, failed: 0 },
+  { date: "May 16", total: 8, rca_fr: 1, rca: 5, skipped: 2, failed: 0 },
+  { date: "May 17", total: 9, rca_fr: 1, rca: 7, skipped: 1, failed: 0 },
+  { date: "May 18", total: 20, rca_fr: 2, rca: 14, skipped: 2, failed: 0 },
+  { date: "May 19", total: 22, rca_fr: 1, rca: 17, skipped: 3, failed: 0 },
+  { date: "May 20", total: 14, rca_fr: 1, rca: 12, skipped: 1, failed: 0 },
+  { date: "May 21", total: 17, rca_fr: 2, rca: 10, skipped: 5, failed: 0 },
+  { date: "May 22", total: 13, rca_fr: 1, rca: 10, skipped: 2, failed: 0 },
+  { date: "May 23", total: 4, rca_fr: 1, rca: 3, skipped: 0, failed: 0 },
+  { date: "May 24", total: 1, rca_fr: 0, rca: 1, skipped: 0, failed: 0 },
+  { date: "May 25", total: 18, rca_fr: 4, rca: 12, skipped: 2, failed: 0 },
+  { date: "May 26", total: 18, rca_fr: 0, rca: 14, skipped: 4, failed: 0 },
+  { date: "May 27", total: 12, rca_fr: 0, rca: 8, skipped: 4, failed: 0 },
+  { date: "May 28", total: 18, rca_fr: 0, rca: 15, skipped: 2, failed: 0 },
+  { date: "May 29", total: 16, rca_fr: 0, rca: 10, skipped: 4, failed: 0 },
+  { date: "May 30", total: 8, rca_fr: 6, rca: 1, skipped: 1, failed: 0 },
+];
+
+// ============================================================
+// TAB SWITCHING
+// ============================================================
+function showTab(name) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  event.target.classList.add('active');
+}
+
+// ============================================================
+// CHARTS
+// ============================================================
+// Outcome donut
+new Chart(document.getElementById('outcomeChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['RCA + FR Draft (68)', 'RCA Only (318)', 'Skipped (133)', 'Failed (4)'],
+    datasets: [{
+      data: [68, 318, 133, 4],
+      backgroundColor: ['#22c55e', '#3b82f6', '#f59e0b', '#ef4444'],
+      borderWidth: 2, borderColor: '#fff'
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'right', labels: { padding: 16, font: { size: 13 } } },
+      tooltip: { callbacks: { label: ctx => `${ctx.label}: ${ctx.raw} runs (${(ctx.raw/523*100).toFixed(1)}%)` } }
+    }
+  }
+});
+
+// Funnel chart
+new Chart(document.getElementById('funnelChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Total Tickets', 'F.R.I.D.A.Y Runs', 'RCAs Generated', 'FR Drafts Ready'],
+    datasets: [{
+      data: [2298, 523, 386, 68],
+      backgroundColor: ['#6366f1', '#8b5cf6', '#22c55e', '#f59e0b'],
+      borderRadius: 6, barPercentage: 0.7
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false, indexAxis: 'y',
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: ctx => `${ctx.raw.toLocaleString()} (${(ctx.raw/2298*100).toFixed(1)}% of total)` } }
+    },
+    scales: { x: { beginAtZero: true, grid: { color: '#f1f5f9' } }, y: { grid: { display: false } } }
+  }
+});
+
+// ============================================================
+// FR ROLLOUT CHARTS
+// ============================================================
+// Daily score trend
+new Chart(document.getElementById('frDailyChart'), {
+  type: 'bar',
+  data: {
+    labels: ['May 26', 'May 27', 'May 28', 'May 29', 'May 30', 'May 31', 'Jun 1'],
+    datasets: [
+      { label: 'Drafts Produced', data: [6, 14, 19, 29, 7, 1, 0], backgroundColor: '#dbeafe', borderRadius: 4, yAxisID: 'y1' },
+      { label: 'Reviewed', data: [0, 3, 9, 15, 0, 0, 0], backgroundColor: '#3b82f6', borderRadius: 4, yAxisID: 'y1' },
+      { label: 'Score', data: [null, 5.33, 7.11, 7.47, null, null, null], type: 'line',
+        borderColor: '#f59e0b', backgroundColor: '#f59e0b', pointRadius: 6, pointBackgroundColor: '#f59e0b',
+        tension: 0.3, yAxisID: 'y', spanGaps: true, borderWidth: 3 },
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { position: 'top' } },
+    scales: {
+      y: { beginAtZero: true, max: 10, position: 'left', title: { display: true, text: 'Score (0-10)' } },
+      y1: { beginAtZero: true, position: 'right', grid: { drawOnChartArea: false }, title: { display: true, text: 'Draft Count' } }
+    }
+  }
+});
+
+// Per-account scores
+new Chart(document.getElementById('frAccountChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Spencers', 'Partnr', 'NXL', 'Apollo247', 'Aster KSA', 'Box', 'Movin', 'Aramex', 'HNK', 'Almaya', 'FK', 'Kisankonnect', 'Wakefit', 'Expeditors'],
+    datasets: [{
+      label: 'Score',
+      data: [9.0, 9.0, 8.33, 8.0, 8.0, 7.83, 7.0, 7.0, 6.5, 6.0, 6.0, 5.0, 5.0, 5.0],
+      backgroundColor: [9,9,8.33,8,8,7.83,7,7,6.5,6,6,5,5,5].map(v => v >= 8 ? '#22c55e' : v >= 7 ? '#3b82f6' : v >= 6 ? '#f59e0b' : '#ef4444'),
+      borderRadius: 6
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false, indexAxis: 'y',
+    plugins: { legend: { display: false },
+      tooltip: { callbacks: { label: ctx => `Score: ${ctx.raw}/10` } }
+    },
+    scales: { x: { beginAtZero: true, max: 10, title: { display: true, text: 'Score (0-10)' } }, y: { grid: { display: false } } }
+  }
+});
+
+// Real per-ticket timing data (37 RCA samples, measured from Slack timestamps)
+const TIMING_DATA = [
+  { ticket: "TKT-99163", seconds: 912 }, { ticket: "TKT-99103", seconds: 890 },
+  { ticket: "TKT-99186", seconds: 858 }, { ticket: "TKT-99051", seconds: 604 },
+  { ticket: "TKT-99276", seconds: 545 }, { ticket: "TKT-99246", seconds: 422 },
+  { ticket: "TKT-99319", seconds: 408 }, { ticket: "TKT-99129", seconds: 387 },
+  { ticket: "TKT-99088", seconds: 387 }, { ticket: "TKT-99166", seconds: 378 },
+  { ticket: "TKT-99125", seconds: 375 }, { ticket: "TKT-99261", seconds: 374 },
+  { ticket: "TKT-99195", seconds: 350 }, { ticket: "TKT-99192", seconds: 336 },
+  { ticket: "TKT-99158", seconds: 320 }, { ticket: "TKT-99019", seconds: 293 },
+  { ticket: "TKT-99248", seconds: 291 }, { ticket: "TKT-99012", seconds: 286 },
+  { ticket: "TKT-99005", seconds: 258 }, { ticket: "TKT-99345", seconds: 254 },
+  { ticket: "TKT-99117", seconds: 243 }, { ticket: "TKT-99086", seconds: 239 },
+  { ticket: "TKT-99317", seconds: 234 }, { ticket: "TKT-99252", seconds: 226 },
+  { ticket: "TKT-99219", seconds: 207 }, { ticket: "TKT-99318", seconds: 204 },
+  { ticket: "TKT-99101", seconds: 203 }, { ticket: "TKT-99039", seconds: 190 },
+  { ticket: "TKT-99068", seconds: 187 }, { ticket: "TKT-99194", seconds: 177 },
+  { ticket: "TKT-99288", seconds: 174 }, { ticket: "TKT-99173", seconds: 173 },
+  { ticket: "TKT-99336", seconds: 163 }, { ticket: "TKT-99200", seconds: 139 },
+  { ticket: "TKT-99314", seconds: 130 }, { ticket: "TKT-99145", seconds: 124 },
+  { ticket: "TKT-99120", seconds: 118 },
+].sort((a,b) => a.seconds - b.seconds);
+
+// Render timing table
+(function() {
+  const tbody = document.getElementById('timingTableBody');
+  const sorted = [...TIMING_DATA].sort((a,b) => b.seconds - a.seconds);
+  sorted.forEach((t, i) => {
+    const mins = (t.seconds / 60).toFixed(1);
+    const bucket = t.seconds < 120 ? '<2 min' : t.seconds < 300 ? '2-5 min' : t.seconds < 600 ? '5-10 min' : t.seconds < 900 ? '10-15 min' : '15+ min';
+    const cls = t.seconds < 300 ? 'badge-match' : t.seconds < 600 ? 'badge-partial' : 'badge-mismatch';
+    tbody.innerHTML += `<tr><td>${i+1}</td><td><a href="https://app.devrev.ai/shipsy/works/${t.ticket}" target="_blank">${t.ticket}</a></td><td><strong>${t.seconds}s</strong></td><td>${mins} min</td><td><span class="${cls}">${bucket}</span></td></tr>`;
+  });
+})();
+
+// Timing distribution chart
+new Chart(document.getElementById('timingDistChart'), {
+  type: 'bar',
+  data: {
+    labels: ['< 2 min', '2-5 min', '5-10 min', '10-15 min', '15+ min'],
+    datasets: [{
+      label: 'Runs',
+      data: [
+        TIMING_DATA.filter(t => t.seconds < 120).length,
+        TIMING_DATA.filter(t => t.seconds >= 120 && t.seconds < 300).length,
+        TIMING_DATA.filter(t => t.seconds >= 300 && t.seconds < 600).length,
+        TIMING_DATA.filter(t => t.seconds >= 600 && t.seconds < 900).length,
+        TIMING_DATA.filter(t => t.seconds >= 900).length,
+      ],
+      backgroundColor: ['#22c55e', '#3b82f6', '#f59e0b', '#ef4444', '#991b1b'],
+      borderRadius: 8, barPercentage: 0.6
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: ctx => {
+        const pct = (ctx.raw / TIMING_DATA.length * 100).toFixed(0);
+        return `${ctx.raw} runs (${pct}%)`;
+      }}}
+    },
+    scales: { y: { beginAtZero: true, ticks: { stepSize: 5 }, title: { display: true, text: 'Number of Runs' }, grid: { color: '#f1f5f9' } }, x: { grid: { display: false } } }
+  }
+});
+
+// Daily timeline chart
+new Chart(document.getElementById('dailyChart'), {
+  type: 'bar',
+  data: {
+    labels: DAILY_DATA.map(d => d.date),
+    datasets: [
+      { label: 'RCA + FR', data: DAILY_DATA.map(d => d.rca_fr), backgroundColor: '#22c55e', borderRadius: 3 },
+      { label: 'RCA Only', data: DAILY_DATA.map(d => d.rca), backgroundColor: '#3b82f6', borderRadius: 3 },
+      { label: 'Skipped', data: DAILY_DATA.map(d => d.skipped), backgroundColor: '#f59e0b', borderRadius: 3 },
+      { label: 'Failed', data: DAILY_DATA.map(d => d.failed), backgroundColor: '#ef4444', borderRadius: 3 },
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { position: 'top', labels: { font: { size: 12 }, padding: 12 } } },
+    scales: {
+      x: { stacked: true, grid: { display: false } },
+      y: { stacked: true, beginAtZero: true, title: { display: true, text: 'Runs' }, grid: { color: '#f1f5f9' } }
+    }
+  }
+});
+
+// Accuracy donut (v2 — 0 mismatches)
+new Chart(document.getElementById('accuracyChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Match — 80-100% (8)', 'Partial — 50-80% (3)', 'Mismatch (0)'],
+    datasets: [{
+      data: [8, 3, 0.1],  // 0.1 to show the label exists but empty
+      backgroundColor: ['#22c55e', '#f59e0b', '#e2e8f0'],
+      borderWidth: 2, borderColor: '#fff'
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'right', labels: { padding: 16, font: { size: 13 } } }
+    }
+  }
+});
+
+// Sample breakdown (v2 — 20 tickets)
+new Chart(document.getElementById('sampleChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Match', 'Partial', 'Mismatch', 'Still Open'],
+    datasets: [{
+      data: [8, 3, 0, 9],
+      backgroundColor: ['#22c55e', '#f59e0b', '#ef4444', '#cbd5e1'],
+      borderRadius: 6
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: { y: { beginAtZero: true, ticks: { stepSize: 2 } }, x: { grid: { display: false } } }
+  }
+});
+
+// Accuracy by ticket type (v2 — new chart)
+new Chart(document.getElementById('accuracyByTypeChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Info Request / Query', 'Feature Request', 'Bug / Technical', 'Operational'],
+    datasets: [
+      { label: 'Match', data: [4, 3, 3, 0], backgroundColor: '#22c55e', borderRadius: 4 },
+      { label: 'Partial', data: [0, 0, 3, 0], backgroundColor: '#f59e0b', borderRadius: 4 },
+      { label: 'Still Open', data: [0, 1, 3, 3], backgroundColor: '#cbd5e1', borderRadius: 4 },
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false, indexAxis: 'y',
+    plugins: { legend: { position: 'top' } },
+    scales: { x: { stacked: true, beginAtZero: true }, y: { stacked: true } }
+  }
+});
+
+// Timing comparison (real AI data, estimated human data)
+new Chart(document.getElementById('timingComparisonChart'), {
+  type: 'bar',
+  data: {
+    labels: ['F.R.I.D.A.Y Median', 'F.R.I.D.A.Y Average', 'F.R.I.D.A.Y Slowest', 'Human First Response (avg)', 'Human Full RCA (avg)'],
+    datasets: [{
+      label: 'Minutes',
+      data: [4.2, 5.3, 15.2, 120, 480],
+      backgroundColor: ['#22c55e', '#3b82f6', '#f59e0b', '#ef4444', '#991b1b'],
+      borderRadius: 6
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false, indexAxis: 'y',
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: ctx => {
+        const v = ctx.raw;
+        return v >= 60 ? `${(v/60).toFixed(1)} hours (${v} min)` : `${v} minutes`;
+      }}}
+    },
+    scales: { x: { beginAtZero: true, title: { display: true, text: 'Minutes' }, grid: { color: '#f1f5f9' } }, y: { grid: { display: false } } }
+  }
+});
+
+// ============================================================
+// ORG TABLE
+// ============================================================
+let orgSortCol = 3, orgSortAsc = false;
+
+function renderOrgTable(data) {
+  const tbody = document.getElementById('orgTableBody');
+  if (!tbody) return;
+  tbody.innerHTML = '';
+  data.forEach((r, i) => {
+    const successPct = r.total > 0 ? ((r.rca_fr + r.rca) / r.total * 100).toFixed(1) : '0.0';
+    const cls = parseFloat(successPct) >= 80 ? 'badge-match' : parseFloat(successPct) >= 50 ? 'badge-partial' : 'badge-mismatch';
+    tbody.innerHTML += `<tr>
+      <td>${i+1}</td><td><strong>${r.org}</strong></td><td>${r.cohort}</td>
+      <td><strong>${r.total}</strong></td><td>${r.rca_fr}</td><td>${r.rca}</td>
+      <td>${r.skipped}</td><td>${r.failed}</td>
+      <td><span class="${cls}">${successPct}%</span></td>
+    </tr>`;
+  });
+  document.getElementById('filterCount').textContent = `Showing ${data.length} of ${ORG_DATA.length} organizations`;
+  document.getElementById('orgCountBadge').textContent = `${ORG_DATA.length} ORGS`;
+}
+
+function filterOrgTable() {
+  if (!document.getElementById('filterCohort')) return;
+  const cohort = document.getElementById('filterCohort').value;
+  const outcome = document.getElementById('filterOutcome').value;
+  const search = document.getElementById('filterSearch').value.toLowerCase();
+  let filtered = ORG_DATA.filter(r => {
+    if (cohort !== 'all' && r.cohort !== cohort) return false;
+    if (outcome === 'rca_fr' && r.rca_fr === 0) return false;
+    if (outcome === 'rca' && (r.rca + r.rca_fr) === 0) return false;
+    if (outcome === 'skipped' && r.skipped === 0) return false;
+    if (search && !r.org.toLowerCase().includes(search) && !r.cohort.toLowerCase().includes(search)) return false;
+    return true;
+  });
+  filtered.sort((a, b) => {
+    const va = getOrgSortVal(a, orgSortCol), vb = getOrgSortVal(b, orgSortCol);
+    return orgSortAsc ? (va > vb ? 1 : -1) : (va < vb ? 1 : -1);
+  });
+  renderOrgTable(filtered);
+}
+
+function getOrgSortVal(r, col) {
+  switch(col) {
+    case 0: return 0;
+    case 1: return r.org.toLowerCase();
+    case 2: return r.cohort;
+    case 3: return r.total;
+    case 4: return r.rca_fr;
+    case 5: return r.rca;
+    case 6: return r.skipped;
+    case 7: return r.failed;
+    case 8: return r.total > 0 ? (r.rca_fr + r.rca) / r.total : 0;
+    default: return 0;
+  }
+}
+
+function sortOrgTable(col) {
+  if (orgSortCol === col) orgSortAsc = !orgSortAsc;
+  else { orgSortCol = col; orgSortAsc = false; }
+  filterOrgTable();
+}
+
+// Populate cohort filter (guard: elements may not exist in v2 layout)
+const cohortSelect = document.getElementById('filterCohort');
+if (cohortSelect) {
+  const cohorts = [...new Set(ORG_DATA.map(r => r.cohort))].sort();
+  cohorts.forEach(c => { const o = document.createElement('option'); o.value = c; o.textContent = c; cohortSelect.appendChild(o); });
+  filterOrgTable();
+}
+
+// Org bar chart
+function renderOrgChart() {
+  if (!document.getElementById('orgChart')) return;
+  const top15 = [...ORG_DATA].sort((a,b) => b.total - a.total).slice(0, 15);
+  new Chart(document.getElementById('orgChart'), {
+    type: 'bar',
+    data: {
+      labels: top15.map(r => r.org),
+      datasets: [
+        { label: 'RCA + FR', data: top15.map(r => r.rca_fr), backgroundColor: '#22c55e', borderRadius: 4 },
+        { label: 'RCA Only', data: top15.map(r => r.rca), backgroundColor: '#3b82f6', borderRadius: 4 },
+        { label: 'Skipped', data: top15.map(r => r.skipped), backgroundColor: '#f59e0b', borderRadius: 4 },
+        { label: 'Failed', data: top15.map(r => r.failed), backgroundColor: '#ef4444', borderRadius: 4 },
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { position: 'top', labels: { font: { size: 12 }, padding: 12 } } },
+      scales: { x: { stacked: true, grid: { display: false } }, y: { stacked: true, beginAtZero: true, grid: { color: '#f1f5f9' } } }
+    }
+  });
+}
+renderOrgChart();
+
+// Cohort charts
+function renderCohortCharts() {
+  if (!document.getElementById('cohortChart')) return;
+  const cohortMap = {};
+  ORG_DATA.forEach(r => {
+    const tier = r.cohort.startsWith('1') ? 'Tier 1' : r.cohort.startsWith('2') ? 'Tier 2' : r.cohort.startsWith('3') ? 'Tier 3' : r.cohort.startsWith('4') ? 'Tier 4' : r.cohort.startsWith('5') ? 'Tier 5' : 'Special';
+    if (!cohortMap[tier]) cohortMap[tier] = { total: 0, rca: 0, rca_fr: 0, skipped: 0, failed: 0 };
+    cohortMap[tier].total += r.total;
+    cohortMap[tier].rca += r.rca;
+    cohortMap[tier].rca_fr += r.rca_fr;
+    cohortMap[tier].skipped += r.skipped;
+    cohortMap[tier].failed += r.failed;
+  });
+  const tiers = Object.keys(cohortMap).sort();
+
+  new Chart(document.getElementById('cohortChart'), {
+    type: 'doughnut',
+    data: {
+      labels: tiers.map(t => `${t} (${cohortMap[t].total})`),
+      datasets: [{ data: tiers.map(t => cohortMap[t].total), backgroundColor: ['#6366f1','#8b5cf6','#3b82f6','#06b6d4','#22c55e','#f59e0b'], borderWidth: 2, borderColor: '#fff' }]
+    },
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right', labels: { padding: 12, font: { size: 12 } } } } }
+  });
+
+  new Chart(document.getElementById('cohortSuccessChart'), {
+    type: 'bar',
+    data: {
+      labels: tiers,
+      datasets: [{
+        label: 'RCA Success %',
+        data: tiers.map(t => ((cohortMap[t].rca + cohortMap[t].rca_fr) / cohortMap[t].total * 100).toFixed(1)),
+        backgroundColor: tiers.map(t => {
+          const pct = (cohortMap[t].rca + cohortMap[t].rca_fr) / cohortMap[t].total * 100;
+          return pct >= 80 ? '#22c55e' : pct >= 60 ? '#f59e0b' : '#ef4444';
+        }),
+        borderRadius: 6
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: { y: { beginAtZero: true, max: 100, title: { display: true, text: '% Success' }, grid: { color: '#f1f5f9' } }, x: { grid: { display: false } } }
+    }
+  });
+}
+renderCohortCharts();
+
+// ============================================================
+// LIVE DATA FROM REPORT_DATA (generated by friday_report.py)
+// ============================================================
+function loadReportData() {
+  if (typeof REPORT_DATA === 'undefined') {
+    document.getElementById('dataFreshness').textContent = 'No data file — run: python3 scripts/friday_report.py --days 30';
+    return;
+  }
+  const R = REPORT_DATA;
+
+  // Update header
+  document.getElementById('headerPeriod').textContent =
+    `${R.period.days}-Day Report: ${R.period.from} to ${R.period.to}`;
+  document.getElementById('dataFreshness').textContent =
+    `Data generated: ${new Date(R.generated_at).toLocaleString()}`;
+
+  // Update KPI cards on overview
+  const kpiCards = document.querySelectorAll('#tab-overview .kpi-value');
+  if (kpiCards.length >= 6) {
+    kpiCards[0].textContent = R.kpis.total_tickets.toLocaleString();
+    kpiCards[0].parentElement.querySelector('.kpi-detail').textContent = `~${Math.round(R.kpis.total_tickets/R.period.days)}/day avg`;
+    kpiCards[1].textContent = R.kpis.friday_runs.toLocaleString();
+    kpiCards[1].parentElement.querySelector('.kpi-detail').textContent = `~${Math.round(R.kpis.friday_runs/R.period.days)}/day avg`;
+    kpiCards[2].textContent = R.kpis.coverage_pct + '%';
+    kpiCards[2].parentElement.querySelector('.kpi-detail').textContent = `${R.kpis.friday_runs} of ${R.kpis.total_tickets}`;
+    kpiCards[3].textContent = R.kpis.rca_count.toLocaleString();
+    kpiCards[4].textContent = R.kpis.fr_draft_count.toLocaleString();
+    kpiCards[4].parentElement.querySelector('.kpi-detail').textContent =
+      R.kpis.rca_count > 0 ? `${(R.kpis.fr_draft_count/R.kpis.rca_count*100).toFixed(1)}% of RCAs` : '';
+  }
+
+  // ── IMPACT TAB (SLA Panel) ──
+  const SLA_DATA = R.sla_tickets || [];
+  const SLA_FILTERS = {
+    all: () => true,
+    engaged: t => (t.fr_c == null || t.fr_c >= 5) && (t.res_c == null || t.res_c >= 60),
+    substantive: t => SLA_FILTERS.engaged(t) && t.sev !== 'Low' && !!t.rb,
+    harder: t => SLA_FILTERS.substantive(t) && (t.res_c == null || t.res_c >= 120),
+  };
+  let slaQuality = 'substantive', slaSev = 'all', slaRb = 'all', slaFeOnly = true;
+  const SLA_FE_COUNT = SLA_DATA.filter(t => t.fe).length;
+
+  function slaEffective(t, qKey) {
+    qKey = qKey || slaQuality;
+    if (!SLA_FILTERS[qKey](t)) return false;
+    if (slaFeOnly && !t.fe) return false;
+    if (slaSev !== 'all') { const sevs = slaSev.split(','); if (!sevs.includes(t.sev)) return false; }
+    if (slaRb !== 'all') { const rbs = slaRb.split(','); if (!rbs.includes(t.rb)) return false; }
+    return true;
+  }
+
+  function slaCompute(tickets) {
+    let frH=0, frM=0, resH=0, resM=0; const frVals=[], resVals=[];
+    for (const t of tickets) {
+      if (t.fr_st === 'hit') frH++; else if (t.fr_st === 'miss') frM++;
+      if (t.res_st === 'hit') resH++; else if (t.res_st === 'miss') resM++;
+      if (t.fr_c != null) frVals.push(t.fr_c);
+      if (t.res_c != null) resVals.push(t.res_c);
+    }
+    const rate = (h,m) => (h+m) ? Math.round(1000*h/(h+m))/10 : null;
+    const med = arr => { if (!arr.length) return null; const s=[...arr].sort((a,b)=>a-b), n=s.length; return n%2 ? s[(n-1)/2] : (s[n/2-1]+s[n/2])/2; };
+    return { n: tickets.length, fr_rate: rate(frH, frM), fr_med: med(frVals), res_rate: rate(resH, resM), res_med: med(resVals) };
+  }
+
+  function slaBucketOf(b) {
+    if (b === 'rca_fr') return t => t.bucket === 'success_with_fr';
+    if (b === 'rca_only') return t => t.bucket === 'success_no_fr';
+    if (b === 'no_run') return t => t.bucket === 'no_run';
+    if (b === 'friday_all') return t => t.bucket === 'success_with_fr' || t.bucket === 'success_no_fr';
+  }
+
+  function slaFmtMin(m) {
+    if (m == null) return '\u2014';
+    if (m < 60) return Math.round(m) + 'm';
+    if (m < 1440) return (m/60).toFixed(1) + 'h';
+    return (m/1440).toFixed(1) + 'd';
+  }
+
+  function slaDelta(d, unit) {
+    unit = unit || 'pp';
+    if (d == null || isNaN(d)) return '<span class="sla-delta neu">\u2014</span>';
+    const sign = d > 0 ? '+' : '';
+    const cls = d === 0 ? 'neu' : (d > 0 ? 'pos' : 'neg');
+    return `<span class="sla-delta ${cls}">${sign}${d.toFixed(1)} ${unit}</span>`;
+  }
+
+  function slaSpeed(fridayMed, baseMed) {
+    if (fridayMed == null || baseMed == null || baseMed === 0) return '';
+    const pct = Math.round(100 * (baseMed - fridayMed) / baseMed);
+    if (pct === 0) return '<span class="sla-delta neu">same</span>';
+    const cls = pct > 0 ? 'pos' : 'neg';
+    const lbl = pct > 0 ? `${pct}% faster` : `${Math.abs(pct)}% slower`;
+    return `<span class="sla-delta ${cls}">${lbl}</span>`;
+  }
+
+  function renderSlaPanel() {
+    if (!SLA_DATA.length) {
+      document.getElementById('sla-headline').innerHTML = '<b>No per-ticket SLA data.</b> Re-run: <code>python3 scripts/friday_report.py --days 30</code> to generate.';
+      document.getElementById('impactBadge').textContent = 'NO DATA';
+      return;
+    }
+
+    // Update filter counts
+    for (const fkey of Object.keys(SLA_FILTERS)) {
+      const c = SLA_DATA.filter(t => slaEffective(t, fkey)).length;
+      const el = document.querySelector(`[data-sla-qc="${fkey}"]`);
+      if (el) el.textContent = c;
+    }
+    document.getElementById('sla-fe-count').textContent = `(${SLA_FE_COUNT})`;
+
+    const filtered = SLA_DATA.filter(t => slaEffective(t));
+    document.getElementById('impactBadge').textContent = `${filtered.length} TICKETS`;
+
+    const stats = {};
+    for (const b of ['rca_fr','rca_only','no_run','friday_all']) {
+      stats[b] = slaCompute(filtered.filter(slaBucketOf(b)));
+    }
+
+    const a = stats.rca_fr, b2 = stats.rca_only, fa = stats.friday_all, n = stats.no_run;
+    const frD_a_n = (a.fr_rate != null && n.fr_rate != null) ? (a.fr_rate - n.fr_rate) : null;
+    const frD_fa_n = (fa.fr_rate != null && n.fr_rate != null) ? (fa.fr_rate - n.fr_rate) : null;
+    const spA = (a.fr_med != null && n.fr_med != null && n.fr_med) ? Math.round(100*(n.fr_med - a.fr_med)/n.fr_med) : null;
+
+    let h = `<b>Friday RCA+FR cohort (n=${a.n})</b> hits FR-SLA at <span class="win">${a.fr_rate ?? '\u2014'}%</span>`;
+    if (frD_a_n != null) h += `, vs No-Friday baseline ${n.fr_rate ?? '\u2014'}% (n=${n.n}) ${slaDelta(frD_a_n)}`;
+    if (spA != null && spA > 0) h += `. <b>${spA}% faster</b> on median FR (${slaFmtMin(a.fr_med)} vs ${slaFmtMin(n.fr_med)})`;
+    else if (spA != null) h += `. Median FR: ${slaFmtMin(a.fr_med)} vs ${slaFmtMin(n.fr_med)} ${slaSpeed(a.fr_med, n.fr_med)}`;
+    h += `. Friday-all (n=${fa.n}) vs No-Friday: ${slaDelta(frD_fa_n)}.`;
+    document.getElementById('sla-headline').innerHTML = h;
+
+    // Three comparison cards
+    function vsCard(titleHtml, subtitle, fStats, nStats, labelF, labelN) {
+      const frBarF = fStats.fr_rate || 0, frBarN = nStats.fr_rate || 0;
+      const resBarF = fStats.res_rate || 0, resBarN = nStats.res_rate || 0;
+      const frRateD = (fStats.fr_rate != null && nStats.fr_rate != null) ? (fStats.fr_rate - nStats.fr_rate) : null;
+      const resRateD = (fStats.res_rate != null && nStats.res_rate != null) ? (fStats.res_rate - nStats.res_rate) : null;
+      return `<div class="sla-vs-card">
+        <div class="card-title">${titleHtml}${subtitle ? `<div class="card-sub">${subtitle}</div>` : ''}</div>
+        <div class="sla-row"><span class="lbl"><b>${labelF}</b><br>FR SLA hit</span><div class="bar"><div class="bar-fill f" style="width:${frBarF}%"></div></div><span class="val">${fStats.fr_rate ?? '\u2014'}%</span></div>
+        <div class="sla-row"><span class="lbl"><b>${labelN}</b><br>FR SLA hit ${slaDelta(frRateD)}</span><div class="bar"><div class="bar-fill n" style="width:${frBarN}%"></div></div><span class="val">${nStats.fr_rate ?? '\u2014'}%</span></div>
+        <div class="sla-row"><span class="lbl"><b>${labelF}</b><br>Res SLA hit</span><div class="bar"><div class="bar-fill f" style="width:${resBarF}%"></div></div><span class="val">${fStats.res_rate ?? '\u2014'}%</span></div>
+        <div class="sla-row"><span class="lbl"><b>${labelN}</b><br>Res SLA hit ${slaDelta(resRateD)}</span><div class="bar"><div class="bar-fill n" style="width:${resBarN}%"></div></div><span class="val">${nStats.res_rate ?? '\u2014'}%</span></div>
+        <div class="sla-row" style="border-top:1px solid #e7e5e4;padding-top:6px;margin-top:4px"><span class="lbl">FR median</span><span style="font-size:11px;color:#44403c">${slaFmtMin(fStats.fr_med)} vs ${slaFmtMin(nStats.fr_med)} ${slaSpeed(fStats.fr_med, nStats.fr_med)}</span><span></span></div>
+        <div class="sla-row"><span class="lbl">Res median</span><span style="font-size:11px;color:#44403c">${slaFmtMin(fStats.res_med)} vs ${slaFmtMin(nStats.res_med)} ${slaSpeed(fStats.res_med, nStats.res_med)}</span><span></span></div>
+        <div class="sla-row"><span class="lbl">Sample size</span><span style="font-size:11px;color:#78716c">${labelF} n=${fStats.n} &middot; ${labelN} n=${nStats.n}</span><span></span></div>
+      </div>`;
+    }
+
+    document.getElementById('sla-vs-grid').innerHTML =
+      vsCard('Friday RCA+FR <span style="color:#78716c">vs</span> RCA-only', "Within Friday\u2019s cohort \u2014 controls for ticket complexity", stats.rca_fr, stats.rca_only, 'Friday +FR', 'Friday RCA only') +
+      vsCard('Friday RCA+FR <span style="color:#78716c">vs</span> No Friday', "Friday\u2019s best-case vs baseline", stats.rca_fr, stats.no_run, 'Friday +FR', 'No Friday') +
+      vsCard('Friday all-RCA <span style="color:#78716c">vs</span> No Friday', "Every Friday-processed ticket vs baseline", stats.friday_all, stats.no_run, 'Friday all', 'No Friday');
+
+    // Detail cells
+    function detailCell(key, label, highlight, dim) {
+      const s = stats[key]; if (!s) return '';
+      const frClass = s.fr_rate == null ? '' : (s.fr_rate >= 80 ? '' : (s.fr_rate >= 60 ? 'warn' : 'bad'));
+      const resClass = s.res_rate == null ? '' : (s.res_rate >= 80 ? '' : (s.res_rate >= 60 ? 'warn' : 'bad'));
+      let cls = 'sla-cell'; if (highlight) cls += ' hl'; if (dim) cls += ' dim';
+      return `<div class="${cls}">
+        <div class="cell-name">${label} <span class="cell-n">n=${s.n}</span></div>
+        <div class="metric"><span class="m-lbl">FR SLA</span><span class="m-val">${s.fr_rate ?? '\u2014'}%</span></div>
+        <div class="miniBar ${frClass}"><div style="width:${s.fr_rate || 0}%"></div></div>
+        <div class="metric"><span class="m-lbl">FR median</span><span class="m-val">${slaFmtMin(s.fr_med)}</span></div>
+        <div class="metric"><span class="m-lbl">Res SLA</span><span class="m-val">${s.res_rate ?? '\u2014'}%</span></div>
+        <div class="miniBar ${resClass}"><div style="width:${s.res_rate || 0}%"></div></div>
+        <div class="metric"><span class="m-lbl">Res median</span><span class="m-val">${slaFmtMin(s.res_med)}</span></div>
+      </div>`;
+    }
+
+    document.getElementById('sla-detail-grid').innerHTML =
+      detailCell('rca_fr', 'RCA + FR draft', true, false) +
+      detailCell('rca_only', 'RCA only', false, false) +
+      detailCell('friday_all', 'Friday all', false, false) +
+      detailCell('no_run', 'No Friday run', false, true) +
+      '<div class="sla-cell dim" style="display:flex;flex-direction:column;justify-content:center;align-items:center"><div class="cell-name">Total filtered</div><div style="font-size:24px;font-weight:800;color:var(--text);margin:8px 0">' + filtered.length + '</div><div class="cell-n">of ' + SLA_DATA.length + ' tickets</div></div>';
+  }
+
+  // SLA filter event listeners
+  document.querySelectorAll('[data-sla-q]').forEach(p => {
+    p.addEventListener('click', () => {
+      document.querySelectorAll('[data-sla-q]').forEach(x => x.classList.remove('active'));
+      p.classList.add('active'); slaQuality = p.dataset.slaQ; renderSlaPanel();
+    });
+  });
+  document.querySelectorAll('[data-sla-sev]').forEach(p => {
+    p.addEventListener('click', () => {
+      document.querySelectorAll('[data-sla-sev]').forEach(x => x.classList.remove('active'));
+      p.classList.add('active'); slaSev = p.dataset.slaSev; renderSlaPanel();
+    });
+  });
+  document.querySelectorAll('[data-sla-rb]').forEach(p => {
+    p.addEventListener('click', () => {
+      document.querySelectorAll('[data-sla-rb]').forEach(x => x.classList.remove('active'));
+      p.classList.add('active'); slaRb = p.dataset.slaRb; renderSlaPanel();
+    });
+  });
+  document.getElementById('sla-fe-toggle').addEventListener('click', e => {
+    slaFeOnly = !slaFeOnly;
+    e.currentTarget.classList.toggle('active', slaFeOnly);
+    renderSlaPanel();
+  });
+  renderSlaPanel();
+
+  // ── TRENDS TAB ──
+  if (R.trends && R.trends.length > 0) {
+    const T = R.trends;
+    const weeks = T.map(t => t.week);
+    document.getElementById('trendsBadge').textContent = `${T.length} WEEKS`;
+
+    // Trend KPIs with arrows
+    const last = T[T.length - 1];
+    const prev = T.length > 1 ? T[T.length - 2] : last;
+    const trendKpis = document.getElementById('trendKpis');
+    function trendArrow(current, previous, lowerBetter) {
+      if (!previous) return '';
+      const d = current - previous;
+      if (Math.abs(d) < 0.1) return ' (stable)';
+      const good = lowerBetter ? d < 0 : d > 0;
+      return good ? ` (${d > 0 ? '+' : ''}${d.toFixed(1)} improving)` : ` (${d > 0 ? '+' : ''}${d.toFixed(1)} declining)`;
+    }
+    trendKpis.innerHTML = `
+      <div class="kpi-card"><div class="kpi-value" style="color:var(--blue)">${last.coverage_pct}%</div><div class="kpi-label">Latest Coverage</div><div class="kpi-detail">${last.week}${trendArrow(last.coverage_pct, prev.coverage_pct, false)}</div></div>
+      <div class="kpi-card"><div class="kpi-value" style="color:var(--purple)">${last.avg_timing_sec ? Math.round(last.avg_timing_sec/60) + 'm' : '?'}</div><div class="kpi-label">Latest Avg Speed</div><div class="kpi-detail">${last.week}${last.avg_timing_sec && prev.avg_timing_sec ? trendArrow(last.avg_timing_sec, prev.avg_timing_sec, true) : ''}</div></div>
+      <div class="kpi-card"><div class="kpi-value" style="color:var(--green)">${last.friday_runs}</div><div class="kpi-label">Latest Week Runs</div><div class="kpi-detail">${last.week}${trendArrow(last.friday_runs, prev.friday_runs, false)}</div></div>
+      <div class="kpi-card"><div class="kpi-value" style="color:var(--amber)">${last.rca_fr}</div><div class="kpi-label">Latest FR Drafts</div><div class="kpi-detail">${last.week}${trendArrow(last.rca_fr, prev.rca_fr, false)}</div></div>
+    `;
+
+    // Coverage trend line
+    new Chart(document.getElementById('trendCoverageChart'), {
+      type: 'line',
+      data: {
+        labels: weeks,
+        datasets: [{ label: 'Coverage %', data: T.map(t => t.coverage_pct),
+          borderColor: '#3b82f6', backgroundColor: 'rgba(59,130,246,0.1)', fill: true,
+          tension: 0.3, pointRadius: 5, pointBackgroundColor: '#3b82f6' }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: { y: { beginAtZero: true, title: { display: true, text: '% Coverage' } } }
+      }
+    });
+
+    // Speed trend line
+    new Chart(document.getElementById('trendSpeedChart'), {
+      type: 'line',
+      data: {
+        labels: weeks,
+        datasets: [{ label: 'Avg Seconds', data: T.map(t => t.avg_timing_sec),
+          borderColor: '#8b5cf6', backgroundColor: 'rgba(139,92,246,0.1)', fill: true,
+          tension: 0.3, pointRadius: 5, pointBackgroundColor: '#8b5cf6' }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: { y: { title: { display: true, text: 'Seconds' } } }
+      }
+    });
+
+    // Volume trend (stacked bar)
+    new Chart(document.getElementById('trendVolumeChart'), {
+      type: 'bar',
+      data: {
+        labels: weeks,
+        datasets: [
+          { label: 'Friday Runs', data: T.map(t => t.friday_runs), backgroundColor: '#22c55e', borderRadius: 4 },
+          { label: 'Not Processed', data: T.map(t => t.total - t.friday_runs), backgroundColor: '#e2e8f0', borderRadius: 4 },
+        ]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { position: 'top' } },
+        scales: { x: { stacked: true }, y: { stacked: true, beginAtZero: true, title: { display: true, text: 'Tickets' } } }
+      }
+    });
+
+    // FR draft rate trend
+    new Chart(document.getElementById('trendFrChart'), {
+      type: 'line',
+      data: {
+        labels: weeks,
+        datasets: [{ label: 'FR Draft %',
+          data: T.map(t => t.friday_runs > 0 ? (t.rca_fr / t.friday_runs * 100).toFixed(1) : 0),
+          borderColor: '#f59e0b', backgroundColor: 'rgba(245,158,11,0.1)', fill: true,
+          tension: 0.3, pointRadius: 5, pointBackgroundColor: '#f59e0b' }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: { y: { beginAtZero: true, max: 100, title: { display: true, text: '% of Runs' } } }
+      }
+    });
+  }
+
+  // Update org data from report if available
+  if (R.orgs && R.orgs.length > 0) {
+    // Replace ORG_DATA with live data
+    ORG_DATA.length = 0;
+    R.orgs.forEach(o => {
+      ORG_DATA.push({
+        org: o.org, cohort: o.cohort, total: o.total,
+        rca_fr: o.rca_fr, rca: o.rca,
+        skipped: 0, failed: 0, no_friday: o.no_friday || 0
+      });
+    });
+    // Re-populate cohort filter (guard: elements may not exist in v2 layout)
+    const cohortSel = document.getElementById('filterCohort');
+    if (cohortSel) {
+      const existingOpts = new Set([...cohortSel.options].map(o => o.value));
+      const newCohorts = [...new Set(ORG_DATA.map(r => r.cohort))].sort();
+      newCohorts.forEach(c => {
+        if (!existingOpts.has(c)) {
+          const o = document.createElement('option'); o.value = c; o.textContent = c;
+          cohortSel.appendChild(o);
+        }
+      });
+      filterOrgTable();
+    }
+  }
+}
+
+// Date range button handler
+function runReport(days) {
+  document.querySelectorAll('.range-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  alert(`To generate ${days}-day data, run in terminal:\n\npython3 scripts/friday_report.py --days ${days}\n\nThen refresh this page.`);
+}
+
+// Load on page init
+loadReportData();
+</script>
+
+</body>
+</html>

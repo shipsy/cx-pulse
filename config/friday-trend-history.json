@@ -1,0 +1,82 @@
+[
+  {
+    "generated_at": "2026-05-31T22:47:10.723405",
+    "period": {
+      "from": "2026-05-01",
+      "to": "2026-05-31",
+      "days": 30
+    },
+    "coverage_pct": 32.0,
+    "friday_runs": 388,
+    "total_tickets": 1211,
+    "rca_count": 388,
+    "fr_draft_count": 74,
+    "avg_timing_sec": 2740,
+    "median_timing_sec": 366,
+    "impact_speedup": "0.9x"
+  },
+  {
+    "generated_at": "2026-05-31T22:54:58.423066",
+    "period": {
+      "from": "2026-05-01",
+      "to": "2026-05-31",
+      "days": 30
+    },
+    "coverage_pct": 32.0,
+    "friday_runs": 388,
+    "total_tickets": 1211,
+    "rca_count": 388,
+    "fr_draft_count": 74,
+    "avg_timing_sec": 470,
+    "median_timing_sec": 380,
+    "impact_speedup": "0.9x"
+  },
+  {
+    "generated_at": "2026-06-01T13:53:14.729196",
+    "period": {
+      "from": "2026-05-02",
+      "to": "2026-06-01",
+      "days": 30
+    },
+    "coverage_pct": 32.1,
+    "friday_runs": 387,
+    "total_tickets": 1204,
+    "rca_count": 387,
+    "fr_draft_count": 78,
+    "avg_timing_sec": 473,
+    "median_timing_sec": 378,
+    "impact_speedup": "0.9x"
+  },
+  {
+    "generated_at": "2026-06-01T13:56:53.606171",
+    "period": {
+      "from": "2026-05-02",
+      "to": "2026-06-01",
+      "days": 30
+    },
+    "coverage_pct": 32.1,
+    "friday_runs": 387,
+    "total_tickets": 1204,
+    "rca_count": 387,
+    "fr_draft_count": 78,
+    "avg_timing_sec": 473,
+    "median_timing_sec": 378,
+    "impact_speedup": "0.9x"
+  },
+  {
+    "generated_at": "2026-06-01T14:04:13.989275",
+    "period": {
+      "from": "2026-05-02",
+      "to": "2026-06-01",
+      "days": 30
+    },
+    "coverage_pct": 32.1,
+    "friday_runs": 387,
+    "total_tickets": 1204,
+    "rca_count": 387,
+    "fr_draft_count": 78,
+    "avg_timing_sec": 473,
+    "median_timing_sec": 378,
+    "impact_speedup": "0.8x"
+  }
+]

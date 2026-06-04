@@ -1,0 +1,6996 @@
+[
+  {
+    "customer_name": "Aarti Industries",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 45,
+        "resolution_time_minutes": null,
+        "support_hours": "Mon-Fri 10AM-7PM",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 180,
+        "resolution_time_minutes": null,
+        "support_hours": "Mon-Fri 10AM-7PM",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "resolution_time_minutes": null,
+        "support_hours": null,
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": true,
+    "service_credits_summary": "Escalation / service credits: not specified in this clause.",
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Aditya Birla",
+    "uptime_pct": 99.6,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "AJ Logistics",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 15,
+        "resolution_time_minutes": 120,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 2880,
+        "support_hours": "16x6",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 7200,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": [
+      "Note: Governing law UAE (DIFC)."
+    ],
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "AJS Transport",
+    "uptime_pct": 99.6,
+    "tiers": [],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "incomplete",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Al Jabri",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Al Saif",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 120,
+        "resolution_time_minutes": 480,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": [
+      "Note: P1 tier here is stronger than the usual SA template (2hr resp / 8hr res / 24x7 vs 4hr/8*5)."
+    ],
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Al Sariyah (Sharaf DG)",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 60,
+        "resolution_time_minutes": null,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "medium"
+      },
+      {
+        "priority": "P4",
+        "response_time_minutes": 1440,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Al-Musbah",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 15,
+        "resolution_time_minutes": 120,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 2880,
+        "support_hours": "16x6",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 7200,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Alkhayyat Investments (Binsina)",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 15,
+        "resolution_time_minutes": 120,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 2880,
+        "support_hours": "16x6",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 7200,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Amal",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 15,
+        "resolution_time_minutes": 120,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 2880,
+        "support_hours": "16x6",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 7200,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": [
+      "Note: OCR mangled the sub-clause numbering (e.g. \"63.1.1\", \"6.421\") but tier values are clear and match the standard UAE template."
+    ],
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Ambica Steels",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Americana",
+    "uptime_pct": 99.6,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "ANC Delivers",
+    "uptime_pct": 99.6,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 15,
+        "resolution_time_minutes": 60,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 120,
+        "resolution_time_minutes": 360,
+        "support_hours": "24x7",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 720,
+        "support_hours": "24x7",
+        "devrev_severity": "medium"
+      },
+      {
+        "priority": "P4",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": 960,
+        "support_hours": "24x7",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": true,
+    "service_credits_summary": "Service credits / penalties: No fixed service-credit table. ANC non-negotiable (agreed by Shipsy, sum TBC): for breach via data breach/excessive downtime/unavailability resulting in privacy breach or data loss, Shipsy to pay liquidated damages of [sum TBC] per privacy breach / per piece of data lost, at ANC's discretion, in addition to other remedies. KPI bonus: +10% bonus (110% of fees) if KPIs exceed expectations.",
+    "notes": [
+      "NOT FOUND in DevRev accounts. Platinum Dedicated tier. Needs manual account creation or mapping."
+    ],
+    "status": "ok",
+    "cohort": "other",
+    "devrev_accounts": []
+  },
+  {
+    "customer_name": "Apollo Pharmacies Limited",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 15,
+        "resolution_time_minutes": 120,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 2880,
+        "support_hours": "16x6",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 7200,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Aramex",
+    "uptime_pct": 99.4,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 60,
+        "resolution_time_minutes": 240,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 120,
+        "resolution_time_minutes": 480,
+        "support_hours": "24x7",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 1440,
+        "support_hours": "16x6",
+        "devrev_severity": "medium"
+      },
+      {
+        "priority": "P4",
+        "response_time_minutes": 720,
+        "resolution_time_minutes": 2880,
+        "support_hours": "16x6",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": true,
+    "service_credits_summary": "Source: PRIMARY: 1. Aramex _ Shipsy MSA_.pdf (= MSA Shipsy DMCC + Aramex Int. LLC, executed 11 Mar 2025) — full tiered SLA with service credits. Also: [completed] MSA - Shipsy Aramex India.pdf carries the older standard 4hr/8hr/16hr package; multiple SoWs/Addenda reference \"uptime guarantee up to 99.6%\".",
+    "notes": [
+      "DMCC MSA (primary). Aramex KSA has a weaker SLA (4hr/8hr/16hr, 8x5). Aramex India also has a separate weaker SLA."
+    ],
+    "status": "ok",
+    "cohort": "2-Aramex",
+    "devrev_accounts": [
+      {
+        "display_name": "Aramex",
+        "account_id": "ACC-G0tfv4Ge",
+        "don_id": "don:identity:dvrv-us-1:devo/xXjPo9nF:account/G0tfv4Ge"
+      },
+      {
+        "display_name": "Aramex Global",
+        "account_id": "ACC-cldfPBey",
+        "don_id": "don:identity:dvrv-us-1:devo/xXjPo9nF:account/cldfPBey"
+      },
+      {
+        "display_name": "Aramex VW",
+        "account_id": "ACC-x6aBsVOi",
+        "don_id": "don:identity:dvrv-us-1:devo/xXjPo9nF:account/x6aBsVOi"
+      },
+      {
+        "display_name": "Aramex Oceania",
+        "account_id": "ACC-YFdgDPLP",
+        "don_id": "don:identity:dvrv-us-1:devo/xXjPo9nF:account/YFdgDPLP"
+      },
+      {
+        "display_name": "Aramex Freight",
+        "account_id": "ACC-11duBDFNw",
+        "don_id": "don:identity:dvrv-us-1:devo/xXjPo9nF:account/11duBDFNw"
+      },
+      {
+        "display_name": "Aramex RO",
+        "account_id": "ACC-mGbG1chd",
+        "don_id": "don:identity:dvrv-us-1:devo/xXjPo9nF:account/mGbG1chd"
+      },
+      {
+        "display_name": "Aramex Move",
+        "account_id": "ACC-o0NpKw5T",
+        "don_id": "don:identity:dvrv-us-1:devo/xXjPo9nF:account/o0NpKw5T"
+      },
+      {
+        "display_name": "aramex.com.au",
+        "account_id": "ACC-1FBk68T7w",
+        "don_id": "don:identity:dvrv-us-1:devo/xXjPo9nF:account/1FBk68T7w"
+      },
+      {
+        "display_name": "aramex.co.nz",
+        "account_id": "ACC-3YvXMdkj",
+        "don_id": "don:identity:dvrv-us-1:devo/xXjPo9nF:account/3YvXMdkj"
+      }
+    ]
+  },
+  {
+    "customer_name": "Aramex KSA",
+    "uptime_pct": 99.6,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "argenX",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 60,
+        "resolution_time_minutes": 240,
+        "support_hours": null,
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": 1080,
+        "support_hours": null,
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": null,
+        "devrev_severity": "medium"
+      },
+      {
+        "priority": "P4",
+        "response_time_minutes": 1440,
+        "resolution_time_minutes": null,
+        "support_hours": null,
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Arvind Limited",
+    "uptime_pct": null,
+    "tiers": [],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": [],
+    "status": "none_found",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "ASDA UK",
+    "uptime_pct": 99.9,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 60,
+        "resolution_time_minutes": null,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": null,
+        "support_hours": null,
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": true,
+    "service_credits_summary": "Service credits (Appendix 6, quarterly): If Service Availability not met in a quarter, ASDA entitled to Service Credit within 30 days of quarter end (sole remedy for a single failure, without prejudice to termination rights under clause 15):",
+    "notes": null,
+    "status": "ok",
+    "cohort": "other",
+    "devrev_accounts": [
+      {
+        "display_name": "Asda",
+        "account_id": "ACC-lYzn2A0l",
+        "don_id": "don:identity:dvrv-us-1:devo/xXjPo9nF:account/lYzn2A0l"
+      }
+    ]
+  },
+  {
+    "customer_name": "Asendia Singapore",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 60,
+        "resolution_time_minutes": 240,
+        "support_hours": null,
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": 1080,
+        "support_hours": null,
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": null,
+        "devrev_severity": "medium"
+      },
+      {
+        "priority": "P4",
+        "response_time_minutes": 1440,
+        "resolution_time_minutes": null,
+        "support_hours": null,
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Aster Arabia Trading Company",
+    "uptime_pct": 99.6,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 60,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "medium"
+      },
+      {
+        "priority": "P4",
+        "response_time_minutes": 1440,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Aster Healthcare",
+    "uptime_pct": 99.9,
+    "tiers": [],
+    "has_service_credits": true,
+    "service_credits_summary": "Penalty (% payable in monthly billing amt by SLA band): >95% to <=99% = 0%; >85% to <=95% = -3%; <85% = -10%.",
+    "notes": [
+      "[OCR unclear] Appendix-5 severity table partially garbled (labels \"0/1/2\" prefix artifacts; \"Medium\" and \"Low\" rows reconstructed sensibly from layout).",
+      "Note: These appendix SLAs are from an evaluation/RFP annexure embedded in the file, NOT the executed MSA's binding SLA clause. The binding SLA clause itself states no tiers. Review manually to confirm which is contractually operative."
+    ],
+    "status": "no_tiers_parsed",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Atlant Global",
+    "uptime_pct": 99.6,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Aujan",
+    "uptime_pct": 99.5,
+    "tiers": [],
+    "has_service_credits": true,
+    "service_credits_summary": "Uptime / availability: minimum 99.5% per calendar month, excluding scheduled downtime (48 hrs advance notice) and force majeure. Service credit if below: if Services unavailable >0.5% of any calendar month, Shipsy provides a Service credit equal to 5% of that month's subscription fee.",
+    "notes": null,
+    "status": "no_tiers_parsed",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Avery Dennison",
+    "uptime_pct": 99.99,
+    "tiers": [
+      {
+        "priority": "P1",
+        "resolution_time_minutes": null,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 60,
+        "resolution_time_minutes": null,
+        "support_hours": "Mon-Fri 30AM-10PM",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": null,
+        "support_hours": "Mon-Fri 10AM-7PM",
+        "devrev_severity": "medium"
+      },
+      {
+        "priority": "P4",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 4320,
+        "support_hours": "Mon-Fri 10AM-6PM",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": true,
+    "service_credits_summary": "SERVICE CREDITS: if Shipsy fails the 99.99% SLA, credit a \"Daily Fee\" (= 0.274% of annual Fee) for each Reporting Day (or portion) missed (\"Service Level Credit\"). Credit may be refund or applied to next invoice at Customer's discretion. Termination right: if SLA missed >=5 Reporting Days in any calendar month, or >=15 Reporting Days in any 6-month period, Customer may terminate and Shipsy refunds prepaid unused fees + pays unused credits.",
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Azooz Express",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "resolution_time_minutes": null,
+        "support_hours": null,
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Baladi Express",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "BDO",
+    "uptime_pct": 99.7,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 60,
+        "resolution_time_minutes": 240,
+        "support_hours": null,
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": 1080,
+        "support_hours": null,
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": null,
+        "devrev_severity": "medium"
+      },
+      {
+        "priority": "P4",
+        "response_time_minutes": 1440,
+        "resolution_time_minutes": null,
+        "support_hours": null,
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Beethere",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 15,
+        "resolution_time_minutes": 120,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 2880,
+        "support_hours": "16x6",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 7200,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Bijak",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Bilt Graphic",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Biryani By Kilo",
+    "uptime_pct": 99.6,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Blink Technologies (Tradeling)",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 15,
+        "resolution_time_minutes": 120,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 2880,
+        "support_hours": "16x6",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 7200,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Bliss GVS Pharma",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 35,
+        "resolution_time_minutes": null,
+        "support_hours": "Mon-Fri 10AM-7PM",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 180,
+        "resolution_time_minutes": null,
+        "support_hours": "Mon-Fri 10AM-7PM",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 180,
+        "resolution_time_minutes": null,
+        "support_hours": "Mon-Fri 10AM-7PM",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Bluescale LLP",
+    "uptime_pct": null,
+    "tiers": [],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": [],
+    "status": "none_found",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Brands for Less LLC",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 15,
+        "resolution_time_minutes": 120,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 2880,
+        "support_hours": "16x6",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 7200,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "BRF Global",
+    "uptime_pct": 97.0,
+    "tiers": [],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "no_tiers_parsed",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Building Paradise",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Bunge Lodgers",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 15,
+        "resolution_time_minutes": 120,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 2880,
+        "support_hours": "16x6",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 7200,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": true,
+    "service_credits_summary": "Service credits for support-SLA breach: none.",
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Burjeel Retail Pharmacy",
+    "uptime_pct": null,
+    "tiers": [],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": [],
+    "status": "none_found",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Cab Technologies",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 15,
+        "resolution_time_minutes": 120,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 2880,
+        "support_hours": "16x6",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 7200,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": true,
+    "service_credits_summary": "Service credits: NONE stated.",
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Caratlane",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P3",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 7200,
+        "support_hours": "8x5",
+        "devrev_severity": "medium"
+      }
+    ],
+    "has_service_credits": true,
+    "service_credits_summary": "Service credits: NONE stated.",
+    "notes": [
+      "Note: P1 (Shutdown) and P2 (Bugs) tier response/resolution times not legible in the extracted PDF text — review original PDF manually for those two tiers."
+    ],
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Casa Delivery",
+    "uptime_pct": 99.6,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": true,
+    "service_credits_summary": "Service credits: NONE stated.",
+    "notes": [
+      "Note: No chat support in standard package."
+    ],
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Catalent",
+    "uptime_pct": 99.0,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 30,
+        "resolution_time_minutes": 60,
+        "support_hours": "8x5",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 480,
+        "support_hours": "8x5",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 360,
+        "resolution_time_minutes": 1440,
+        "support_hours": "8x5",
+        "devrev_severity": "medium"
+      },
+      {
+        "priority": "P4",
+        "response_time_minutes": 600,
+        "resolution_time_minutes": 2160,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": true,
+    "service_credits_summary": "Service credits: No incremental % credits; remedy is termination + pro-rata refund on Persistent Failure (99% threshold).",
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "CBL Global Foods",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": true,
+    "service_credits_summary": "Service credits: NONE stated.",
+    "notes": [
+      "Note: No chat support in standard package. (P-tiers here give response time only, no resolution times.)"
+    ],
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Certis Lanka",
+    "uptime_pct": 99.6,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": true,
+    "service_credits_summary": "Service credits: NONE stated.",
+    "notes": [
+      "Note: No chat support in standard package."
+    ],
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "CG Logistic Pvt Ltd",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 1440,
+        "support_hours": "8x5",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": 2880,
+        "support_hours": "8x5",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": 7200,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": true,
+    "service_credits_summary": "Service credits: NONE stated.",
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Colis Prive Maroc",
+    "uptime_pct": 99.9,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 60,
+        "resolution_time_minutes": null,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "medium"
+      },
+      {
+        "priority": "P4",
+        "response_time_minutes": 1440,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": true,
+    "service_credits_summary": "Service credits (Availability SLA):",
+    "notes": [
+      "Note: No chat support in standard package."
+    ],
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Connect India",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 15,
+        "resolution_time_minutes": 120,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 2880,
+        "support_hours": "16x6",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 7200,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Contango & E7",
+    "uptime_pct": null,
+    "tiers": [],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "no_tiers_parsed",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Contrans",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 1440,
+        "support_hours": "8x5",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": 2880,
+        "support_hours": "8x5",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": 7200,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": true,
+    "service_credits_summary": "Service credits: NONE stated.",
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Ctrl M Print Management",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 15,
+        "resolution_time_minutes": 120,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 2880,
+        "support_hours": "16x6",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 7200,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": true,
+    "service_credits_summary": "Service credits: NONE stated.",
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Dealshare",
+    "uptime_pct": 99.6,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 15,
+        "resolution_time_minutes": 240,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 120,
+        "resolution_time_minutes": null,
+        "support_hours": null,
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "medium"
+      },
+      {
+        "priority": "P4",
+        "response_time_minutes": 1440,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": true,
+    "service_credits_summary": "Service credits: NONE stated.",
+    "notes": [
+      "Note: No chat support in standard package."
+    ],
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Decathalon",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 15,
+        "resolution_time_minutes": 120,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 2880,
+        "support_hours": "16x6",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 7200,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": true,
+    "service_credits_summary": "Service credits: NONE stated.",
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Desqaured (Box)",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 15,
+        "resolution_time_minutes": 120,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 2880,
+        "support_hours": "16x6",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 7200,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": true,
+    "service_credits_summary": "Service credits: NONE stated.",
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "DHL",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 15,
+        "resolution_time_minutes": 120,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 2880,
+        "support_hours": "16x6",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 7200,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": true,
+    "service_credits_summary": "Service credits: NONE stated.",
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Districo India",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": null,
+        "support_hours": null,
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": true,
+    "service_credits_summary": "Service credits: NONE stated.",
+    "notes": [
+      "Note: No chat support in standard package."
+    ],
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Dmart",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 15,
+        "resolution_time_minutes": null,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": null,
+        "support_hours": "16x6",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": true,
+    "service_credits_summary": "Service credits: NONE stated.",
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "DPD Laser",
+    "uptime_pct": 99.6,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 60,
+        "resolution_time_minutes": 240,
+        "support_hours": null,
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": null,
+        "support_hours": null,
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": null,
+        "devrev_severity": "medium"
+      },
+      {
+        "priority": "P4",
+        "response_time_minutes": 1440,
+        "resolution_time_minutes": null,
+        "support_hours": null,
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": true,
+    "service_credits_summary": "Service credits: NONE stated.",
+    "notes": [
+      "Note: No chat support in standard package (beyond the 2 chat users noted)."
+    ],
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "DTDC Express Ltd",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 15,
+        "resolution_time_minutes": 120,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 60,
+        "resolution_time_minutes": 1080,
+        "support_hours": "Mon-Sat",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 120,
+        "resolution_time_minutes": 2160,
+        "support_hours": "Mon-Fri 10AM-7PM",
+        "devrev_severity": "medium"
+      },
+      {
+        "priority": "P4",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 2700,
+        "support_hours": "Mon-Fri 10AM-7PM",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": true,
+    "service_credits_summary": "Service credits: NONE stated.",
+    "notes": null,
+    "status": "ok",
+    "cohort": "1-DTDC",
+    "devrev_accounts": [
+      {
+        "display_name": "DTDC",
+        "account_id": "ACC-u5JsHNO6",
+        "don_id": "don:identity:dvrv-us-1:devo/xXjPo9nF:account/u5JsHNO6"
+      },
+      {
+        "display_name": "dtdc.co",
+        "account_id": "ACC-1ERdqDghw",
+        "don_id": "don:identity:dvrv-us-1:devo/xXjPo9nF:account/1ERdqDghw"
+      },
+      {
+        "display_name": "dtdc.in",
+        "account_id": "ACC-im2HyH1y",
+        "don_id": "don:identity:dvrv-us-1:devo/xXjPo9nF:account/im2HyH1y"
+      }
+    ]
+  },
+  {
+    "customer_name": "Duroshox",
+    "uptime_pct": 99.5,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": null,
+        "support_hours": null,
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": null,
+        "support_hours": null,
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": true,
+    "service_credits_summary": "Service credits: NONE stated (Shipsy provides bug resolution at no additional cost).",
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "EFL (Eureka Forbes)",
+    "uptime_pct": 99.6,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 120,
+        "resolution_time_minutes": null,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": null,
+        "support_hours": "24x7",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "medium"
+      },
+      {
+        "priority": "P4",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": true,
+    "service_credits_summary": "Service credits: NONE stated.",
+    "notes": [
+      "Note: No chat support in standard package."
+    ],
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Eirad UPS",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 15,
+        "resolution_time_minutes": 120,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 2880,
+        "support_hours": "16x6",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 7200,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Emami Frank Ross",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 15,
+        "resolution_time_minutes": 120,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 2880,
+        "support_hours": "16x6",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 7200,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": [
+      "- Shutdown (P1): [OCR unclear] — the P1 Shutdown row is missing/illegible (pages 4-5 of OCR are blank/garbled). Per Shipsy standard India template this is typically response 15 min / max resolution 2 hrs / 24*7, but cannot be confirmed from this OCR.",
+      "Note: OCR quality poor on the SLA pages; sub-clause numbering scrambled, P1 row lost. P2/P3 values legible."
+    ],
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Expeditors International",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "resolution_time_minutes": null,
+        "support_hours": null,
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "resolution_time_minutes": null,
+        "support_hours": null,
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "resolution_time_minutes": null,
+        "support_hours": null,
+        "devrev_severity": "medium"
+      },
+      {
+        "priority": "P4",
+        "resolution_time_minutes": null,
+        "support_hours": null,
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": true,
+    "service_credits_summary": "Service credits: Service Availability Credits payable per Exhibit B for any \"Service Error\" (unavailability not due to Scheduled Downtime/Exception). [Exhibit B not in candidate snippet.]",
+    "notes": [
+      "NOTE: The \"Service Level Matrix\" (Section 6) response/resolution times per tier are GARBLED/MISALIGNED in the extracted PDF (rows show fragments: \"1 hour\", \"2 hours / 6 hours\", \"3 / 6 hours\", \"4 / 4 hours\" with columns scrambled) — exact per-tier response & resolution times could not be reliably read. Review original PDF for Section 6 matrix."
+    ],
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Extra",
+    "uptime_pct": 99.6,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Faisal Al Dosary",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": [
+      "- P3 (Improvements, UI changes minimal business impact): response 16 hours; support 8*5 (Mon-Fri, business hours); escalation via Atlassian Feedback System. [OCR unclear] — no max resolution time stated for P3 in OCR text."
+    ],
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Fashnear (Farmiso)",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "resolution_time_minutes": null,
+        "support_hours": null,
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "resolution_time_minutes": null,
+        "support_hours": null,
+        "devrev_severity": "high"
+      }
+    ],
+    "has_service_credits": true,
+    "service_credits_summary": "Service credits / penalties (STRONG — this is the notable term):",
+    "notes": [
+      "NOTE: Response/resolution time figures for the tiers are not present in Farmiso's own documents (likely governed by underlying Meesho/Fashnear MSA). Review the base agreement for tier timings."
+    ],
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Fashnear (Meesho)",
+    "uptime_pct": 99.96,
+    "tiers": [
+      {
+        "priority": "P1",
+        "resolution_time_minutes": null,
+        "support_hours": null,
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": null,
+        "support_hours": null,
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 9000,
+        "support_hours": null,
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Fastway Couriers",
+    "uptime_pct": null,
+    "tiers": [],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": [],
+    "status": "none_found",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Ferns & Petals",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 15,
+        "resolution_time_minutes": 120,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 2880,
+        "support_hours": "16x6",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 7200,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": true,
+    "service_credits_summary": "Service credits: NONE stated.",
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Field Intelligence",
+    "uptime_pct": 99.5,
+    "tiers": [],
+    "has_service_credits": true,
+    "service_credits_summary": "Service credits: If Shipsy fails to meet the uptime commitment, Customer receives a credit on a pro-rata basis of the annual Maintenance and Support Fee.",
+    "notes": null,
+    "status": "no_tiers_parsed",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Fiora Online",
+    "uptime_pct": 90.0,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 15,
+        "resolution_time_minutes": 120,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 2880,
+        "support_hours": "16x6",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 7200,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": true,
+    "service_credits_summary": "Service credits: NONE stated.",
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Flipkart",
+    "uptime_pct": 99.6,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 30,
+        "resolution_time_minutes": 60,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 480,
+        "support_hours": "16x6",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 360,
+        "resolution_time_minutes": 1440,
+        "support_hours": "8x5",
+        "devrev_severity": "medium"
+      },
+      {
+        "priority": "P4",
+        "response_time_minutes": 600,
+        "resolution_time_minutes": 2160,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": true,
+    "service_credits_summary": "Service credits: NONE stated. (Information security breach notification obligation: within 3 hours — separate from support SLA.)",
+    "notes": [
+      "Note: Standard package excludes chat support; Platinum package includes chat.",
+      "Multiple contracts: Platinum Addendum 3 (tighter) and Standard Addendum 5. Using Platinum values as primary."
+    ],
+    "status": "ok",
+    "cohort": "3A-On Demand",
+    "devrev_accounts": [
+      {
+        "display_name": "Flipkart",
+        "account_id": "ACC-cBf033gP",
+        "don_id": "don:identity:dvrv-us-1:devo/xXjPo9nF:account/cBf033gP"
+      },
+      {
+        "display_name": "flipkart.in",
+        "account_id": "ACC-OPPE2slK",
+        "don_id": "don:identity:dvrv-us-1:devo/xXjPo9nF:account/OPPE2slK"
+      },
+      {
+        "display_name": "Flipkart DH Offload",
+        "account_id": "ACC-jdKQCOIt",
+        "don_id": "don:identity:dvrv-us-1:devo/xXjPo9nF:account/jdKQCOIt"
+      }
+    ]
+  },
+  {
+    "customer_name": "Flow PL",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 15,
+        "resolution_time_minutes": 120,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 2880,
+        "support_hours": "16x6",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 7200,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Floward",
+    "uptime_pct": 99.9,
+    "tiers": [
+      {
+        "priority": "P1",
+        "resolution_time_minutes": null,
+        "support_hours": null,
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "resolution_time_minutes": null,
+        "support_hours": null,
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "resolution_time_minutes": null,
+        "support_hours": null,
+        "devrev_severity": "medium"
+      },
+      {
+        "priority": "P4",
+        "resolution_time_minutes": null,
+        "support_hours": null,
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": true,
+    "service_credits_summary": "Uptime penalty (System Uptime SLA Band -> % payable in monthly billing): >99.9% = 0%; >99.5% to <=99.9% = -2%; <99.5% = -5%.",
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Flyjac",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 15,
+        "resolution_time_minutes": 120,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 2880,
+        "support_hours": "16x6",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 7200,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Freshcartons (Rozana)",
+    "uptime_pct": 99.0,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": true,
+    "service_credits_summary": "Service credits/penalties: uptime compensation as above (1 day's fee/breach, capped 60 days/yr); no separate severity-tier penalty.",
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Frontline Logistics",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 15,
+        "resolution_time_minutes": 120,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 2880,
+        "support_hours": "16x6",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 7200,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Gilani",
+    "uptime_pct": 99.6,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 60,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Gujarat Fluorochemicals Ltd",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 15,
+        "resolution_time_minutes": 120,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 2880,
+        "support_hours": "16x6",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 7200,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Gulf Maritime General Trading & Contracting Co W.L.L  (Alkazemi)",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 15,
+        "resolution_time_minutes": 120,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 2880,
+        "support_hours": "16x6",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 7200,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "GWC",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 60,
+        "resolution_time_minutes": null,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "medium"
+      },
+      {
+        "priority": "P4",
+        "response_time_minutes": 1440,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Haldiram Products Pvt. Ltd",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 15,
+        "resolution_time_minutes": 120,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 2880,
+        "support_hours": "16x6",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 7200,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Happy BG",
+    "uptime_pct": 99.9,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 15,
+        "resolution_time_minutes": 60,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 60,
+        "resolution_time_minutes": 240,
+        "support_hours": "24x7",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "medium"
+      },
+      {
+        "priority": "P4",
+        "response_time_minutes": 1440,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "HCCB",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 60,
+        "resolution_time_minutes": 240,
+        "support_hours": null,
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": 1080,
+        "support_hours": null,
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": null,
+        "devrev_severity": "medium"
+      },
+      {
+        "priority": "P4",
+        "response_time_minutes": 1440,
+        "resolution_time_minutes": null,
+        "support_hours": null,
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Heads Up for Tails",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 15,
+        "resolution_time_minutes": 120,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 2880,
+        "support_hours": "16x6",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 7200,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Healthkart",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "resolution_time_minutes": null,
+        "support_hours": null,
+        "devrev_severity": "blocker"
+      }
+    ],
+    "has_service_credits": true,
+    "service_credits_summary": "- No P1/P2/P3/P4 tiers, no response/resolution times, no service credits/penalties found in OCR.",
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Heineken",
+    "uptime_pct": 99.9,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 60,
+        "resolution_time_minutes": 240,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 960,
+        "support_hours": "8x5",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 360,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": true,
+    "service_credits_summary": "Service credits/penalties: HEINEKEN may terminate or suspend the Agreement immediately, without liability, if Supplier fails to meet agreed service levels (incl. agreed uptime) for (i) 2 consecutive months or (ii) 3 months per year (Clause 20.4). No defined % service credit.",
+    "notes": null,
+    "status": "ok",
+    "cohort": "2-HNK",
+    "devrev_accounts": [
+      {
+        "display_name": "heineken",
+        "account_id": "ACC-BvMwCgbz",
+        "don_id": "don:identity:dvrv-us-1:devo/xXjPo9nF:account/BvMwCgbz"
+      },
+      {
+        "display_name": "heineken.com.br",
+        "account_id": "ACC-C4800jMY",
+        "don_id": "don:identity:dvrv-us-1:devo/xXjPo9nF:account/C4800jMY"
+      },
+      {
+        "display_name": "heineken-br1",
+        "account_id": "ACC-5zvP8D4",
+        "don_id": "don:identity:dvrv-us-1:devo/xXjPo9nF:account/5zvP8D4"
+      }
+    ]
+  },
+  {
+    "customer_name": "Hellmann",
+    "uptime_pct": 99.9,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 120,
+        "resolution_time_minutes": null,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": null,
+        "support_hours": "24x7",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 360,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": true,
+    "service_credits_summary": "Uptime service credits (Platform Uptime -> % discount in monthly billing): >=99.9% = 0%; >=99.5% and <99.9% = 2%; >=95% and <99.5% = 5%; <95% = 100%.",
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Hotline Delivery (Kout)",
+    "uptime_pct": 99.9,
+    "tiers": [
+      {
+        "priority": "P1",
+        "resolution_time_minutes": null,
+        "support_hours": null,
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "resolution_time_minutes": null,
+        "support_hours": null,
+        "devrev_severity": "high"
+      }
+    ],
+    "has_service_credits": true,
+    "service_credits_summary": "- Service credits / Liquidated Damages (Clause 5):",
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Interpay",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 15,
+        "resolution_time_minutes": 120,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 2880,
+        "support_hours": "16x6",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 7200,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Iqmal",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Iwexpress",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 15,
+        "resolution_time_minutes": 120,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 2880,
+        "support_hours": "16x6",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 7200,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Jeebly",
+    "uptime_pct": 99.0,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 60,
+        "resolution_time_minutes": null,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "medium"
+      },
+      {
+        "priority": "P4",
+        "response_time_minutes": 1440,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": true,
+    "service_credits_summary": "Availability penalty: up to 99% = no penalty; up to 97% = 0.5% of monthly fee; up to 96% = 1% of monthly fee; up to 95% = 3% of monthly fee. Penalty capped at USD 300.",
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Jindal Worldwide",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 15,
+        "resolution_time_minutes": 120,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 2880,
+        "support_hours": "16x6",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 7200,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Jovitronix",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 15,
+        "resolution_time_minutes": 120,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 2880,
+        "support_hours": "16x6",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 7200,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Jules AL",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 15,
+        "resolution_time_minutes": 120,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 2880,
+        "support_hours": "16x6",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 7200,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Kangaroo Cargo",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 15,
+        "resolution_time_minutes": 120,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 2880,
+        "support_hours": "16x6",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 7200,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Kapila Krishi Udhyog Limited",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Kapu Tech",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 15,
+        "resolution_time_minutes": 120,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 2880,
+        "support_hours": "16x6",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 7200,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Kardi LLC",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Kasha",
+    "uptime_pct": 99.6,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 60,
+        "resolution_time_minutes": 240,
+        "support_hours": null,
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "resolution_time_minutes": null,
+        "support_hours": null,
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "resolution_time_minutes": null,
+        "support_hours": null,
+        "devrev_severity": "medium"
+      },
+      {
+        "priority": "P4",
+        "resolution_time_minutes": null,
+        "support_hours": null,
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Kelloggs",
+    "uptime_pct": null,
+    "tiers": [],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": [],
+    "status": "none_found",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Khimji International",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Kimbal Technologies",
+    "uptime_pct": 99.6,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 60,
+        "resolution_time_minutes": null,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "medium"
+      },
+      {
+        "priority": "P4",
+        "response_time_minutes": 1440,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": true,
+    "service_credits_summary": "Penalty (Infrastructure Support, Availability -> Penalty): 100%-99.6% = no penalty; 99.5%-98% = 5% of monthly fee; 97.9%-90% = 20% of monthly fee; 89.9%-80% = 30% of monthly fee; <80% = 100% of monthly fee.",
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Kinguru - Dubai",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 15,
+        "resolution_time_minutes": 120,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 2880,
+        "support_hours": "16x6",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 7200,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Kissan Konnect",
+    "uptime_pct": 99.6,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 60,
+        "resolution_time_minutes": null,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "medium"
+      },
+      {
+        "priority": "P4",
+        "response_time_minutes": 1440,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Kyosk",
+    "uptime_pct": 99.6,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 60,
+        "resolution_time_minutes": null,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "medium"
+      },
+      {
+        "priority": "P4",
+        "response_time_minutes": 1440,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Labaiik",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 15,
+        "resolution_time_minutes": 120,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 2880,
+        "support_hours": "16x6",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 7200,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Lamex Food",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "LATAM",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "resolution_time_minutes": null,
+        "support_hours": null,
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "resolution_time_minutes": null,
+        "support_hours": null,
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "resolution_time_minutes": null,
+        "support_hours": null,
+        "devrev_severity": "medium"
+      },
+      {
+        "priority": "P4",
+        "resolution_time_minutes": null,
+        "support_hours": null,
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": true,
+    "service_credits_summary": "Uptime / service credits (monthly uptime percentage vs SLA credit, % of Monthly Prorated Subscription Fee):",
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "LATAM (LAN Cargo S.A.)",
+    "uptime_pct": 99.89,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 60,
+        "resolution_time_minutes": 240,
+        "support_hours": null,
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": 1080,
+        "support_hours": null,
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": null,
+        "devrev_severity": "medium"
+      },
+      {
+        "priority": "P4",
+        "resolution_time_minutes": null,
+        "support_hours": null,
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": true,
+    "service_credits_summary": "Service credits (per Monthly Uptime Percentage):",
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "LCM Logistics",
+    "uptime_pct": 99.5,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Lifestyle",
+    "uptime_pct": null,
+    "tiers": [],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": [],
+    "status": "none_found",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Lighthouse",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Loftafrica",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 15,
+        "resolution_time_minutes": 120,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 2880,
+        "support_hours": "16x6",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 7200,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Lulu Hypermarket",
+    "uptime_pct": 99.9,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 30,
+        "resolution_time_minutes": 60,
+        "support_hours": null,
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 120,
+        "resolution_time_minutes": 360,
+        "support_hours": null,
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": null,
+        "devrev_severity": "medium"
+      },
+      {
+        "priority": "P4",
+        "response_time_minutes": 1440,
+        "resolution_time_minutes": null,
+        "support_hours": null,
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": true,
+    "service_credits_summary": "Service credits: None specified (KPI breach -> termination right, not credits).",
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Mahindra Logistics",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Maldives Post",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 120,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "medium"
+      },
+      {
+        "priority": "P4",
+        "response_time_minutes": 1440,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Manipal Technologies",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 15,
+        "resolution_time_minutes": 120,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 2880,
+        "support_hours": "16x6",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 7200,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": true,
+    "service_credits_summary": "- Service credits / penalties (Clause 11.1.1, delay in issue resolution beyond Clause 7.3 times):",
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Maruti Courier",
+    "uptime_pct": 99.6,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Max Hyper Market",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 15,
+        "resolution_time_minutes": 120,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 2880,
+        "support_hours": "16x6",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 7200,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Meatigo",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 15,
+        "resolution_time_minutes": 120,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 2880,
+        "support_hours": "16x6",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 7200,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Mera Pashu",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 15,
+        "resolution_time_minutes": 120,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 2880,
+        "support_hours": "16x6",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 7200,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Mezzan",
+    "uptime_pct": 99.6,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 60,
+        "resolution_time_minutes": null,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "resolution_time_minutes": null,
+        "support_hours": null,
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": [
+      "- P3 / P4: [OCR unclear] — OCR text ends at page 30 after P2; P3/P4 tiers (if present) not captured in extracted file. Review manually."
+    ],
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "MOVIN",
+    "uptime_pct": 99.6,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 30,
+        "resolution_time_minutes": 60,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 120,
+        "resolution_time_minutes": null,
+        "support_hours": "24x7",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": null,
+        "support_hours": "24x7",
+        "devrev_severity": "medium"
+      },
+      {
+        "priority": "P4",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": null,
+        "support_hours": "24x7",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Myntra",
+    "uptime_pct": 99.6,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 30,
+        "resolution_time_minutes": 60,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "resolution_time_minutes": null,
+        "support_hours": null,
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "resolution_time_minutes": null,
+        "support_hours": null,
+        "devrev_severity": "medium"
+      },
+      {
+        "priority": "P4",
+        "resolution_time_minutes": null,
+        "support_hours": null,
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": [
+      "NOTE: Candidate file also includes an older base MSA (MSA.pdf) with a standard tier (P1 resp 15 min/res 2 hrs/24x7; P2 resp 4 hrs/res 48 hrs/16x6; P3 resp 4 hrs/res 120 hrs/8x5). The Flipkart Order Form Platinum SLA above is the operative/newer commitment."
+    ],
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Nature_s Basket",
+    "uptime_pct": 99.6,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 60,
+        "resolution_time_minutes": null,
+        "support_hours": null,
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "medium"
+      },
+      {
+        "priority": "P4",
+        "response_time_minutes": 1440,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": true,
+    "service_credits_summary": "- Service credits / penalties (availability-based, monthly):",
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Ncubate",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 15,
+        "resolution_time_minutes": 120,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 2880,
+        "support_hours": "16x6",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 7200,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Nippon Express",
+    "uptime_pct": 99.6,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 60,
+        "resolution_time_minutes": null,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "medium"
+      },
+      {
+        "priority": "P4",
+        "response_time_minutes": 1440,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Olayan",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": [
+      "- P3 (Improvements, UI changes minimal business impact): response 16 hours; support 8*5 (Mon-Fri, business hours); escalation via Atlassian Feedback System. [OCR unclear] — no max resolution time stated for P3 in OCR."
+    ],
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Omantel",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 15,
+        "resolution_time_minutes": 120,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 2880,
+        "support_hours": "16x6",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 7200,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": true,
+    "service_credits_summary": "Penalties / service credits:",
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Omya",
+    "uptime_pct": 99.6,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Oriental Rubber",
+    "uptime_pct": 98.0,
+    "tiers": [],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "no_tiers_parsed",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Part 1 (Partnr)",
+    "uptime_pct": 99.6,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "medium"
+      },
+      {
+        "priority": "P4",
+        "response_time_minutes": 1440,
+        "resolution_time_minutes": null,
+        "support_hours": null,
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "PayTM",
+    "uptime_pct": 99.5,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Pepperfry",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 15,
+        "resolution_time_minutes": 120,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 2880,
+        "support_hours": "16x6",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 7200,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Perfetti Van Melle",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 45,
+        "resolution_time_minutes": null,
+        "support_hours": null,
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 180,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 180,
+        "resolution_time_minutes": 4320,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": true,
+    "service_credits_summary": "Service credits: Unused-container credit rolls to next annual year. Excess containers charged $6.25/container.",
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Pincode",
+    "uptime_pct": 99.6,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 60,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "medium"
+      },
+      {
+        "priority": "P4",
+        "response_time_minutes": 1440,
+        "resolution_time_minutes": null,
+        "support_hours": null,
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Pitchfork",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 15,
+        "resolution_time_minutes": 120,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 2880,
+        "support_hours": "16x6",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 7200,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Plub",
+    "uptime_pct": 99.5,
+    "tiers": [],
+    "has_service_credits": true,
+    "service_credits_summary": "Service credits (Addendum/TMS Annexure V, automatically applied to next invoice):",
+    "notes": null,
+    "status": "no_tiers_parsed",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Polygon Stores",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 15,
+        "resolution_time_minutes": 120,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 2880,
+        "support_hours": "16x6",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 7200,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "POST Luxembourg (Inflow)",
+    "uptime_pct": 99.9,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 30,
+        "resolution_time_minutes": 60,
+        "support_hours": null,
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 120,
+        "resolution_time_minutes": 360,
+        "support_hours": null,
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": null,
+        "support_hours": null,
+        "devrev_severity": "medium"
+      },
+      {
+        "priority": "P4",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": null,
+        "support_hours": null,
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": true,
+    "service_credits_summary": "Service credits (indemnity, % of monthly SaaS fee = (yearly platform + subscription + premium support fee)/12):",
+    "notes": [
+      "Note: regulated entity (CSSF/PSD2) — security patch lead times by CVSS: critical >9 within 30 days; 7-9 within 90 days; 5-7 within 180 days; 0-5 within 365 days."
+    ],
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Prakash Chemical",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 15,
+        "resolution_time_minutes": 120,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 2880,
+        "support_hours": "16x6",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 7200,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Pro Connect (India)",
+    "uptime_pct": 99.9,
+    "tiers": [
+      {
+        "priority": "P1",
+        "resolution_time_minutes": null,
+        "support_hours": null,
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "resolution_time_minutes": null,
+        "support_hours": null,
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "resolution_time_minutes": null,
+        "support_hours": null,
+        "devrev_severity": "medium"
+      },
+      {
+        "priority": "P4",
+        "resolution_time_minutes": null,
+        "support_hours": null,
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": true,
+    "service_credits_summary": "Uptime: 99.9% guarantee. Service Credits (% of monthly billing amount):",
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Pro Connect LLC (MEA)",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 15,
+        "resolution_time_minutes": 120,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 2880,
+        "support_hours": "16x6",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 7200,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "PT Elegant",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 15,
+        "resolution_time_minutes": 120,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 2880,
+        "support_hours": "16x6",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 7200,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Puig",
+    "uptime_pct": null,
+    "tiers": [],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "no_tiers_parsed",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Purplle",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Qatarpost",
+    "uptime_pct": 99.6,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 45,
+        "resolution_time_minutes": 60,
+        "support_hours": null,
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "resolution_time_minutes": null,
+        "support_hours": null,
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "medium"
+      },
+      {
+        "priority": "P4",
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": [
+      "Package: Silver issue resolution package (Annexure A). NOTE: a per-tier comparison table on page 13 (Bronze/Silver/Gold/Platinum) is heavily OCR-garbled [OCR unclear]; figures below taken from the clean Annexure A clause."
+    ],
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Quiqup",
+    "uptime_pct": 99.6,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "RIL",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "resolution_time_minutes": null,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "resolution_time_minutes": null,
+        "support_hours": null,
+        "devrev_severity": "high"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "cohort": "1-Reliance",
+    "devrev_accounts": [
+      {
+        "display_name": "Reliance (RIL)",
+        "account_id": "ACC-y36IXmM4",
+        "don_id": "don:identity:dvrv-us-1:devo/xXjPo9nF:account/y36IXmM4"
+      },
+      {
+        "display_name": "RIL",
+        "account_id": "ACC-6wFfy2pw",
+        "don_id": "don:identity:dvrv-us-1:devo/xXjPo9nF:account/6wFfy2pw"
+      },
+      {
+        "display_name": "Reliance",
+        "account_id": "ACC-Wc8Rt9rz",
+        "don_id": "don:identity:dvrv-us-1:devo/xXjPo9nF:account/Wc8Rt9rz"
+      },
+      {
+        "display_name": "Reliance Grocery",
+        "account_id": "ACC-JKoyH2yi",
+        "don_id": "don:identity:dvrv-us-1:devo/xXjPo9nF:account/JKoyH2yi"
+      }
+    ]
+  },
+  {
+    "customer_name": "Safexpress",
+    "uptime_pct": 99.6,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 60,
+        "resolution_time_minutes": null,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": true,
+    "service_credits_summary": "SLA-breach remedy: if Shipsy fails to adhere to agreed SLA terms, Customer gives 60 days' written notice; if not cured in 60 days, Customer may terminate. (No monetary service credits.)",
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Samsonite",
+    "uptime_pct": 99.6,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "San Miguel",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 15,
+        "resolution_time_minutes": null,
+        "support_hours": "Mon-Fri 10AM-5PM",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 60,
+        "resolution_time_minutes": null,
+        "support_hours": "Mon-Fri 10AM-5PM",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": null,
+        "support_hours": "Mon-Fri 10AM-5PM",
+        "devrev_severity": "medium"
+      },
+      {
+        "priority": "P4",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 4320,
+        "support_hours": "Mon-Fri 10AM-5PM",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": [
+      "Business Continuity Plan (complete planned outage): P1 response 2 hours; resolution 1 working day; daily tracking info sent as Excel until platform live; report frequency \"All [OCR unclear]\"; support Mon-Fri [hours cut off — OCR unclear]."
+    ],
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Sangeetha Mobiles Private Limited",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Sathya Agencies",
+    "uptime_pct": null,
+    "tiers": [],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "no_tiers_parsed",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Saudi Bulk Company (SBT)",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 15,
+        "resolution_time_minutes": 120,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 2880,
+        "support_hours": "16x6",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 7200,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Sela",
+    "uptime_pct": 99.6,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 60,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "medium"
+      },
+      {
+        "priority": "P4",
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Selorg Tech (Land Marvel)",
+    "uptime_pct": 99.6,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "SF Logistics Private Limited (Ibobscs)",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 15,
+        "resolution_time_minutes": 120,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 2880,
+        "support_hours": "16x6",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 7200,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "SGA Security",
+    "uptime_pct": 99.6,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": null,
+        "support_hours": null,
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Shipyaari",
+    "uptime_pct": 90.0,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 15,
+        "resolution_time_minutes": 120,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 2880,
+        "support_hours": "16x6",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 7200,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Sigma Corporation",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 15,
+        "resolution_time_minutes": 120,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 2880,
+        "support_hours": "16x6",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 7200,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Sirocco FZCO",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 15,
+        "resolution_time_minutes": 120,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 2880,
+        "support_hours": "16x6",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 7200,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": true,
+    "service_credits_summary": "Uptime: not stated as % (Schedule A references \"billing rates and discounts (service credit fees)\" but no uptime % in SLA clause).",
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "SKIP Logistics",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "SMI Express",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 15,
+        "resolution_time_minutes": 120,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 2880,
+        "support_hours": "16x6",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 7200,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": [
+      "NOTE: document is an unsigned service agreement."
+    ],
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Smiths News",
+    "uptime_pct": 99.9,
+    "tiers": [
+      {
+        "priority": "P1",
+        "resolution_time_minutes": 60,
+        "support_hours": null,
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "resolution_time_minutes": 240,
+        "support_hours": null,
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "resolution_time_minutes": 480,
+        "support_hours": null,
+        "devrev_severity": "medium"
+      },
+      {
+        "priority": "P4",
+        "resolution_time_minutes": 960,
+        "support_hours": null,
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": true,
+    "service_credits_summary": "SERVICE CREDITS (per monthly uptime %):",
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Solstium-Network Courier",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Sonar Courier",
+    "uptime_pct": 99.6,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Spencer",
+    "uptime_pct": 99.6,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 60,
+        "resolution_time_minutes": null,
+        "support_hours": null,
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "medium"
+      },
+      {
+        "priority": "P4",
+        "response_time_minutes": 1440,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": true,
+    "service_credits_summary": "PENALTY / SERVICE CREDITS (Infrastructure Support availability):",
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "SPL (TibbyGo)",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 60,
+        "resolution_time_minutes": null,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 120,
+        "resolution_time_minutes": null,
+        "support_hours": "24x7",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "medium"
+      },
+      {
+        "priority": "P4",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": [
+      "NOTE: bilingual (English/Arabic) KSA SaaS agreement."
+    ],
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "SSL Logistics",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 60,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "medium"
+      },
+      {
+        "priority": "P4",
+        "response_time_minutes": 1440,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Starlinks",
+    "uptime_pct": 99.6,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Sterling",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": null,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": [
+      "Note: Addendum No. 2 is a JSON config payload, no SLA terms."
+    ],
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Swiggy",
+    "uptime_pct": 99.6,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 120,
+        "resolution_time_minutes": null,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "medium"
+      },
+      {
+        "priority": "P4",
+        "response_time_minutes": 1440,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": true,
+    "service_credits_summary": "PENALTY / SERVICE CREDITS (Availability SLA):",
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Swish",
+    "uptime_pct": 99.6,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 60,
+        "resolution_time_minutes": null,
+        "support_hours": null,
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "medium"
+      },
+      {
+        "priority": "P4",
+        "response_time_minutes": 1440,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Tata 1MG",
+    "uptime_pct": 99.6,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Tata Motors",
+    "uptime_pct": null,
+    "tiers": [],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": [
+      "Note: No explicit tiered SLA in contract; only generic \"standard SLAs\" reference + hypercare 24x7. Review manually if tiered terms are required."
+    ],
+    "status": "no_tiers_parsed",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "TatvaCare",
+    "uptime_pct": 99.6,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 60,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "medium"
+      },
+      {
+        "priority": "P4",
+        "response_time_minutes": 1440,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": [
+      "Note: No chat support in standard package."
+    ],
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "TD Logistics",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 15,
+        "resolution_time_minutes": null,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Tej Courier",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": [
+      "Note: No chat support in standard package."
+    ],
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Teleport",
+    "uptime_pct": 99.6,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 60,
+        "resolution_time_minutes": 240,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": 960,
+        "support_hours": "8x5",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": 2880,
+        "support_hours": "8x5",
+        "devrev_severity": "medium"
+      },
+      {
+        "priority": "P4",
+        "response_time_minutes": 1440,
+        "resolution_time_minutes": 4320,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": true,
+    "service_credits_summary": "Service credits (Availability SLA):",
+    "notes": [
+      "Note: No chat support in standard package."
+    ],
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Thermo Fisher",
+    "uptime_pct": 99.6,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 60,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "medium"
+      },
+      {
+        "priority": "P4",
+        "response_time_minutes": 1440,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": [
+      "Note: No chat support in standard package."
+    ],
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "TibbyGo",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 60,
+        "resolution_time_minutes": null,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 120,
+        "resolution_time_minutes": null,
+        "support_hours": "24x7",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "medium"
+      },
+      {
+        "priority": "P4",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Tiki",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": [
+      "Note: No chat support in standard package."
+    ],
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Traisure",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": [
+      "Note: No chat support in standard package."
+    ],
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Truemeds",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 15,
+        "resolution_time_minutes": 120,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 2880,
+        "support_hours": "16x6",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 7200,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "UBT",
+    "uptime_pct": 98.0,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 60,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "medium"
+      },
+      {
+        "priority": "P4",
+        "response_time_minutes": 1440,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Unibev",
+    "uptime_pct": 99.6,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 60,
+        "resolution_time_minutes": null,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "medium"
+      },
+      {
+        "priority": "P4",
+        "response_time_minutes": 1440,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": true,
+    "service_credits_summary": "Service credits / penalties (Availability SLA — service credit table):",
+    "notes": [
+      "- Availability 97%: ~2% of monthly fee [OCR unclear].",
+      "- Availability 95%: ~3% of monthly fee [OCR unclear]."
+    ],
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Unique Fragrances",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 60,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "medium"
+      },
+      {
+        "priority": "P4",
+        "response_time_minutes": 1440,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": [
+      "Note: No chat support in standard package."
+    ],
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "United Homeware Company",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 15,
+        "resolution_time_minutes": 120,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 2880,
+        "support_hours": "16x6",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 7200,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "UPP (E7)",
+    "uptime_pct": 99.6,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 60,
+        "resolution_time_minutes": 240,
+        "support_hours": null,
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "resolution_time_minutes": null,
+        "support_hours": null,
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "resolution_time_minutes": null,
+        "support_hours": null,
+        "devrev_severity": "medium"
+      },
+      {
+        "priority": "P4",
+        "resolution_time_minutes": null,
+        "support_hours": null,
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": true,
+    "service_credits_summary": "Service credits (Availability SLA / Infrastructure Support):",
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "UPS Gulf",
+    "uptime_pct": 99.9999,
+    "tiers": [],
+    "has_service_credits": true,
+    "service_credits_summary": "Service credits/penalties: Service Level Credits referenced (continue during Termination Assistance Period) but specific credit amounts not in extracted snippet. Termination right if Vendor fails any service level for 3 consecutive months or 4 of any 6 consecutive months.",
+    "notes": [
+      "Note: Custom UPS contract — no standard Shipsy P1-P4 support tier table."
+    ],
+    "status": "no_tiers_parsed",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Urbandot",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": [
+      "Note: No chat support in standard package."
+    ],
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Vima Foods",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": [
+      "Note: No chat support in standard package."
+    ],
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Wacker Chemie",
+    "uptime_pct": 99.6,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": [
+      "Note: No chat support in standard package."
+    ],
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Wacker Metroark",
+    "uptime_pct": 99.6,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Wakefit",
+    "uptime_pct": 99.6,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 120,
+        "resolution_time_minutes": null,
+        "support_hours": null,
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": [
+      "Note: No chat support in standard package."
+    ],
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Warehouse Now",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 15,
+        "resolution_time_minutes": 120,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 2880,
+        "support_hours": "16x6",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 7200,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Wellness Forever",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 15,
+        "resolution_time_minutes": 120,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 2880,
+        "support_hours": "16x6",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 7200,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Welspun",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 45,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 180,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 180,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": [
+      "Note: Custom Welspun SLA — non-standard tier names and 9-hour daily window."
+    ],
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "XpressBees",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 60,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "medium"
+      },
+      {
+        "priority": "P4",
+        "response_time_minutes": 1440,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": [
+      "Note: No chat support in standard package."
+    ],
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Zajel",
+    "uptime_pct": null,
+    "tiers": [],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": [
+      "Note: Genuine SLA exists (Schedule D + uptime guarantee) but tier detail not extractable — REVIEW MANUALLY for exact response/resolution times."
+    ],
+    "status": "no_tiers_parsed",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Zajil Express Company",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 15,
+        "resolution_time_minutes": 120,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 2880,
+        "support_hours": "16x6",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 7200,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Zamil AC",
+    "uptime_pct": 99.6,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 480,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 960,
+        "resolution_time_minutes": null,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  },
+  {
+    "customer_name": "Zepto",
+    "uptime_pct": 99.9,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 15,
+        "resolution_time_minutes": 240,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 60,
+        "resolution_time_minutes": 2160,
+        "support_hours": "Mon-Sat 10AM-8PM",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 120,
+        "resolution_time_minutes": 2880,
+        "support_hours": "Mon-Fri 10AM-8PM",
+        "devrev_severity": "medium"
+      },
+      {
+        "priority": "P4",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 4320,
+        "support_hours": "Mon-Fri 10AM-8PM",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": true,
+    "service_credits_summary": "3-tier penalty: uptime (3-10%), support SLA (3-10%), API latency (3-10%) of monthly billing",
+    "notes": [
+      "Note: Addendum has full uptime %, support tiers with resolution times, AND service credit/penalty bands — most complete SLA in this batch. Three review metrics monthly: uptime, support SLA, API latency.",
+      "NOT FOUND in DevRev accounts. Needs manual account creation or mapping."
+    ],
+    "status": "ok",
+    "cohort": "3A-On Demand",
+    "devrev_accounts": []
+  },
+  {
+    "customer_name": "Zypp",
+    "uptime_pct": null,
+    "tiers": [
+      {
+        "priority": "P1",
+        "response_time_minutes": 15,
+        "resolution_time_minutes": 120,
+        "support_hours": "24x7",
+        "devrev_severity": "blocker"
+      },
+      {
+        "priority": "P2",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 2880,
+        "support_hours": "16x6",
+        "devrev_severity": "high"
+      },
+      {
+        "priority": "P3",
+        "response_time_minutes": 240,
+        "resolution_time_minutes": 7200,
+        "support_hours": "8x5",
+        "devrev_severity": "low"
+      }
+    ],
+    "has_service_credits": false,
+    "service_credits_summary": null,
+    "notes": null,
+    "status": "ok",
+    "devrev_accounts": [],
+    "cohort": null
+  }
+]

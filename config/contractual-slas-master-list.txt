@@ -1,0 +1,239 @@
+SHIPSY — CONTRACTUAL SLA MASTER LIST (209 Customers)
+Extracted from customer contracts. Source: customer_support_slas.md
+Generated: 2026-06-02
+
+#     Customer                            Status        Uptime  Credits   P1 Resp   P1 Res  P2 Resp   P2 Res  P3 Resp   P3 Res  P4 Resp   P4 Res
+───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+1     Aarti Industries                    OK                 —      Yes       45m        —       3h        —        —        —        —        —
+2     Aditya Birla                        OK             99.6%       No        4h        —       8h        —      16h        —        —        —
+3     AJ Logistics                        OK                 —       No       15m       2h       4h      48h       4h     120h        —        —
+4     AJS Transport                       INCOMPLETE     99.6%       No         —        —        —        —        —        —        —        —
+5     Al Jabri                            OK                 —       No        4h        —       8h        —      16h        —        —        —
+6     Al Saif                             OK                 —       No        2h       8h       8h        —      16h        —        —        —
+7     Al Sariyah (Sharaf DG)              OK                 —       No        1h        —       8h        —      16h        —      24h        —
+8     Al-Musbah                           OK                 —       No       15m       2h       4h      48h       4h     120h        —        —
+9     Alkhayyat Investments (Binsina)     OK                 —       No       15m       2h       4h      48h       4h     120h        —        —
+10    Amal                                OK                 —       No       15m       2h       4h      48h       4h     120h        —        —
+11    Ambica Steels                       OK                 —       No        4h        —       8h        —      16h        —        —        —
+12    Americana                           OK             99.6%       No        4h        —       8h        —      16h        —        —        —
+13    ANC Delivers                        OK             99.6%      Yes       15m       1h       2h       6h       4h      12h       8h      16h
+14    Apollo Pharmacies Limited           OK                 —       No       15m       2h       4h      48h       4h     120h        —        —
+15    Aramex                              OK             99.4%      Yes        1h       4h       2h       8h       4h      24h      12h      48h
+16    Aramex KSA                          OK             99.6%       No        4h        —       8h        —      16h        —        —        —
+17    argenX                              OK                 —       No        1h       4h       8h      18h      16h        —      24h        —
+18    Arvind Limited                      NONE               —       No         —        —        —        —        —        —        —        —
+19    ASDA UK                             OK             99.9%      Yes        1h        —       4h        —       8h        —        —        —
+20    Asendia Singapore                   OK                 —       No        1h       4h       8h      18h      16h        —      24h        —
+21    Aster Arabia Trading Company        OK             99.6%       No        1h        —       8h        —      16h        —      24h        —
+22    Aster Healthcare                    NO TIERS       99.9%      Yes         —        —        —        —        —        —        —        —
+23    Atlant Global                       OK             99.6%       No        4h        —       8h        —      16h        —        —        —
+24    Aujan                               NO TIERS       99.5%      Yes         —        —        —        —        —        —        —        —
+25    Avery Dennison                      OK            99.99%      Yes         —        —       1h        —       4h        —       4h      72h
+26    Azooz Express                       OK                 —       No         —        —       8h        —      16h        —        —        —
+27    Baladi Express                      OK                 —       No        4h        —       8h        —      16h        —        —        —
+28    BDO                                 OK             99.7%       No        1h       4h       8h      18h      16h        —      24h        —
+29    Beethere                            OK                 —       No       15m       2h       4h      48h       4h     120h        —        —
+30    Bijak                               OK                 —       No        4h        —       8h        —      16h        —        —        —
+31    Bilt Graphic                        OK                 —       No        4h        —       8h        —      16h        —        —        —
+32    Biryani By Kilo                     OK             99.6%       No        4h        —       8h        —      16h        —        —        —
+33    Blink Technologies (Tradeling)      OK                 —       No       15m       2h       4h      48h       4h     120h        —        —
+34    Bliss GVS Pharma                    OK                 —       No       35m        —       3h        —       3h        —        —        —
+35    Bluescale LLP                       NONE               —       No         —        —        —        —        —        —        —        —
+36    Brands for Less LLC                 OK                 —       No       15m       2h       4h      48h       4h     120h        —        —
+37    BRF Global                          NO TIERS       97.0%       No         —        —        —        —        —        —        —        —
+38    Building Paradise                   OK                 —       No        4h        —       8h        —      16h        —        —        —
+39    Bunge Lodgers                       OK                 —      Yes       15m       2h       4h      48h       4h     120h        —        —
+40    Burjeel Retail Pharmacy             NONE               —       No         —        —        —        —        —        —        —        —
+41    Cab Technologies                    OK                 —      Yes       15m       2h       4h      48h       4h     120h        —        —
+42    Caratlane                           OK                 —      Yes         —        —        —        —       4h     120h        —        —
+43    Casa Delivery                       OK             99.6%      Yes        4h        —       8h        —      16h        —        —        —
+44    Catalent                            OK             99.0%      Yes       30m       1h       4h       8h       6h      24h      10h      36h
+45    CBL Global Foods                    OK                 —      Yes        4h        —       8h        —      16h        —        —        —
+46    Certis Lanka                        OK             99.6%      Yes        4h        —       8h        —      16h        —        —        —
+47    CG Logistic Pvt Ltd                 OK                 —      Yes        4h      24h       8h      48h      16h     120h        —        —
+48    Colis Prive Maroc                   OK             99.9%      Yes        1h        —       8h        —      16h        —      24h        —
+49    Connect India                       OK                 —       No       15m       2h       4h      48h       4h     120h        —        —
+50    Contango & E7                       NO TIERS           —       No         —        —        —        —        —        —        —        —
+51    Contrans                            OK                 —      Yes        4h      24h       8h      48h      16h     120h        —        —
+52    Ctrl M Print Management             OK                 —      Yes       15m       2h       4h      48h       4h     120h        —        —
+53    Dealshare                           OK             99.6%      Yes       15m       4h       2h        —      16h        —      24h        —
+54    Decathalon                          OK                 —      Yes       15m       2h       4h      48h       4h     120h        —        —
+55    Desqaured (Box)                     OK                 —      Yes       15m       2h       4h      48h       4h     120h        —        —
+56    DHL                                 OK                 —      Yes       15m       2h       4h      48h       4h     120h        —        —
+57    Districo India                      OK                 —      Yes        4h        —       8h        —      16h        —        —        —
+58    Dmart                               OK                 —      Yes       15m        —       4h        —       4h        —        —        —
+59    DPD Laser                           OK             99.6%      Yes        1h       4h       8h        —      16h        —      24h        —
+60    DTDC Express Ltd                    OK                 —      Yes       15m       2h       1h      18h       2h      36h       4h      45h
+61    Duroshox                            OK             99.5%      Yes        4h        —       8h        —      16h        —        —        —
+62    EFL (Eureka Forbes)                 OK             99.6%      Yes        2h        —       4h        —       8h        —      16h        —
+63    Eirad UPS                           OK                 —       No       15m       2h       4h      48h       4h     120h        —        —
+64    Emami Frank Ross                    OK                 —       No       15m       2h       4h      48h       4h     120h        —        —
+65    Expeditors International            OK                 —      Yes         —        —        —        —        —        —        —        —
+66    Extra                               OK             99.6%       No        4h        —       8h        —      16h        —        —        —
+67    Faisal Al Dosary                    OK                 —       No        4h        —       8h        —      16h        —        —        —
+68    Fashnear (Farmiso)                  OK                 —      Yes         —        —        —        —        —        —        —        —
+69    Fashnear (Meesho)                   OK            99.96%       No         —        —       4h        —       4h     150h        —        —
+70    Fastway Couriers                    NONE               —       No         —        —        —        —        —        —        —        —
+71    Ferns & Petals                      OK                 —      Yes       15m       2h       4h      48h       4h     120h        —        —
+72    Field Intelligence                  NO TIERS       99.5%      Yes         —        —        —        —        —        —        —        —
+73    Fiora Online                        OK             90.0%      Yes       15m       2h       4h      48h       4h     120h        —        —
+74    Flipkart                            OK             99.6%      Yes       30m       1h       4h       8h       6h      24h      10h      36h
+75    Flow PL                             OK                 —       No       15m       2h       4h      48h       4h     120h        —        —
+76    Floward                             OK             99.9%      Yes         —        —        —        —        —        —        —        —
+77    Flyjac                              OK                 —       No       15m       2h       4h      48h       4h     120h        —        —
+78    Freshcartons (Rozana)               OK             99.0%      Yes        4h        —       8h        —      16h        —        —        —
+79    Frontline Logistics                 OK                 —       No       15m       2h       4h      48h       4h     120h        —        —
+80    Gilani                              OK             99.6%       No        1h        —       8h        —      16h        —        —        —
+81    Gujarat Fluorochemicals Ltd         OK                 —       No       15m       2h       4h      48h       4h     120h        —        —
+82    Gulf Maritime General Trading ...   OK                 —       No       15m       2h       4h      48h       4h     120h        —        —
+83    GWC                                 OK                 —       No        1h        —       8h        —      16h        —      24h        —
+84    Haldiram Products Pvt. Ltd          OK                 —       No       15m       2h       4h      48h       4h     120h        —        —
+85    Happy BG                            OK             99.9%       No       15m       1h       1h       4h      16h        —      24h        —
+86    HCCB                                OK                 —       No        1h       4h       8h      18h      16h        —      24h        —
+87    Heads Up for Tails                  OK                 —       No       15m       2h       4h      48h       4h     120h        —        —
+88    Healthkart                          OK                 —      Yes         —        —        —        —        —        —        —        —
+89    Heineken                            OK             99.9%      Yes        1h       4h       4h      16h       6h        —        —        —
+90    Hellmann                            OK             99.9%      Yes        2h        —       4h        —       6h        —        —        —
+91    Hotline Delivery (Kout)             OK             99.9%      Yes         —        —        —        —        —        —        —        —
+92    Interpay                            OK                 —       No       15m       2h       4h      48h       4h     120h        —        —
+93    Iqmal                               OK                 —       No        4h        —       8h        —      16h        —        —        —
+94    Iwexpress                           OK                 —       No       15m       2h       4h      48h       4h     120h        —        —
+95    Jeebly                              OK             99.0%      Yes        1h        —       8h        —      16h        —      24h        —
+96    Jindal Worldwide                    OK                 —       No       15m       2h       4h      48h       4h     120h        —        —
+97    Jovitronix                          OK                 —       No       15m       2h       4h      48h       4h     120h        —        —
+98    Jules AL                            OK                 —       No       15m       2h       4h      48h       4h     120h        —        —
+99    Kangaroo Cargo                      OK                 —       No       15m       2h       4h      48h       4h     120h        —        —
+100   Kapila Krishi Udhyog Limited        OK                 —       No        4h        —       8h        —      16h        —        —        —
+101   Kapu Tech                           OK                 —       No       15m       2h       4h      48h       4h     120h        —        —
+102   Kardi LLC                           OK                 —       No        4h        —       8h        —      16h        —        —        —
+103   Kasha                               OK             99.6%       No        1h       4h        —        —        —        —        —        —
+104   Kelloggs                            NONE               —       No         —        —        —        —        —        —        —        —
+105   Khimji International                OK                 —       No        4h        —       8h        —      16h        —        —        —
+106   Kimbal Technologies                 OK             99.6%      Yes        1h        —       8h        —      16h        —      24h        —
+107   Kinguru - Dubai                     OK                 —       No       15m       2h       4h      48h       4h     120h        —        —
+108   Kissan Konnect                      OK             99.6%       No        1h        —       8h        —      16h        —      24h        —
+109   Kyosk                               OK             99.6%       No        1h        —       8h        —      16h        —      24h        —
+110   Labaiik                             OK                 —       No       15m       2h       4h      48h       4h     120h        —        —
+111   Lamex Food                          OK                 —       No        4h        —       8h        —      16h        —        —        —
+112   LATAM                               OK                 —      Yes         —        —        —        —        —        —        —        —
+113   LATAM (LAN Cargo S.A.)              OK            99.89%      Yes        1h       4h       8h      18h      16h        —        —        —
+114   LCM Logistics                       OK             99.5%       No        4h        —       8h        —      16h        —        —        —
+115   Lifestyle                           NONE               —       No         —        —        —        —        —        —        —        —
+116   Lighthouse                          OK                 —       No        4h        —       8h        —      16h        —        —        —
+117   Loftafrica                          OK                 —       No       15m       2h       4h      48h       4h     120h        —        —
+118   Lulu Hypermarket                    OK             99.9%      Yes       30m       1h       2h       6h      16h        —      24h        —
+119   Mahindra Logistics                  OK                 —       No        4h        —       8h        —      16h        —        —        —
+120   Maldives Post                       OK                 —       No        2h        —       8h        —      16h        —      24h        —
+121   Manipal Technologies                OK                 —      Yes       15m       2h       4h      48h       4h     120h        —        —
+122   Maruti Courier                      OK             99.6%       No        4h        —       8h        —      16h        —        —        —
+123   Max Hyper Market                    OK                 —       No       15m       2h       4h      48h       4h     120h        —        —
+124   Meatigo                             OK                 —       No       15m       2h       4h      48h       4h     120h        —        —
+125   Mera Pashu                          OK                 —       No       15m       2h       4h      48h       4h     120h        —        —
+126   Mezzan                              OK             99.6%       No        1h        —       8h        —        —        —        —        —
+127   MOVIN                               OK             99.6%       No       30m       1h       2h        —       4h        —       8h        —
+128   Myntra                              OK             99.6%       No       30m       1h        —        —        —        —        —        —
+129   Nature_s Basket                     OK             99.6%      Yes        1h        —       8h        —      16h        —      24h        —
+130   Ncubate                             OK                 —       No       15m       2h       4h      48h       4h     120h        —        —
+131   Nippon Express                      OK             99.6%       No        1h        —       8h        —      16h        —      24h        —
+132   Olayan                              OK                 —       No        4h        —       8h        —      16h        —        —        —
+133   Omantel                             OK                 —      Yes       15m       2h       4h      48h       4h     120h        —        —
+134   Omya                                OK             99.6%       No        4h        —       8h        —      16h        —        —        —
+135   Oriental Rubber                     NO TIERS       98.0%       No         —        —        —        —        —        —        —        —
+136   Part 1 (Partnr)                     OK             99.6%       No        4h        —       8h        —      16h        —      24h        —
+137   PayTM                               OK             99.5%       No        4h        —       8h        —      16h        —        —        —
+138   Pepperfry                           OK                 —       No       15m       2h       4h      48h       4h     120h        —        —
+139   Perfetti Van Melle                  OK                 —      Yes       45m        —       3h        —       3h      72h        —        —
+140   Pincode                             OK             99.6%       No        1h        —       8h        —      16h        —      24h        —
+141   Pitchfork                           OK                 —       No       15m       2h       4h      48h       4h     120h        —        —
+142   Plub                                NO TIERS       99.5%      Yes         —        —        —        —        —        —        —        —
+143   Polygon Stores                      OK                 —       No       15m       2h       4h      48h       4h     120h        —        —
+144   POST Luxembourg (Inflow)            OK             99.9%      Yes       30m       1h       2h       6h       4h        —       8h        —
+145   Prakash Chemical                    OK                 —       No       15m       2h       4h      48h       4h     120h        —        —
+146   Pro Connect (India)                 OK             99.9%      Yes         —        —        —        —        —        —        —        —
+147   Pro Connect LLC (MEA)               OK                 —       No       15m       2h       4h      48h       4h     120h        —        —
+148   PT Elegant                          OK                 —       No       15m       2h       4h      48h       4h     120h        —        —
+149   Puig                                NO TIERS           —       No         —        —        —        —        —        —        —        —
+150   Purplle                             OK                 —       No        4h        —       8h        —      16h        —        —        —
+151   Qatarpost                           OK             99.6%       No       45m       1h        —        —        —        —        —        —
+152   Quiqup                              OK             99.6%       No        4h        —       8h        —      16h        —        —        —
+153   RIL                                 OK                 —       No         —        —        —        —        —        —        —        —
+154   Safexpress                          OK             99.6%      Yes        1h        —       8h        —      16h        —        —        —
+155   Samsonite                           OK             99.6%       No        4h        —       8h        —      16h        —        —        —
+156   San Miguel                          OK                 —       No       15m        —       1h        —       4h        —       4h      72h
+157   Sangeetha Mobiles Private Limited   OK                 —       No        4h        —       8h        —      16h        —        —        —
+158   Sathya Agencies                     NO TIERS           —       No         —        —        —        —        —        —        —        —
+159   Saudi Bulk Company (SBT)            OK                 —       No       15m       2h       4h      48h       4h     120h        —        —
+160   Sela                                OK             99.6%       No        1h        —        —        —        —        —        —        —
+161   Selorg Tech (Land Marvel)           OK             99.6%       No        4h        —       8h        —      16h        —        —        —
+162   SF Logistics Private Limited (...   OK                 —       No       15m       2h       4h      48h       4h     120h        —        —
+163   SGA Security                        OK             99.6%       No        4h        —       8h        —      16h        —        —        —
+164   Shipyaari                           OK             90.0%       No       15m       2h       4h      48h       4h     120h        —        —
+165   Sigma Corporation                   OK                 —       No       15m       2h       4h      48h       4h     120h        —        —
+166   Sirocco FZCO                        OK                 —      Yes       15m       2h       4h      48h       4h     120h        —        —
+167   SKIP Logistics                      OK                 —       No        4h        —       8h        —      16h        —        —        —
+168   SMI Express                         OK                 —       No       15m       2h       4h      48h       4h     120h        —        —
+169   Smiths News                         OK             99.9%      Yes         —       1h        —       4h        —       8h        —      16h
+170   Solstium-Network Courier            OK                 —       No        4h        —       8h        —      16h        —        —        —
+171   Sonar Courier                       OK             99.6%       No        4h        —       8h        —      16h        —        —        —
+172   Spencer                             OK             99.6%      Yes        1h        —       8h        —      16h        —      24h        —
+173   SPL (TibbyGo)                       OK                 —       No        1h        —       2h        —       4h        —       8h        —
+174   SSL Logistics                       OK                 —       No        1h        —       8h        —      16h        —      24h        —
+175   Starlinks                           OK             99.6%       No        4h        —       8h        —      16h        —        —        —
+176   Sterling                            OK                 —       No        4h        —       8h        —      16h        —        —        —
+177   Swiggy                              OK             99.6%      Yes        2h        —       8h        —      16h        —      24h        —
+178   Swish                               OK             99.6%       No        1h        —       8h        —      16h        —      24h        —
+179   Tata 1MG                            OK             99.6%       No        4h        —       8h        —      16h        —        —        —
+180   Tata Motors                         NO TIERS           —       No         —        —        —        —        —        —        —        —
+181   TatvaCare                           OK             99.6%       No        1h        —       8h        —      16h        —      24h        —
+182   TD Logistics                        OK                 —       No       15m        —       4h        —      16h        —        —        —
+183   Tej Courier                         OK                 —       No        4h        —       8h        —      16h        —        —        —
+184   Teleport                            OK             99.6%      Yes        1h       4h       8h      16h      16h      48h      24h      72h
+185   Thermo Fisher                       OK             99.6%       No        1h        —       8h        —      16h        —      24h        —
+186   TibbyGo                             OK                 —       No        1h        —       2h        —       4h        —       8h        —
+187   Tiki                                OK                 —       No        4h        —       8h        —      16h        —        —        —
+188   Traisure                            OK                 —       No        4h        —       8h        —      16h        —        —        —
+189   Truemeds                            OK                 —       No       15m       2h       4h      48h       4h     120h        —        —
+190   UBT                                 OK             98.0%       No        1h        —       8h        —      16h        —      24h        —
+191   Unibev                              OK             99.6%      Yes        1h        —       8h        —      16h        —      24h        —
+192   Unique Fragrances                   OK                 —       No        1h        —       8h        —      16h        —      24h        —
+193   United Homeware Company             OK                 —       No       15m       2h       4h      48h       4h     120h        —        —
+194   UPP (E7)                            OK             99.6%      Yes        1h       4h        —        —        —        —        —        —
+195   UPS Gulf                            NO TIERS     99.9999%      Yes         —        —        —        —        —        —        —        —
+196   Urbandot                            OK                 —       No        4h        —       8h        —      16h        —        —        —
+197   Vima Foods                          OK                 —       No        4h        —       8h        —      16h        —        —        —
+198   Wacker Chemie                       OK             99.6%       No        4h        —       8h        —      16h        —        —        —
+199   Wacker Metroark                     OK             99.6%       No        4h        —       8h        —      16h        —        —        —
+200   Wakefit                             OK             99.6%       No        2h        —       8h        —      16h        —        —        —
+201   Warehouse Now                       OK                 —       No       15m       2h       4h      48h       4h     120h        —        —
+202   Wellness Forever                    OK                 —       No       15m       2h       4h      48h       4h     120h        —        —
+203   Welspun                             OK                 —       No       45m        —       3h        —       3h        —        —        —
+204   XpressBees                          OK                 —       No        1h        —       8h        —      16h        —      24h        —
+205   Zajel                               NO TIERS           —       No         —        —        —        —        —        —        —        —
+206   Zajil Express Company               OK                 —       No       15m       2h       4h      48h       4h     120h        —        —
+207   Zamil AC                            OK             99.6%       No        4h        —       8h        —      16h        —        —        —
+208   Zepto                               OK             99.9%      Yes       15m       4h       1h      36h       2h      48h       4h      72h
+209   Zypp                                OK                 —       No       15m       2h       4h      48h       4h     120h        —        —
+───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+SLA TEMPLATE CLUSTERS:
+
+  [ 60 customers] P1: 15m/2h | P2: 4h/48h | P3: 4h/120h
+                  → AJ Logistics, Al-Musbah, Alkhayyat Investments (Binsina), Amal, +56 more
+  [ 51 customers] P1: 4h/— | P2: 8h/— | P3: 16h/—
+                  → Aditya Birla, Al Jabri, Ambica Steels, Americana, +47 more
+  [ 20 customers] P1: 1h/— | P2: 8h/— | P3: 16h/— | P4: 24h/—
+                  → Al Sariyah (Sharaf DG), Aster Arabia Trading Company, Colis Prive Maroc, GWC, +16 more
+  [  4 customers] P1: 1h/4h | P2: 8h/18h | P3: 16h/— | P4: 24h/—
+                  → argenX, Asendia Singapore, BDO, HCCB
+  [  4 customers] P1: —/— | P2: —/— | P3: —/— | P4: —/—
+                  → Expeditors International, Floward, LATAM, Pro Connect (India)
+  [  3 customers] P1: —/— | P2: —/—
+                  → Fashnear (Farmiso), Hotline Delivery (Kout), RIL
+  [  2 customers] P1: 30m/1h | P2: 4h/8h | P3: 6h/24h | P4: 10h/36h
+                  → Catalent, Flipkart
+  [  2 customers] P1: 4h/24h | P2: 8h/48h | P3: 16h/120h
+                  → CG Logistic Pvt Ltd, Contrans
+  [  2 customers] P1: 1h/— | P2: 8h/— | P3: 16h/—
+                  → Gilani, Safexpress
+  [  2 customers] P1: 1h/4h | P2: —/— | P3: —/— | P4: —/—
+                  → Kasha, UPP (E7)
