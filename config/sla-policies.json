@@ -1,0 +1,245 @@
+{
+  "SLA-01-DTDC": {
+    "name": "SLA-01-DTDC",
+    "p1_fr": 15, "p1_rt": 120,
+    "p2_fr": 60, "p2_rt": 1080,
+    "p3_fr": 120, "p3_rt": 2160,
+    "p4_fr": 240, "p4_rt": 2700,
+    "schedule": "P1 24x7 P2 MonSat P3 MonFri",
+    "accounts": ["DTDC"]
+  },
+  "SLA-02-Flipkart/Myntra": {
+    "name": "SLA-02-Flipkart/Myntra",
+    "p1_fr": 30, "p1_rt": 60,
+    "p2_fr": 240, "p2_rt": 480,
+    "p3_fr": 360, "p3_rt": 1440,
+    "p4_fr": 600, "p4_rt": 2160,
+    "schedule": "24x7",
+    "accounts": ["Flipkart", "Myntra", "myntrahl"]
+  },
+  "SLA-03-Template-A": {
+    "name": "SLA-03-Template-A",
+    "p1_fr": 15, "p1_rt": 120,
+    "p2_fr": 240, "p2_rt": 2880,
+    "p3_fr": 240, "p3_rt": 7200,
+    "p4_fr": null, "p4_rt": null,
+    "schedule": "P1 24x7 P2 16x6 P3 8x5",
+    "accounts": ["iwexpress", "Apollo247", "Wellness Forever", "box Account", "SBT Account", "gmggroup", "flowpl", "Flow Express", "omantel", "meatigo", "Apollopharmalogistics"]
+  },
+  "SLA-04-Template-B": {
+    "name": "SLA-04-Template-B",
+    "p1_fr": 240, "p1_rt": null,
+    "p2_fr": 480, "p2_rt": null,
+    "p3_fr": 960, "p3_rt": null,
+    "p4_fr": null, "p4_rt": null,
+    "schedule": "8x5 all tiers",
+    "accounts": ["Aramex Global", "Starlinks", "Rozana", "extra Account"]
+  },
+  "SLA-05-MOVIN": {
+    "name": "SLA-05-MOVIN",
+    "p1_fr": 30, "p1_rt": 60,
+    "p2_fr": 120, "p2_rt": 360,
+    "p3_fr": 240, "p3_rt": 720,
+    "p4_fr": 480, "p4_rt": 960,
+    "schedule": "24x7 all tiers",
+    "accounts": ["Movin", "movin1demo"]
+  },
+  "SLA-06-Heineken": {
+    "name": "SLA-06-Heineken",
+    "p1_fr": 60, "p1_rt": 240,
+    "p2_fr": 240, "p2_rt": 960,
+    "p3_fr": 360, "p3_rt": null,
+    "p4_fr": null, "p4_rt": null,
+    "schedule": "P1 24x7 P2/P3 8x5",
+    "accounts": ["heineken-br1"]
+  },
+  "SLA-07-Aujan/ANC": {
+    "name": "SLA-07-Aujan/ANC",
+    "p1_fr": 15, "p1_rt": 60,
+    "p2_fr": 120, "p2_rt": 360,
+    "p3_fr": 240, "p3_rt": 720,
+    "p4_fr": 480, "p4_rt": 960,
+    "schedule": "P1 24x7 P2-P4 Wknd 16h",
+    "accounts": ["aujanimport", "aujanexport", "ancdelivers"]
+  },
+  "SLA-08-Aramex": {
+    "name": "SLA-08-Aramex",
+    "p1_fr": 60, "p1_rt": 240,
+    "p2_fr": 120, "p2_rt": 480,
+    "p3_fr": 240, "p3_rt": 1440,
+    "p4_fr": 720, "p4_rt": 2880,
+    "schedule": "P1/P2 24x7 P3/P4 16x6",
+    "accounts": ["Aramex Move"]
+  },
+  "SLA-09-Template-C-4h": {
+    "name": "SLA-09-Template-C-4h",
+    "p1_fr": 240, "p1_rt": null,
+    "p2_fr": 480, "p2_rt": null,
+    "p3_fr": 960, "p3_rt": null,
+    "p4_fr": 1440, "p4_rt": null,
+    "schedule": "P1 24x7 P2-P4 8x5",
+    "accounts": ["proconnect", "Partnr"]
+  },
+  "SLA-10-Swiggy": {
+    "name": "SLA-10-Swiggy",
+    "p1_fr": 120, "p1_rt": null,
+    "p2_fr": 480, "p2_rt": null,
+    "p3_fr": 960, "p3_rt": null,
+    "p4_fr": 1440, "p4_rt": null,
+    "schedule": "P1 24x7 P2-P4 8x5",
+    "accounts": ["swiggytms", "scootsy", "Scootsy", "Instamart"]
+  },
+  "SLA-11-UBT": {
+    "name": "SLA-11-UBT",
+    "p1_fr": 60, "p1_rt": 240,
+    "p2_fr": 480, "p2_rt": 1080,
+    "p3_fr": 960, "p3_rt": null,
+    "p4_fr": 1440, "p4_rt": null,
+    "schedule": "Std 24x7 P1 8x5 rest",
+    "accounts": ["Ubteam"]
+  },
+  "SLA-12-Wakefit": {
+    "name": "SLA-12-Wakefit",
+    "p1_fr": 120, "p1_rt": null,
+    "p2_fr": 480, "p2_rt": null,
+    "p3_fr": 960, "p3_rt": null,
+    "p4_fr": null, "p4_rt": null,
+    "schedule": "P1 12x7 P2/P3 8x5",
+    "accounts": ["wakefit"]
+  },
+  "SLA-13-TibbyGo": {
+    "name": "SLA-13-TibbyGo",
+    "p1_fr": 60, "p1_rt": null,
+    "p2_fr": 120, "p2_rt": null,
+    "p3_fr": 240, "p3_rt": null,
+    "p4_fr": 480, "p4_rt": null,
+    "schedule": "P1/P2 24x7 P3/P4 8x5",
+    "accounts": ["TibbyGo"]
+  },
+  "SLA-14-Jeebly/GWC": {
+    "name": "SLA-14-Jeebly/GWC",
+    "p1_fr": 60, "p1_rt": null,
+    "p2_fr": 480, "p2_rt": null,
+    "p3_fr": 960, "p3_rt": null,
+    "p4_fr": 1440, "p4_rt": null,
+    "schedule": "P1 24x7 P2-P4 8x5",
+    "accounts": ["Jeebly", "GWC"]
+  },
+  "SLA-15-Teleport": {
+    "name": "SLA-15-Teleport",
+    "p1_fr": 60, "p1_rt": 240,
+    "p2_fr": 480, "p2_rt": 960,
+    "p3_fr": 960, "p3_rt": 2880,
+    "p4_fr": 1440, "p4_rt": 4320,
+    "schedule": "P1 24x7 P2-P4 8x5",
+    "accounts": ["teleportdemo", "Teleport MY"]
+  },
+  "SLA-16-Kout": {
+    "name": "SLA-16-Kout",
+    "p1_fr": 5, "p1_rt": 45,
+    "p2_fr": 30, "p2_rt": 90,
+    "p3_fr": 60, "p3_rt": 180,
+    "p4_fr": 120, "p4_rt": 720,
+    "schedule": "P1 24x7 P2 16x6 P3 8x5",
+    "accounts": ["KFG Kout"]
+  },
+  "SLA-17-Caratlane": {
+    "name": "SLA-17-Caratlane",
+    "p1_fr": null, "p1_rt": null,
+    "p2_fr": null, "p2_rt": null,
+    "p3_fr": 240, "p3_rt": 7200,
+    "p4_fr": null, "p4_rt": null,
+    "schedule": "P3 8x5 (P1/P2 OCR lost)",
+    "accounts": ["caratlane"]
+  },
+  "SLA-18-Aster HC": {
+    "name": "SLA-18-Aster HC",
+    "p1_fr": 15, "p1_rt": 20,
+    "p2_fr": 30, "p2_rt": 1440,
+    "p3_fr": 120, "p3_rt": 5760,
+    "p4_fr": 720, "p4_rt": null,
+    "schedule": "Custom CSM",
+    "accounts": ["Aster Pharmacy"]
+  },
+  "SLA-19-Spencer": {
+    "name": "SLA-19-Spencer",
+    "p1_fr": 60, "p1_rt": null,
+    "p2_fr": 480, "p2_rt": null,
+    "p3_fr": 960, "p3_rt": null,
+    "p4_fr": 1440, "p4_rt": null,
+    "schedule": "P1 8x7 P2-P4 8x5",
+    "accounts": ["Spencers", "spencersdemo"]
+  },
+  "SLA-20-Avery Dennison": {
+    "name": "SLA-20-Avery Dennison",
+    "p1_fr": 60, "p1_rt": 720,
+    "p2_fr": 60, "p2_rt": 1440,
+    "p3_fr": 240, "p3_rt": 2880,
+    "p4_fr": 1440, "p4_rt": 7200,
+    "schedule": "P1 24hr Mon-Sun varies",
+    "accounts": ["avery"]
+  },
+  "SLA-21-Qatarpost": {
+    "name": "SLA-21-Qatarpost Silver",
+    "p1_fr": 45, "p1_rt": 60,
+    "p2_fr": 360, "p2_rt": 720,
+    "p3_fr": 540, "p3_rt": 2160,
+    "p4_fr": 720, "p4_rt": 3600,
+    "schedule": "P1 8x7 P3/P4 8x5",
+    "accounts": ["Qatar Post"]
+  },
+  "SLA-22-Aster Arabia": {
+    "name": "SLA-22-Aster Arabia",
+    "p1_fr": 60, "p1_rt": null,
+    "p2_fr": 480, "p2_rt": null,
+    "p3_fr": 960, "p3_rt": null,
+    "p4_fr": 1440, "p4_rt": null,
+    "schedule": "8x5 all tiers",
+    "accounts": ["asterksa"]
+  },
+  "SLA-23-Catalent": {
+    "name": "SLA-23-Catalent Gold",
+    "p1_fr": 30, "p1_rt": 60,
+    "p2_fr": 240, "p2_rt": 480,
+    "p3_fr": 360, "p3_rt": 1440,
+    "p4_fr": 600, "p4_rt": 2160,
+    "schedule": "8x5 + wknd P1/P2",
+    "accounts": ["Catalent"]
+  },
+  "SLA-24-Floward": {
+    "name": "SLA-24-Floward",
+    "p1_fr": 240, "p1_rt": null,
+    "p2_fr": 480, "p2_rt": null,
+    "p3_fr": 960, "p3_rt": null,
+    "p4_fr": 1440, "p4_rt": null,
+    "schedule": "Mon-Fri 8x5 all",
+    "accounts": ["floward"]
+  },
+  "SLA-25-Smiths News": {
+    "name": "SLA-25-Smiths News",
+    "p1_fr": 15, "p1_rt": 60,
+    "p2_fr": 15, "p2_rt": 240,
+    "p3_fr": 240, "p3_rt": 480,
+    "p4_fr": 480, "p4_rt": 960,
+    "schedule": "P1/P2 24x7 P3/P4 8x5",
+    "accounts": ["Smiths News"]
+  },
+  "NO-TIERS": {
+    "name": "NO-TIERS (keep default)",
+    "p1_fr": null, "p1_rt": null,
+    "p2_fr": null, "p2_rt": null,
+    "p3_fr": null, "p3_rt": null,
+    "p4_fr": null, "p4_rt": null,
+    "schedule": "default SLA",
+    "accounts": ["Reliance RIL", "expeditorsdemo", "rcpl", "chronodiali", "Reliance", "healthkart", "zajel", "jio", "Burgerking", "RIL", "ril-tira", "reliancehyperlocal", "expeditors.com", "Burjeelpharmacy", "ajslogisticsprod", "Expeditors", "reliancepbg"]
+  },
+  "SKIP": {
+    "name": "SKIP (no contract)",
+    "p1_fr": null, "p1_rt": null,
+    "p2_fr": null, "p2_rt": null,
+    "p3_fr": null, "p3_rt": null,
+    "p4_fr": null, "p4_rt": null,
+    "schedule": null,
+    "accounts": ["nxlogistics", "Shipsy", "eximdemo", "xhawi.com", "shipsy.ai", "shipsyflamingo", "Service-now", "jayashree", "heromotocorp", "Mbrf", "visl", "FK Food", "test"]
+  }
+}
