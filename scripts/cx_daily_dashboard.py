@@ -63,6 +63,7 @@ ALIASES = {
     "nxlogistics":"NX Logistics","caratlane":"CaratLane","sbt":"SBT",
     "healthkart":"Healthkart","field":"Field","incnut":"Incnut","frontline":"Frontline",
     "heromotocorp":"Hero MotoCorp","zajel":"Zajel","ubteam":"Ubteam",
+    "techmahindra":"Reliance",
 }
 
 DEVU_MAP = {
@@ -86,6 +87,86 @@ SLACK_ID = {
     "Abhishek Bhandari": "U08LNRWDBNE", "Asif Khan": "U069SEPA8M8",
     "Srijan Srivastava": "U096P90QQAE", "Tejal Shirsat": "U09JLRSCV51",
     "Deepanshu Marwari": "U02J2QN6SSX",
+}
+
+# ═══ CONTRACTUAL SLA POLICIES ═══
+# Key: normalized raw DevRev account (lowercase, stripped suffixes).
+# Value: [[P1_fr, P1_rt], [P2_fr, P2_rt], [P3_fr, P3_rt], [P4_fr, P4_rt]] in minutes.
+# None = no target for that tier/metric.
+# Source: "Account to SLA Assignment" (cx-pulse-dashboard, SLA-01 through SLA-25).
+CONTRACTUAL_SLA = {
+    "ancdelivers": [[15,60],[120,360],[240,720],[480,960]],
+    "apollo247": [[15,120],[240,2880],[240,7200],[None,None]],
+    "apollopharmalogistics": [[15,120],[240,2880],[240,7200],[None,None]],
+    "aramex global": [[240,None],[480,None],[960,None],[None,None]],
+    "aramex move": [[60,240],[120,480],[240,1440],[720,2880]],
+    "aster pharmacy": [[15,20],[30,1440],[120,5760],[720,None]],
+    "asterksa": [[60,None],[480,None],[960,None],[1440,None]],
+    "aujanexport": [[15,60],[120,360],[240,720],[480,960]],
+    "aujanimport": [[15,60],[120,360],[240,720],[480,960]],
+    "avery": [[60,720],[60,1440],[240,2880],[1440,7200]],
+    "box": [[15,120],[240,2880],[240,7200],[None,None]],
+    "caratlane": [[None,None],[None,None],[240,7200],[None,None]],
+    "catalent": [[30,60],[240,480],[360,1440],[600,2160]],
+    "dtdc": [[15,120],[60,1080],[120,2160],[240,2700]],
+    "extra": [[240,None],[480,None],[960,None],[None,None]],
+    "flipkart": [[30,60],[240,480],[360,1440],[600,2160]],
+    "flow express": [[15,120],[240,2880],[240,7200],[None,None]],
+    "floward": [[240,None],[480,None],[960,None],[1440,None]],
+    "flowpl": [[15,120],[240,2880],[240,7200],[None,None]],
+    "gmggroup": [[15,120],[240,2880],[240,7200],[None,None]],
+    "gwc": [[60,None],[480,None],[960,None],[1440,None]],
+    "heineken-br1": [[60,240],[240,960],[360,None],[None,None]],
+    "instamart": [[120,None],[480,None],[960,None],[1440,None]],
+    "iwexpress": [[15,120],[240,2880],[240,7200],[None,None]],
+    "jeebly": [[60,None],[480,None],[960,None],[1440,None]],
+    "kfg kout": [[15,60],[30,120],[60,180],[120,1440]],
+    "meatigo": [[15,120],[240,2880],[240,7200],[None,None]],
+    "movin": [[30,60],[120,360],[240,720],[480,960]],
+    "movin1demo": [[30,60],[120,360],[240,720],[480,960]],
+    "myntra": [[30,60],[240,480],[360,1440],[600,2160]],
+    "myntrahl": [[30,60],[240,480],[360,1440],[600,2160]],
+    "omantel": [[15,120],[240,2880],[240,7200],[None,None]],
+    "partnr": [[240,None],[480,None],[960,None],[1440,None]],
+    "proconnect": [[240,None],[480,None],[960,None],[1440,None]],
+    "qatar post": [[45,60],[360,720],[540,2160],[720,3600]],
+    "rozana": [[240,None],[480,None],[960,None],[None,None]],
+    "sbt": [[15,120],[240,2880],[240,7200],[None,None]],
+    "scootsy": [[120,None],[480,None],[960,None],[1440,None]],
+    "smiths news": [[15,60],[15,240],[240,480],[480,960]],
+    "spencers": [[60,None],[480,None],[960,None],[1440,None]],
+    "spencersdemo": [[60,None],[480,None],[960,None],[1440,None]],
+    "starlinks": [[240,None],[480,None],[960,None],[None,None]],
+    "swiggytms": [[120,None],[480,None],[960,None],[1440,None]],
+    "teleport my": [[60,240],[480,960],[960,2880],[1440,4320]],
+    "teleportdemo": [[60,240],[480,960],[960,2880],[1440,4320]],
+    "tibbygo": [[60,None],[120,None],[240,None],[480,None]],
+    "ubteam": [[60,240],[480,1080],[960,None],[1440,None]],
+    "wakefit": [[120,None],[480,None],[960,None],[None,None]],
+    "wellness forever": [[15,120],[240,2880],[240,7200],[None,None]],
+}
+
+# Default SLA targets (fallback for accounts without a contractual policy)
+DEFAULT_SLA_TARGETS = {
+    "blocker": [15, 240],    # 15m FR, 4h RT
+    "high":    [60, 2160],   # 1h FR, 36h RT
+    "medium":  [120, 2880],  # 2h FR, 48h RT
+    "low":     [240, 4320],  # 4h FR, 72h RT
+}
+
+SLA_TIER = {"blocker": 0, "high": 1, "medium": 2, "low": 3}
+
+# Accounts with no tiered contract — use default SLA targets
+SLA_NO_TIERS = {
+    "ajslogisticsprod","burgerking","burjeelpharmacy","chronodiali","expeditors",
+    "expeditors.com","expeditorsdemo","healthkart","jio","rcpl","reliance",
+    "reliance ril","reliancehyperlocal","reliancepbg","ril","ril-tira","zajel",
+}
+
+# Internal/demo/no-contract accounts — excluded from SLA reporting
+SLA_SKIP = {
+    "eximdemo","fk food","jayashree","mbrf","nxlogistics",
+    "service-now","shipsy","shipsy.ai","shipsyflamingo","test","visl","xhawi.com",
 }
 
 # ═══ HELPERS ═══
@@ -168,18 +249,92 @@ def arrow_emoji(prev, now, lower_is_good=True):
         return " ✅" if d < 0 else " ⚠️"
     return " ✅" if d > 0 else " ⚠️"
 
+def sla_raw_key(t):
+    """Normalize raw DevRev account name for contractual SLA lookup."""
+    n = ((t.get("rev_org") or {}).get("display_name", "") or "").strip().lower()
+    if n.endswith(" - default workspace"): n = n[:-20].strip()
+    if n.endswith(" account"): n = n[:-8].strip()
+    return n
+
+def contractual_targets(t):
+    """Get [fr_target_min, rt_target_min] for a ticket based on its account + severity."""
+    key = sla_raw_key(t)
+    severity = sev(t)
+    tier_idx = SLA_TIER.get(severity)
+    if tier_idx is None:
+        return [None, None]
+    policy = CONTRACTUAL_SLA.get(key)
+    explicit = policy[tier_idx] if policy and tier_idx < len(policy) else [None, None]
+    fallback = DEFAULT_SLA_TARGETS.get(severity, [None, None])
+    return [
+        explicit[0] if explicit[0] is not None else fallback[0],
+        explicit[1] if explicit[1] is not None else fallback[1],
+    ]
+
+def contractual_eval(t):
+    """Evaluate a ticket against contractual SLA. Returns {fr: hit/miss/None, rt: hit/miss/None, category}."""
+    key = sla_raw_key(t)
+    if key in SLA_SKIP:
+        return {"fr": None, "rt": None, "category": "skip"}
+    category = "contractual" if key in CONTRACTUAL_SLA else ("no_tiers" if key in SLA_NO_TIERS else "default")
+    targets = contractual_targets(t)
+    # Extract completed_in from SLA tracker
+    tr = t.get("sla_summary", {}).get("sla_tracker", {})
+    c0 = None  # FR completed_in (minutes)
+    c1 = None  # RT completed_in (minutes)
+    st0 = ""   # FR DevRev status
+    st1 = ""   # RT DevRev status
+    for m in tr.get("metric_target_summaries", []):
+        nm = m.get("metric_definition", {}).get("name", "")
+        if "First" in nm:
+            ci = m.get("completed_in")
+            if ci is not None: c0 = ci
+            st0 = m.get("status", "")
+        elif "Resolution" in nm:
+            ci = m.get("completed_in")
+            if ci is not None: c1 = ci
+            st1 = m.get("status", "")
+    fr_result = None
+    if targets[0] is not None:
+        if c0 is not None and c0 > 0:
+            fr_result = "hit" if c0 <= targets[0] else "miss"
+        elif st0 in ("hit", "miss"):
+            fr_result = st0
+    rt_result = None
+    if targets[1] is not None:
+        if c1 is not None and c1 > 0:
+            rt_result = "hit" if c1 <= targets[1] else "miss"
+        elif st1 in ("hit", "miss"):
+            rt_result = st1
+    return {"fr": fr_result, "rt": rt_result, "category": category}
+
 def check_friday(ticket):
-    """Check if Friday AI analyzed this ticket via Timeline API."""
+    """Check Friday AI activity on this ticket. Returns dict with detailed info."""
+    result = {"analyzed": False, "has_rca": False, "has_fr": False, "latency_min": None}
     try:
-        r = apicall("timeline-entries.list", {"object": ticket["id"], "limit": 20})
+        r = apicall("timeline-entries.list", {"object": ticket["id"], "limit": 30})
+        created = ticket.get("created_date", "")
         for e in r.get("timeline_entries", []):
             if e.get("type") != "timeline_comment": continue
             author = (e.get("created_by") or {}).get("display_name", "")
-            if "friday" in author.lower():
-                return True
-        return False
+            if "friday" not in author.lower(): continue
+            result["analyzed"] = True
+            body = e.get("body", "")
+            if "Root Cause Analysis" in body or "Auto-Investigation" in body:
+                result["has_rca"] = True
+            if e.get("visibility") == "external":
+                result["has_fr"] = True
+                if created and e.get("created_date"):
+                    try:
+                        t1 = datetime.datetime.fromisoformat(created.replace("Z", "+00:00")).replace(tzinfo=None)
+                        t2 = datetime.datetime.fromisoformat(e["created_date"].replace("Z", "+00:00")).replace(tzinfo=None)
+                        mins = (t2 - t1).total_seconds() / 60
+                        if mins >= 0 and (result["latency_min"] is None or mins < result["latency_min"]):
+                            result["latency_min"] = round(mins)
+                    except: pass
+        return result
     except:
-        return False
+        return result
 
 
 # ═══ MAIN ═══
@@ -331,24 +486,28 @@ def main():
         expected_open = None
         reclass_delta = 0
 
-    # ═══ SLA ═══
+    # ═══ SLA (Contractual) ═══
     sla_all = {"fr_h": 0, "fr_m": 0, "rt_h": 0, "rt_m": 0}
-    sla_acct = defaultdict(lambda: {"fr_h": 0, "fr_m": 0, "rt_h": 0, "rt_m": 0, "n": 0})
+    sla_acct = defaultdict(lambda: {"fr_h": 0, "fr_m": 0, "rt_h": 0, "rt_m": 0, "n": 0, "category": ""})
+    sla_cats = Counter()  # contractual / no_tiers / default / skip
     for t in tix + resolved_7d:
         a = acct(t)
-        sla = t.get("sla_summary", {}); tr = sla.get("sla_tracker", {})
+        ev = contractual_eval(t)
+        sla_cats[ev["category"]] += 1
+        if ev["category"] == "skip":
+            continue
         has = False
-        for m in tr.get("metric_target_summaries", []):
-            nm = m.get("metric_definition", {}).get("name", ""); st = m.get("status", "")
-            if "First" in nm:
-                if st == "hit": sla_all["fr_h"] += 1; sla_acct[a]["fr_h"] += 1; has = True
-                elif st == "miss": sla_all["fr_m"] += 1; sla_acct[a]["fr_m"] += 1; has = True
-            elif "Resolution" in nm:
-                if st == "hit": sla_all["rt_h"] += 1; sla_acct[a]["rt_h"] += 1; has = True
-                elif st == "miss": sla_all["rt_m"] += 1; sla_acct[a]["rt_m"] += 1; has = True
-        if has: sla_acct[a]["n"] += 1
+        if ev["fr"] == "hit": sla_all["fr_h"] += 1; sla_acct[a]["fr_h"] += 1; has = True
+        elif ev["fr"] == "miss": sla_all["fr_m"] += 1; sla_acct[a]["fr_m"] += 1; has = True
+        if ev["rt"] == "hit": sla_all["rt_h"] += 1; sla_acct[a]["rt_h"] += 1; has = True
+        elif ev["rt"] == "miss": sla_all["rt_m"] += 1; sla_acct[a]["rt_m"] += 1; has = True
+        if has:
+            sla_acct[a]["n"] += 1
+            if not sla_acct[a]["category"]: sla_acct[a]["category"] = ev["category"]
     fr_t = sla_all["fr_h"] + sla_all["fr_m"]
     rt_t = sla_all["rt_h"] + sla_all["rt_m"]
+    print(f"  SLA: {sla_cats['contractual']} contractual, {sla_cats['no_tiers']} no-tiers, "
+          f"{sla_cats['default']} default, {sla_cats['skip']} skip", file=sys.stderr)
 
     # ═══ RESOLUTION RATE (daily, last 7 days) ═══
     daily_rates = []
@@ -402,12 +561,20 @@ def main():
 
     # ═══ FRIDAY AI ═══
     print("Checking Friday AI coverage...", file=sys.stderr)
-    friday_count = 0
+    friday_results = []
     with ThreadPoolExecutor(max_workers=10) as pool:
         futs = {pool.submit(check_friday, t): t for t in created_yday}
         for f in as_completed(futs):
-            if f.result(): friday_count += 1
-    print(f"  Friday: {friday_count}/{len(created_yday)}", file=sys.stderr)
+            friday_results.append(f.result())
+    friday_count = sum(1 for r in friday_results if r["analyzed"])
+    friday_rca = sum(1 for r in friday_results if r["has_rca"])
+    friday_fr = sum(1 for r in friday_results if r["has_fr"])
+    friday_latencies = [r["latency_min"] for r in friday_results if r["latency_min"] is not None]
+    friday_latencies.sort()
+    friday_coverage = round(friday_count / len(created_yday) * 100) if created_yday else 0
+    friday_p50_lat = pctl(friday_latencies, 50) if friday_latencies else None
+    friday_avg_lat = round(sum(friday_latencies) / len(friday_latencies)) if friday_latencies else None
+    print(f"  Friday: {friday_count}/{len(created_yday)} analyzed, {friday_rca} RCA, {friday_fr} FR sent", file=sys.stderr)
 
     # ═══ CX LEAD LOAD ═══
     mx = defaultdict(Counter)
@@ -461,14 +628,19 @@ def main():
     msg.append(f"\nYesterday:  +{len(created_yday)} created | -{len(resolved_yday)} resolved | net {net_sign}{net_yday}")
     msg.append("```")
 
-    # SLA
+    # SLA (Contractual)
     msg.append("")
     msg.append("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
     msg.append("")
     fr_pct = round(sla_all["fr_h"] / fr_t * 100) if fr_t else 0
     rt_pct = round(sla_all["rt_h"] / rt_t * 100) if rt_t else 0
-    msg.append(f"**2. SLA ADHERENCE** _(open + resolved 7d)_")
+    msg.append(f"**2. SLA ADHERENCE (Contract Basis)** _(open + resolved 7d)_")
     msg.append(f"FR **{fr_pct}%** hit ({sla_all['fr_h']}/{fr_t}) · RT **{rt_pct}%** hit ({sla_all['rt_h']}/{rt_t})")
+    cat_parts = []
+    if sla_cats["contractual"]: cat_parts.append(f"{sla_cats['contractual']} contractual")
+    if sla_cats["no_tiers"] + sla_cats["default"]: cat_parts.append(f"{sla_cats['no_tiers'] + sla_cats['default']} default")
+    if sla_cats["skip"]: cat_parts.append(f"{sla_cats['skip']} skip")
+    msg.append(f"_Pool: {' · '.join(cat_parts)}_")
     msg.append("```")
     msg.append(f" #  {'Account':<18}  {'Pool':>4}   {'FR%':>5}   {'RT%':>5}")
     msg.append(f"──  {'─'*18}  {'─'*4}  {'─'*6}  {'─'*6}")
@@ -559,8 +731,14 @@ def main():
     msg.append("")
     msg.append(f"**6. FRIDAY AI** _({yday_str})_")
     msg.append("```")
-    msg.append(f"🤖  Tickets analyzed:   {friday_count}")
-    msg.append(f"⚡  Time to RCA:        P50 ~5min")
+    msg.append(f"🤖  Tickets created:    {len(created_yday)}")
+    msg.append(f"📊  Friday analyzed:    {friday_count}/{len(created_yday)}  ({friday_coverage}%)")
+    msg.append(f"🔍  RCA generated:      {friday_rca}")
+    msg.append(f"💬  First response sent: {friday_fr}")
+    if friday_p50_lat is not None:
+        avg_str = f"{friday_avg_lat}m" if friday_avg_lat else "-"
+        p50_str = f"{friday_p50_lat:.0f}m" if friday_p50_lat else "-"
+        msg.append(f"⚡  Response time:      P50 {p50_str} · Avg {avg_str}")
     msg.append("```")
 
     # CX Lead Load

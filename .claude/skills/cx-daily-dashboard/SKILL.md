@@ -70,13 +70,18 @@ DevRev PAT token stored in the script. Bearer token auth.
 - Created yesterday: created_date = yesterday, excl canceled, with filter
 - Resolved yesterday: actual_close_date = yesterday, stage = resolved/Closed, with filter
 
-### 2. SLA ADHERENCE
-- Field: sla_summary.sla_tracker.metric_target_summaries[]
-- Two metrics: "First response" and "Resolution time"
-- Each has status: hit / miss / in_progress
-- Hit% = hit / (hit + miss). in_progress excluded from %
-- Pool: open tickets + resolved last 7 days combined
+### 2. SLA ADHERENCE (Contract Basis)
+- Uses contractual SLA policies (SLA-01 through SLA-25) with per-account, per-severity targets
+- For each ticket: look up account's contractual FR/RT target in minutes for its severity
+- FR hit = completed_in[0] (DevRev SLA-aware minutes) <= contractual FR target
+- RT hit = completed_in[1] (DevRev SLA-aware minutes) <= contractual RT target
+- If completed_in not available, falls back to DevRev hit/miss status
+- Accounts without a contract use default SLA targets (P1: 15m FR/4h RT, P2: 1h/36h, P3: 2h/48h, P4: 4h/72h)
+- SKIP accounts (internal/demo) excluded from SLA reporting entirely
+- Hit% = hit / (hit + miss). Tickets with no evaluable data excluded from %
+- Pool: open tickets + resolved last 7 days combined (excl SKIP accounts)
 - Show top 12 accounts by pool size + "X more" rolled up
+- Show pool breakdown: contractual / default / skip
 - Color coding: >=75% green, 60-74% yellow, 40-59% orange, <40% red
 - Period label: "(open + resolved 7d)"
 
