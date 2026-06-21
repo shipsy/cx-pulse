@@ -7,8 +7,8 @@
 **Slack Channel**: `C07BQD5776Y` (#customer-experience-product-support)
 
 **References**:
-- Local repo: `shipsy/cx-pulse` (this repo)
-- Dashboard repo: `srijan-srivastava-shipsy/cx-pulse-dashboard` (Vercel live dashboard)
+- Repo: `shipsy/cx-pulse`
+- CX Pulse Dashboard (Vercel live)
 
 ---
 
@@ -208,7 +208,7 @@ If `tnt__assignee` is empty, the ticket is labeled "Unassigned".
 
 #### 5.2.1 Contractual SLA Logic
 
-The SLA evaluation uses per-account, per-severity contractual targets (SLA-01 through SLA-25), sourced from Gaurav's curated sheets and implemented in `srijan-srivastava-shipsy/cx-pulse-dashboard`.
+The SLA evaluation uses per-account, per-severity contractual targets (SLA-01 through SLA-25), sourced from Gaurav's curated sheets and implemented in the CX Pulse Dashboard.
 
 **How it works**:
 
@@ -424,7 +424,7 @@ This is the same formula used in both repos — standard linear interpolation pe
 > 24 hours -> displayed as days (e.g., "2.1d")
 ```
 
-#### 5.4.4 cx-pulse-dashboard approach (for reference)
+#### 5.4.4 CX Pulse Dashboard approach (for reference)
 The Vercel dashboard uses `Completed In[1]` (Resolution Time metric, SLA-aware minutes) directly from the API response — same source, same field. It does NOT fall back to wall-clock. TAT is always in business-hours minutes and displayed via the same percentile function.
 
 ---
@@ -483,9 +483,9 @@ It scans all timeline entries of type `"timeline_comment"` where `created_by.dis
 | **Response time P50** | Median of `(friday_external_comment_time - ticket_created_time)` in minutes | How fast Friday replies to customers |
 | **Response time Avg** | Average of the same latency values | Mean response speed |
 
-#### 5.6.3 Classification (from cx-pulse-dashboard)
+#### 5.6.3 Classification (from CX Pulse Dashboard)
 
-The Vercel dashboard (`build-dataset.mjs`) uses a five-state classification for deeper analysis:
+The Vercel dashboard uses a five-state classification for deeper analysis:
 
 | Outcome | Meaning |
 |---|---|
@@ -570,7 +570,7 @@ After each successful run, the script saves a snapshot to `config/daily-snapshot
 
 ## 7. Key Differences Between Repos
 
-| Aspect | cx-pulse (daily Slack script) | cx-pulse-dashboard (Vercel dashboard) |
+| Aspect | Daily Slack Report | CX Pulse Dashboard (Vercel) |
 |---|---|---|
 | **SLA Method** | Contractual (per-account targets) | DevRev default + Contractual side by side |
 | **SLA Policies** | 25 contractual policies + default fallback | Same 25 policies + default fallback |
@@ -620,7 +620,7 @@ DevRev's default SLA schedule: **Mon-Fri 10:00 AM - 8:00 PM IST** (org_schedule-
 
 For contractual SLA evaluation, the `completed_in` value from DevRev is used as the elapsed time, regardless of the contract's stated schedule. This means:
 - 24x7 contracts measured against DevRev's 8x5 clock may show higher compliance than actual calendar-time performance
-- The cx-pulse-dashboard notes this: "Times are DevRev business-schedule minutes (Mon-Fri 10-8 IST); accounts on 24x7 contracts will look better here than in calendar time"
+- Note: Times are DevRev business-schedule minutes (Mon-Fri 10-8 IST); accounts on 24x7 contracts will appear to have better numbers here than in calendar time
 
 ---
 
@@ -635,5 +635,5 @@ For contractual SLA evaluation, the `completed_in` value from DevRev is used as 
 
 ---
 
-*Document generated from analysis of `shipsy/cx-pulse` and `srijan-srivastava-shipsy/cx-pulse-dashboard` codebases.*
+*Document generated from `shipsy/cx-pulse` codebase and CX Pulse Dashboard.*
 *Last updated: 21 June 2026*
