@@ -1,52 +1,52 @@
 {
-  "date": "2026-06-02",
-  "total": 279,
-  "blockers": 5,
+  "date": "2026-06-22",
+  "total": 335,
+  "blockers": 4,
   "blocker_ids": [
+    "TKT-100310",
+    "TKT-100937",
+    "TKT-99276",
+    "TKT-97851"
+  ],
+  "unanswered": 65,
+  "prior_total": 279,
+  "prior_blockers": 5,
+  "prior_unanswered": 38,
+  "prior_blocker_ids": [
     "TKT-98751",
     "TKT-99125",
     "TKT-99195",
     "TKT-99276",
     "TKT-97851"
   ],
-  "unanswered": 38,
-  "prior_total": 224,
-  "prior_blockers": 4,
-  "prior_unanswered": 31,
-  "prior_blocker_ids": [
-    "TKT-98751",
-    "TKT-99125",
-    "TKT-97851",
-    "TKT-99195"
-  ],
   "daily_rates": {
-    "2026-05-26": [
-      52,
-      35
+    "2026-06-15": [
+      39,
+      44
     ],
-    "2026-05-27": [
-      48,
-      39
+    "2026-06-16": [
+      57,
+      27
     ],
-    "2026-05-28": [
-      38,
-      91
+    "2026-06-17": [
+      57,
+      44
     ],
-    "2026-05-29": [
-      43,
-      39
+    "2026-06-18": [
+      54,
+      58
     ],
-    "2026-05-30": [
+    "2026-06-19": [
+      53,
+      45
+    ],
+    "2026-06-20": [
+      22,
+      25
+    ],
+    "2026-06-21": [
       27,
-      21
-    ],
-    "2026-05-31": [
-      23,
-      15
-    ],
-    "2026-06-01": [
-      61,
-      22
+      25
     ]
   },
   "filter": "subtype=Support, excl WMS/Roadmap cohorts, excl WMS Inbound/Outbound pods, unanswered=queued+WIP only"
