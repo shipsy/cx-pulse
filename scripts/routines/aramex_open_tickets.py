@@ -9,7 +9,7 @@ Accounts: Aramex Move (revo/Qnk3Lbim) + Aramex Oceania (revo/cErb8WTi)
 Filter: subtype=Support, open stages only.
 """
 
-import json, os, sys, subprocess, tempfile
+import json, os, sys, urllib.request
 from collections import defaultdict
 
 # ═══ CONFIG ═══
@@ -41,31 +41,21 @@ OPEN_STAGES = {
 
 def apicall(endpoint, payload, _retries=3):
     import time
-    with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f:
-        json.dump(payload, f)
-        f.flush()
-        tmppath = f.name
-    try:
-        for attempt in range(_retries):
-            r = subprocess.run(["curl", "-s", "--compressed", "--retry", "1",
-                "--max-time", "90", "-X", "POST", f"{API}/{endpoint}",
-                "-H", f"Authorization: Bearer {TOKEN}",
-                "-H", "Content-Type: application/json",
-                "-d", f"@{tmppath}"], capture_output=True, text=True, timeout=120)
-            if not r.stdout.strip():
-                if attempt < _retries - 1:
-                    time.sleep(1)
-                    continue
-                raise RuntimeError(f"curl returned empty (rc={r.returncode})")
-            try:
-                return json.loads(r.stdout, strict=False)
-            except json.JSONDecodeError:
-                if attempt < _retries - 1:
-                    time.sleep(1)
-                    continue
-                raise
-    finally:
-        os.unlink(tmppath)
+    for attempt in range(_retries):
+        try:
+            req = urllib.request.Request(
+                f"{API}/{endpoint}",
+                data=json.dumps(payload).encode(),
+                headers={"Authorization": f"Bearer {TOKEN}", "Content-Type": "application/json"},
+                method="POST",
+            )
+            with urllib.request.urlopen(req, timeout=90) as r:
+                return json.loads(r.read())
+        except Exception as e:
+            if attempt < _retries - 1:
+                time.sleep(1)
+                continue
+            raise
 
 
 def fetch_all(revo_id):
