@@ -15,25 +15,29 @@ const c=(arr,f)=>arr.reduce((o,x)=>{const k=f(x);o[k]=(o[k]||0)+1;return o;},{})
 const sum=o=>Object.values(o).reduce((a,b)=>a+b,0);
 const lnk=id=>`<https://app.devrev.ai/shipsy/works/${id}|${id}>`;
 const nice=new Date(RUN_DATE+"T00:00:00Z").toLocaleDateString("en-GB",{day:"2-digit",month:"short",timeZone:"UTC"});
+const pad=(n,w)=>String(n).padStart(w);
 
 // exclude label (e.g. "DTDC")
 const exLabel=(cfg.excludeOrgSubstrings||[]).length===1
   ?cfg.excludeOrgSubstrings[0].toUpperCase():"excluded orgs";
 const pctRan=F.inScope?Math.round(100*F.fridayRan/F.inScope):0;
 
-// --- funnel waterfall (always shown) ---
-const funnel=`Resolved today ${String(F.resolvedTotal).padStart(14)}
-  − ${exLabel.padEnd(20)} −${F.excludedByOrg}
-  = In scope ${String(F.inScope).padStart(15)}
-      Friday ran ${String(F.fridayRan).padStart(11)}   (${pctRan}%)
-        → judged (real RCA) ${F.judgeable}
-        → skipped/unmapped  ${F.skipped}
-        → failed             ${F.failed}
-      Friday never ran ${String(F.neverRan).padStart(6)}`;
+// --- funnel waterfall in code block ---
+const funnel=`\`\`\`
+Resolved today ${pad(F.resolvedTotal,11)}
+− ${exLabel.padEnd(22)} −${F.excludedByOrg}
+${"─".repeat(27)}
+= In scope ${pad(F.inScope,15)}
+    Friday ran ${pad(F.fridayRan,11)}   (${pctRan}%)
+      → judged (real RCA) ${pad(F.judgeable,2)}
+      → skipped/unmapped  ${pad(F.skipped,2)}
+      → failed ${pad(F.failed,13)}
+    Friday never ran ${pad(F.neverRan,5)}
+\`\`\``;
 
 // --- empty day ---
 if(F.judgeable===0){
-  console.log(`🔍 *Friday Impact — Resolved Today (${nice}, ex-${exLabel})*\n_No judgeable Friday runs today._\n\n${funnel}\n\n_Sent using Claude._`);
+  console.log(`🔍 *Friday Impact — Resolved Today (${nice}, ex-${exLabel})*\n_No judgeable Friday runs today._\n${funnel}\n_Sent using Claude._`);
   process.exit(0);
 }
 
@@ -57,21 +61,25 @@ const custEdge=posCount>=negCount
   :`negative (${negCount}) still edges positive (${posCount})`;
 const bottomLine=`*Bottom line:* right or partly right on ${pct(right)}% (${right}/${F.judgeable}), wrong ${pct(wrong)}% (${wrong}), and ${helpWord} — ${spedup} sped up resolution, ${setback} set the ticket back. ${pct(noReply)}% of customers never reply; among those who do, ${custEdge}.`;
 
-// --- scoreboard ---
+// --- scoreboard in code block ---
 const scoreboard=`*1. SCOREBOARD (${F.judgeable} judged)*
-Was Friday right?  🟢 Correct ${verd["Correct"]||0}  🟡 Partly ${verd["Partially correct"]||0}  🔴 Wrong ${verd["Incorrect"]||0}  ⚪ Unverifiable ${verd["Not verifiable"]||0}
-Did it help?       🟢 Sped up ${spedup}  ⚪ No effect ${imp["Neutral / no clear effect"]||0}          🔴 Set back ${setback}
-Customer           🟢 Positive ${posCount}  ⚪ Neutral/No-reply ${neutralNoReply}   🔴 Negative ${negCount}`;
+\`\`\`
+Was Friday right?   🟢 Correct ${pad(verd["Correct"]||0,2)}   🟡 Partly ${pad(verd["Partially correct"]||0,2)}   🔴 Wrong ${pad(verd["Incorrect"]||0,2)}   ⚪ Unverifiable ${pad(verd["Not verifiable"]||0,2)}
+Did it help?        🟢 Sped up ${pad(spedup,2)}   ⚪ No effect ${pad(imp["Neutral / no clear effect"]||0,2)}              🔴 Set back ${pad(setback,2)}
+Customer reaction   🟢 Positive ${pad(posCount,2)}   ⚪ Neutral/No-reply ${pad(neutralNoReply,2)}       🔴 Negative ${pad(negCount,2)}
+\`\`\``;
 
-// --- why it missed ---
+// --- why it missed in code block ---
 const wrongRCA=V.filter(x=>vv(x)==="Incorrect");
 const wrongProcess=V.filter(x=>ii(x)==="Misled or added noise"&&vv(x)!=="Incorrect");
 const missLines=[];
 if(wrongRCA.length) missLines.push(
-  `Wrong root cause ${String(wrongRCA.length).padStart(33)}   ${wrongRCA.map(x=>x.id).join(", ")}`);
+  `${"Wrong root cause".padEnd(35)} ${pad(wrongRCA.length,2)}    ${wrongRCA.map(x=>x.id).join(", ")}`);
 if(wrongProcess.length) missLines.push(
-  `Wrong external response / process ${String(wrongProcess.length).padStart(5)}   ${wrongProcess.map(x=>x.id).join(", ")}`);
-const missSection=missLines.length?missLines.join("\n"):"_none today_";
+  `${"Wrong external response / process".padEnd(35)} ${pad(wrongProcess.length,2)}    ${wrongProcess.map(x=>x.id).join(", ")}`);
+const missSection=missLines.length
+  ?`\`\`\`\n${missLines.join("\n")}\n\`\`\``
+  :"_none today_";
 
 // --- by org ---
 const orgs={}; for(const x of V){ const o=(x.org||"?"); const g=orgs[o]??={ran:0,right:0,help:0,set:0,neg:0};
@@ -81,19 +89,19 @@ if(sum(Object.fromEntries(Object.entries(orgs).map(([k,v])=>[k,v.ran])))!==F.jud
 const top=Object.entries(orgs).sort((a,b)=>b[1].ran-a[1].ran);
 const sig=g=>g.set>0||g.neg>g.ran/2?"🔴":(g.right===g.ran&&g.neg===0?"🟢":"🟡");
 const orgRows=top.slice(0,7).map(([o,g])=>
-  `${o.slice(0,16).padEnd(16)} ${String(g.ran).padStart(3)}  ${String(g.right).padStart(5)}  ${String(g.help).padStart(6)}  ${String(g.set).padStart(7)}  ${String(g.neg).padStart(4)}  ${sig(g)}`
+  `${o.slice(0,16).padEnd(16)} ${pad(g.ran,3)}  ${pad(g.right,5)}  ${pad(g.help,6)}  ${pad(g.set,7)}  ${pad(g.neg,4)}   ${sig(g)}`
 ).join("\n");
 const moreOrgs=top.length>7?`\n+${top.length-7} more orgs`:"";
 
 // --- review: full narrative for set-back tickets ---
 const reviewTickets=V.filter(x=>ii(x)==="Misled or added noise");
 const reviewLines=reviewTickets.map(x=>{
-  const parts=[`🔴 ${lnk(x.id)} ${S(x.org)} — ${trunc(x.issue_summary,45)}.`];
-  if(x.friday_did) parts.push(`Friday → "${trunc(x.friday_did,55)}";`);
+  const parts=[`🔴 ${lnk(x.id)} ${S(x.org)} — ${trunc(x.issue_summary,50)}.`];
+  if(x.friday_did) parts.push(`Friday → _"${trunc(x.friday_did,55)}"_;`);
   if(x.customer_reaction==="Negative"&&x.customer_reaction_evidence)
     parts.push(`customer: _"${trunc(x.customer_reaction_evidence,50)}"_`);
-  else if(x.team_response) parts.push(trunc(x.team_response,65));
-  else if(x.verdict_reason) parts.push(trunc(x.verdict_reason,65));
+  else if(x.team_response) parts.push(trunc(x.team_response,70));
+  else if(x.verdict_reason) parts.push(trunc(x.verdict_reason,70));
   return parts.join(" ");
 }).join("\n")||"_none today_";
 
@@ -104,18 +112,17 @@ const winTickets=V.filter(x=>x.helpful==="Yes"||ii(x)==="Sped up resolution")
     return sc(b)-sc(a);
   }).slice(0,4);
 const winLines=winTickets.map(x=>{
-  const parts=[`🟢 ${lnk(x.id)} ${S(x.org)} — ${trunc(x.issue_summary,45)}.`];
-  if(x.friday_did) parts.push(`Friday → "${trunc(x.friday_did,55)}";`);
+  const parts=[`🟢 ${lnk(x.id)} ${S(x.org)} — ${trunc(x.issue_summary,50)}.`];
+  if(x.friday_did) parts.push(`Friday → _"${trunc(x.friday_did,55)}"_;`);
   if(x.customer_reaction==="Positive"&&x.customer_reaction_evidence)
     parts.push(`customer: *"${trunc(x.customer_reaction_evidence,50)}"*`);
-  else if(x.team_response) parts.push(trunc(x.team_response,55));
+  else if(x.team_response) parts.push(trunc(x.team_response,60));
   return parts.join(" ");
 }).join("\n")||"_none today_";
 
 // --- compose full message ---
 const msg=`🔍 *Friday Impact — Resolved Today (${nice}, ex-${exLabel})*
 _Full coverage — every resolved-today ticket Friday ran on, judged from its DevRev timeline + adversarially verified_
-
 ${funnel}
 ━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -128,7 +135,7 @@ ${missSection}
 
 *3. BY ORG — where Friday helps vs hurts*
 \`\`\`
-Org               Ran  Right  Helped  SetBack   Neg
+Org              Ran  Right  Helped  SetBack  Neg
 ${orgRows}${moreOrgs}
 \`\`\`
 
